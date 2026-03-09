@@ -3,13 +3,15 @@ import { prisma } from "..";
 
 class FormService {
 
-    async getOptions() {
+    async getNavigationOptions() {
         const options = await prisma.category.findMany({
             select: {
+                id: true,
                 name: true,
                 categoryIcon: true,
                 subCategory: {
                     select: {
+                        id: true,
                         name: true,
                     }
                 }

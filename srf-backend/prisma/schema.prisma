@@ -13,6 +13,7 @@ datasource db {
   provider = "mysql"
 }
 
+// AUTH AND USERS
 model applicant {
   id       String   @id @default(uuid())
   name     String   @map("nome")
@@ -25,14 +26,15 @@ model applicant {
 }
 
 model user {
-  id         String       @id @default(uuid())
-  name       String       @map("nome")
-  email      String       @unique
-  password   String       @map("senha")
-  roleId     String       @default("2") @map("id_funcao")
-  userPic    String?
+  id       String  @id @default(uuid())
+  name     String  @map("nome")
+  email    String  @unique
+  password String  @map("senha")
+  roleId   String  @default("2") @map("id_funcao")
+  role     role    @relation(fields: [roleId], references: [id])
+  userPic  String?
+
   userAccess userAccess[]
-  role       role         @relation(fields: [roleId], references: [id])
   auditLogs  auditLog[]
 
   @@map("usuario")
@@ -41,24 +43,27 @@ model user {
 model role {
   id   String @id @default(uuid())
   name String @map("nome")
+
   user user[]
 
   @@map("funcao")
 }
 
 model group {
-  id          String        @id @default(uuid())
-  name        String        @unique @map("nome")
+  id   String @id @default(uuid())
+  name String @unique @map("nome")
+
   groupAccess groupAccess[]
 
   @@map("grupo")
 }
 
 model category {
-  id           String        @id @default(uuid())
-  name         String        @unique @map("nome")
-  categoryIcon String?       @map("icone_categoria")
-  subCategory  subCategory[]
+  id           String  @id @default(uuid())
+  name         String  @unique @map("nome")
+  categoryIcon String? @map("icone_categoria")
+
+  subCategory subCategory[]
 
   @@map("categoria")
 }
@@ -68,19 +73,21 @@ model subCategory {
   name       String   @unique @map("nome")
   categoryId String   @map("id_categoria")
   category   category @relation(fields: [categoryId], references: [id])
-  form       form[]
+
+  form form[]
 
   @@map("sub_categoria")
 }
 
 model form {
-  id            String        @id @default(uuid())
-  name          String        @map("nome")
-  subCategoryId String        @map("id_sub_categoria")
-  group         groupAccess[]
-  userAccess    userAccess[]
-  subCategory   subCategory   @relation(fields: [subCategoryId], references: [id])
-  auditLog      auditLog[]
+  id            String      @id @default(uuid())
+  name          String      @map("nome")
+  subCategoryId String      @map("id_sub_categoria")
+  subCategory   subCategory @relation(fields: [subCategoryId], references: [id])
+
+  group      groupAccess[]
+  userAccess userAccess[]
+  auditLog   auditLog[]
 
   @@map("formulario")
 }
@@ -88,10 +95,10 @@ model form {
 model userAccess {
   id              String           @id @default(uuid())
   userId          String           @map("id_usuario")
-  formId          String           @map("id_formulario")
-  accessLevelId   String?          @map("id_nivel_acesso")
   user            user             @relation(fields: [userId], references: [id])
+  formId          String           @map("id_formulario")
   form            form             @relation(fields: [formId], references: [id])
+  accessLevelId   String?          @map("id_nivel_acesso")
   enumAccessLevel enumAccessLevel? @relation(fields: [accessLevelId], references: [id])
 
   @@map("autorizacao_usuario")
@@ -100,10 +107,10 @@ model userAccess {
 model groupAccess {
   id              String           @id @default(uuid())
   groupId         String           @map("id_grupo")
-  formId          String           @map("id_formulario")
-  accessLevelId   String?          @map("id_nivel_acesso")
   group           group            @relation(fields: [groupId], references: [id])
+  formId          String           @map("id_formulario")
   form            form             @relation(fields: [formId], references: [id])
+  accessLevelId   String?          @map("id_nivel_acesso")
   enumAccessLevel enumAccessLevel? @relation(fields: [accessLevelId], references: [id])
 
   @@map("autorizacao_grupo")
@@ -123,12 +130,11 @@ model enumAccessLevel {
 model auditLog {
   id     String   @id @default(uuid())
   userId String   @map("id_usuario")
+  user   user     @relation(fields: [userId], references: [id])
   date   DateTime @default(now())
   action String   @map("acao") // "SUBMIT", "REVERT"
   formId String   @map("id_formulario")
-
-  user user @relation(fields: [userId], references: [id])
-  form form @relation(fields: [formId], references: [id])
+  form   form     @relation(fields: [formId], references: [id])
 
   changes changeLog[]
 
@@ -136,15 +142,923 @@ model auditLog {
 }
 
 model changeLog {
-  id         Int    @id @default(autoincrement())
-  auditLogId String @map("id_auditlog")
-  table      String @map("tabela")
-  recordId   String @map("id_registro")
-  action     String @map("tipo_acao") // "CREATE", "UPDATE", "DELETE"
-  oldData    Json?  @map("dados_antigos")
-  newData    Json?  @map("dados_novos")
-
-  auditLog auditLog @relation(fields: [auditLogId], references: [id], onDelete: Cascade)
+  id         Int      @id @default(autoincrement())
+  auditLogId String   @map("id_auditlog")
+  auditLog   auditLog @relation(fields: [auditLogId], references: [id], onDelete: Cascade)
+  table      String   @map("tabela")
+  recordId   String   @map("id_registro")
+  action     String   @map("tipo_acao") // "CREATE", "UPDATE", "DELETE"
+  oldData    Json?    @map("dados_antigos")
+  newData    Json?    @map("dados_novos")
 
   @@map("changelog")
+}
+
+// ===== FORMS =====
+// ==x== Live Animal ==x==
+model liveAnimal {
+  id        String           @id @default(uuid())
+  specieId  String           @map("id_especie")
+  specie    specie           @relation(fields: [specieId], references: [id])
+  name      String           @map("nome")
+  genderId  String           @map("id_genero")
+  gender    enumAnimalGender @relation(fields: [genderId], references: [id])
+  birthDate DateTime         @map("data_nascimento")
+  active    Boolean          @map("ativo")
+
+  gpsTracking        gpsTracking?
+  castration         castration?
+  veterinarianVisit  veterinarianVisit[]
+  vaccineApplication vaccineApplication[]
+  animalInterview    animalInterview?
+
+  @@map("animal_vivo")
+}
+
+model specie {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  liveAnimal liveAnimal[]
+  deadAnimal deadAnimal[]
+
+  @@map("especie")
+}
+
+model enumAnimalGender {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  liveAnimal liveAnimal[]
+
+  @@map("enum_genero_animal")
+}
+
+// ==x== GPS ==x==
+model gpsTracking {
+  id                    String           @id @default(uuid())
+  liveAnimalId          String           @unique @map("id_animal_vivo")
+  liveAnimal            liveAnimal       @relation(fields: [liveAnimalId], references: [id])
+  trackingDeviceId      String           @map("id_dispositivo_rastreio")
+  trackingDevice        trackingDevice   @relation(fields: [trackingDeviceId], references: [id])
+  startDate             DateTime         @map("data_inicio")
+  endDate               DateTime?        @map("data_fim")
+  note                  String?          @map("observacao")
+  monitoredDays         Int              @map("dias_monitorados")
+  locationPoints        Int              @map("pontos_localizacao")
+  livingArea            Float            @map("area_vida")
+  monitoringMethodId    String           @map("id_metodo_monitoramento")
+  monitoringMethod      monitoringMethod @relation(fields: [monitoringMethodId], references: [id])
+  rawSpreadsheetLink    String?          @map("link_planilha_bruta")
+  editedSpreadsheetLink String?          @map("link_planilha_editada")
+
+  @@map("rastreio_gps")
+}
+
+model monitoringMethod {
+  id          String @id @default(uuid())
+  description String @map("descricao")
+
+  gpsTracking gpsTracking[]
+
+  @@map("metodo_monitoramento")
+}
+
+model trackingDevice {
+  id           String  @id @default(uuid())
+  brand        String  @map("marca")
+  serialNumber String  @map("numero_serie")
+  note         String? @map("observacao")
+
+  gpsTracking gpsTracking[]
+
+  @@map("dispositivo_rastreio")
+}
+
+// ==x== Interviews and Tutor ==x==
+model animalInterview {
+  id           String     @id @default(uuid())
+  liveAnimalId String     @unique @map("id_animal_vivo")
+  liveAnimal   liveAnimal @relation(fields: [liveAnimalId], references: [id])
+
+  animalAnswer animalAnswer[]
+
+  @@map("entrevista_animal")
+}
+
+model animalAnswer {
+  id                   String              @id @default(uuid())
+  animalInterviewId    String              @map("id_entrevista_animal")
+  animalInterview      animalInterview     @relation(fields: [animalInterviewId], references: [id])
+  animalQuestionId     String              @map("id_pergunta_animal")
+  animalQuestion       animalQuestion      @relation(fields: [animalQuestionId], references: [id])
+  text                 String?             @map("texto")
+  quantity             Int?                @map("quantidade")
+  animalAnswerOptionId String?             @map("id_opcao_resposta_animal")
+  animalAnswerOption   animalAnswerOption? @relation(fields: [animalAnswerOptionId], references: [id])
+
+  @@map("resposta_animal")
+}
+
+model animalQuestion {
+  id   String @id @default(uuid())
+  text String @map("pergunta")
+
+  animalAnswerOption animalAnswerOption[]
+  animalAnswer       animalAnswer[]
+
+  @@map("pergunta_animal")
+}
+
+model animalAnswerOption {
+  id               String         @id @default(uuid())
+  animalQuestionId String         @map("id_pergunta_animal")
+  animalQuestion   animalQuestion @relation(fields: [animalQuestionId], references: [id])
+  text             String         @map("resposta_possivel")
+
+  animalAnswer animalAnswer[]
+
+  @@map("opcao_resposta_animal")
+}
+
+model tutorInterview {
+  id      String   @id @default(uuid())
+  tutorId String   @unique @map("id_tutor")
+  tutor   tutor    @relation(fields: [tutorId], references: [id])
+  date    DateTime @map("data")
+
+  tutorAnswer tutorAnswer[]
+
+  @@map("entrevista_tutor")
+}
+
+model tutor {
+  id        String     @id @default(uuid())
+  name      String     @map("nome")
+  genderId  String     @map("id_genero")
+  gender    enumGender @relation(fields: [genderId], references: [id])
+  birthDate DateTime   @map("data_nascimento")
+
+  tutorInterview tutorInterview?
+  necropsy       necropsy[]
+
+  @@map("tutor")
+}
+
+model enumGender {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  tutor tutor[]
+
+  @@map("enum_genero")
+}
+
+model tutorAnswer {
+  id                  String             @id @default(uuid())
+  tutorInterviewId    String             @map("id_entrevista_tutor")
+  tutorInterview      tutorInterview     @relation(fields: [tutorInterviewId], references: [id])
+  tutorQuestionId     String             @map("id_pergunta_tutor")
+  tutorQuestion       tutorQuestion      @relation(fields: [tutorQuestionId], references: [id])
+  text                String?            @map("texto")
+  quantity            Int?               @map("quantidade")
+  tutorAnswerOptionId String?            @map("id_opcao_resposta_tutor")
+  tutorAnswerOption   tutorAnswerOption? @relation(fields: [tutorAnswerOptionId], references: [id])
+
+  @@map("resposta_tutor")
+}
+
+model tutorAnswerOption {
+  id              String        @id @default(uuid())
+  tutorQuestionId String        @map("id_pergunta_tutor")
+  tutorQuestion   tutorQuestion @relation(fields: [tutorQuestionId], references: [id])
+  text            String        @map("resposta_possivel")
+
+  tutorAnswer tutorAnswer[]
+
+  @@map("opcao_resposta_tutor")
+}
+
+model tutorQuestion {
+  id   String @id @default(uuid())
+  text String @map("pergunta")
+
+  tutorAnswerOption tutorAnswerOption[]
+  tutorAnswer       tutorAnswer[]
+
+  @@map("pergunta_tutor")
+}
+
+// Health
+
+model castration {
+  id                  String            @id @default(uuid())
+  liveAnimalId        String            @unique @map("id_animal_vivo")
+  liveAnimal          liveAnimal        @relation(fields: [liveAnimalId], references: [id])
+  veterinarianVisitId String            @unique @map("id_visita_veterinaria")
+  veterinarianVisit   veterinarianVisit @relation(fields: [veterinarianVisitId], references: [id])
+  date                DateTime          @map("data")
+  note                String?           @map("observacao")
+
+  @@map("castracao")
+}
+
+model veterinarianVisit {
+  id             String       @id @default(uuid())
+  liveAnimalId   String       @map("id_animal_vivo")
+  liveAnimal     liveAnimal   @relation(fields: [liveAnimalId], references: [id])
+  veterinarianId String       @map("id_veterinario")
+  veterinarian   veterinarian @relation(fields: [veterinarianId], references: [id])
+  date           DateTime     @map("data")
+  cardLink       String?      @map("link_carteirinha")
+
+  castration           castration?
+  vaccineApplication   vaccineApplication[]
+  exam                 exam?
+  stoolAnalysis        stoolAnalysis?
+  physicalExam         physicalExam?
+  bodyMeasurement      bodyMeasurementVeterinarian[]
+  ectoparasiteAnalysis ectoparasiteAnalysisVeterinarian[]
+  sorologyAnalysis     sorologyAnalysis[]
+  sampleAllocation     sampleAllocationVeterinarian[]
+
+  @@map("visita_veterinaria")
+}
+
+model veterinarian {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  veterinarianVisit veterinarianVisit[]
+
+  @@map("veterinario")
+}
+
+model vaccine {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  vaccineApplication vaccineApplication[]
+
+  @@map("vacina")
+}
+
+model vaccineApplication {
+  id                  String             @id @default(uuid())
+  liveAnimalId        String             @map("id_animal_vivo")
+  liveAnimal          liveAnimal         @relation(fields: [liveAnimalId], references: [id])
+  vaccineId           String             @map("id_vacina")
+  vaccine             vaccine            @relation(fields: [vaccineId], references: [id])
+  veterinarianVisitId String?            @map("id_visita_veterinaria")
+  veterinarianVisit   veterinarianVisit? @relation(fields: [veterinarianVisitId], references: [id])
+  date                DateTime           @map("data")
+  vaccineTypeId       String             @map("id_tipo_vacina")
+  vaccineType         enumVaccineType    @relation(fields: [vaccineTypeId], references: [id])
+
+  @@map("aplicacao_vacina")
+}
+
+model enumVaccineType {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  vaccineApplication vaccineApplication[]
+
+  @@map("enum_tipo_vacina")
+}
+
+model exam {
+  id                  String                   @id @default(uuid())
+  veterinarianVisitId String                   @unique @map("id_visita_veterinaria")
+  veterinarianVisit   veterinarianVisit        @relation(fields: [veterinarianVisitId], references: [id])
+  generalConditionId  String                   @map("id_estado_geral")
+  generalCondition    enumExamGeneralCondition @relation(fields: [generalConditionId], references: [id])
+  interpretationId    String                   @map("id_interpretacao")
+  interpretation      enumExamInterpretation   @relation(fields: [interpretationId], references: [id])
+  note                String?                  @map("observacao")
+
+  examValue examValue[]
+
+  @@map("exame")
+}
+
+model enumExamGeneralCondition {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  exam exam[]
+
+  @@map("enum_estado_geral")
+}
+
+model enumExamInterpretation {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  exam exam[]
+
+  @@map("enum_interpretacao")
+}
+
+model examValue {
+  id               String                       @id @default(uuid())
+  examId           String                       @map("id_exame")
+  exam             exam                         @relation(fields: [examId], references: [id])
+  examTypeId       String                       @map("id_tipo_exame")
+  examType         examType                     @relation(fields: [examTypeId], references: [id])
+  value            String                       @map("valor")
+  interpretationId String?                      @map("id_interpretacao")
+  interpretation   enumExamValueInterpretation? @relation(fields: [interpretationId], references: [id])
+
+  @@map("valor_exame")
+}
+
+model enumExamValueInterpretation {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  examValue examValue[]
+
+  @@map("enum_interpretacao_valor_exame")
+}
+
+model examType {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  examValue examValue[]
+
+  @@map("tipo_exame")
+}
+
+model stoolAnalysis {
+  id                     String               @id @default(uuid())
+  veterinarianVisitId    String               @unique @map("id_visita_veterinaria")
+  veterinarianVisit      veterinarianVisit    @relation(fields: [veterinarianVisitId], references: [id])
+  weight                 Float                @map("peso")
+  processingTechnologyId String               @map("id_tecnologia_processamento")
+  processingTechnology   processingTechnology @relation(fields: [processingTechnologyId], references: [id])
+  note                   String?              @map("observacao")
+
+  eggCystAnalysis   eggCystAnalysis[]
+  molecularAnalysis molecularAnalysis[]
+
+  @@map("analise_fezes")
+}
+
+model processingTechnology {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  stoolAnalysis stoolAnalysis[]
+
+  @@map("tecnologia_processamento")
+}
+
+model eggCystAnalysis {
+  id              String        @id @default(uuid())
+  stoolAnalysisId String        @map("id_analise_fezes")
+  stoolAnalysis   stoolAnalysis @relation(fields: [stoolAnalysisId], references: [id])
+  eggCystSpecieId String        @map("id_especie_ovo_cisto")
+  eggCystSpecie   eggCystSpecie @relation(fields: [eggCystSpecieId], references: [id])
+  quantity        Int           @map("quantidade")
+  note            String?       @map("observacao")
+
+  @@map("analise_ovo_cisto")
+}
+
+model eggCystSpecie {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  eggCystAnalysis   eggCystAnalysis[]
+  molecularAnalysis molecularAnalysis[]
+
+  @@map("especie_ovo_cisto")
+}
+
+model molecularAnalysis {
+  id              String        @id @default(uuid())
+  stoolAnalysisId String        @map("id_analise_fezes")
+  stoolAnalysis   stoolAnalysis @relation(fields: [stoolAnalysisId], references: [id])
+  eggCystSpecieId String        @map("id_especie_ovo_cisto")
+  eggCystSpecie   eggCystSpecie @relation(fields: [eggCystSpecieId], references: [id])
+  note            String?       @map("observacao")
+
+  @@map("analise_molecular")
+}
+
+model physicalExam {
+  id                  String                           @id @default(uuid())
+  veterinarianVisitId String                           @unique @map("id_visita_veterinaria")
+  veterinarianVisit   veterinarianVisit                @relation(fields: [veterinarianVisitId], references: [id])
+  generalConditionId  String                           @map("id_estado_geral")
+  generalCondition    enumPhysicalExamGeneralCondition @relation(fields: [generalConditionId], references: [id])
+  fr                  String                           @map("FR")
+  fc                  Int                              @map("FC")
+  tempRectal          Float                            @map("temp_retal")
+  mucousId            String                           @map("id_mucosa")
+  mucous              enumMucous                       @relation(fields: [mucousId], references: [id])
+  tpc                 Int                              @map("TPC")
+  hydrationId         String                           @map("id_hidratacao")
+  hydration           enumHydration                    @relation(fields: [hydrationId], references: [id])
+  weight              Float                            @map("peso")
+  score               Int                              @map("score")
+  bloodCollectionNote String?                          @map("observacao_coleta_sangue")
+  physicalExamNote    String?                          @map("observacao_exame_fisico")
+  generalNote         String?                          @map("observacao_geral")
+
+  @@map("exame_fisico")
+}
+
+model enumPhysicalExamGeneralCondition {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  physicalExam physicalExam[]
+
+  @@map("enum_estado_geral_exame_fisico")
+}
+
+model enumMucous {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  physicalExam physicalExam[]
+
+  @@map("enum_mucosa")
+}
+
+model enumHydration {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  physicalExam physicalExam[]
+
+  @@map("enum_hidratacao")
+}
+
+model bodyMeasurementVeterinarian {
+  id                    String                          @id @default(uuid())
+  veterinarianVisitId   String                          @map("id_visita_veterinaria")
+  veterinarianVisit     veterinarianVisit               @relation(fields: [veterinarianVisitId], references: [id])
+  bodyMeasurementTypeId String                          @map("id_tipo_medida_corporal")
+  bodyMeasurementType   bodyMeasurementTypeVeterinarian @relation(fields: [bodyMeasurementTypeId], references: [id])
+  value                 Float                           @map("valor")
+
+  @@map("medida_corporal_veterinario")
+}
+
+model bodyMeasurementTypeVeterinarian {
+  id          String @id @default(uuid())
+  description String @map("descricao")
+  unit        String @map("unidade")
+
+  bodyMeasurementVeterinarian bodyMeasurementVeterinarian[]
+
+  @@map("tipo_medida_corporal_veterinario")
+}
+
+model bodyMeasurementTypeNecropsy {
+  id          String @id @default(uuid())
+  description String @map("descricao")
+  unit        String @map("unidade")
+
+  bodyMeasurementNecropsy bodyMeasurementNecropsy[]
+
+  @@map("tipo_medida_corporal_necropsia")
+}
+
+model ectoparasiteAnalysisVeterinarian {
+  id                      String             @id @default(uuid())
+  veterinarianVisitId     String             @map("id_visita_veterinaria")
+  veterinarianVisit       veterinarianVisit  @relation(fields: [veterinarianVisitId], references: [id])
+  ectoparasiteGenusId     String             @map("id_genero_ectoparasito")
+  ectoparasiteGenus       ectoparasiteGenus  @relation(fields: [ectoparasiteGenusId], references: [id])
+  ectoparasiteSpecieId    String             @map("id_especie_ectoparasito")
+  ectoparasiteSpecie      ectoparasiteSpecie @relation("specie", fields: [ectoparasiteSpecieId], references: [id])
+  ectoparasiteSubSpecieId String             @map("id_subespecie_ectoparasito")
+  ectoparasiteSubSpecie   ectoparasiteSpecie @relation("subspecie", fields: [ectoparasiteSubSpecieId], references: [id])
+  maleQuantity            Int                @map("quantidade_machos")
+  femaleQuantity          Int                @map("quantidade_femeas")
+  nymphQuantity           Int                @map("quantidade_ninfas")
+  larvaeQuantity          Int                @map("quantidade_larvas")
+  eggQuantity             Int                @map("quantidade_ovos")
+  note                    String?            @map("observacao")
+
+  @@map("analise_ectoparasito_veterinario")
+}
+
+model ectoparasiteGenus {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  ectoparasiteAnalysisVeterinarian ectoparasiteAnalysisVeterinarian[]
+  ectoparasiteAnalysisNecropsy     ectoparasiteAnalysisNecropsy[]
+
+  @@map("genero_ectoparasito")
+}
+
+model ectoparasiteSpecie {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  ectoparasiteAnalysisVeterinarianSpecie    ectoparasiteAnalysisVeterinarian[] @relation("specie")
+  ectoparasiteAnalysisVeterinarianSubSpecie ectoparasiteAnalysisVeterinarian[] @relation("subspecie")
+  ectoparasiteAnalysisNecropsySpecie        ectoparasiteAnalysisNecropsy[]     @relation("specie")
+  ectoparasiteAnalysisNecropsySubSpecie     ectoparasiteAnalysisNecropsy[]     @relation("subspecie")
+
+  @@map("especie_ectoparasito")
+}
+
+model sorologyAnalysis {
+  id                  String                       @id @default(uuid())
+  veterinarianVisitId String                       @map("id_visita_veterinaria")
+  veterinarianVisit   veterinarianVisit            @relation(fields: [veterinarianVisitId], references: [id])
+  sampleId            String                       @map("id_amostra")
+  sample              sampleAllocationVeterinarian @relation(fields: [sampleId], references: [id])
+  sorologyTestId      String                       @map("id_teste_sorologico")
+  sorologyTest        sorologyTest                 @relation(fields: [sorologyTestId], references: [id])
+  sorologyAgentId     String                       @map("id_agente_sorologico")
+  sorologyAgent       sorologyAgent                @relation(fields: [sorologyAgentId], references: [id])
+  cuttingPoint        String                       @map("ponto_corte")
+  result              Float                        @map("resultado")
+  interpretationId    String                       @map("id_interpretacao")
+  interpretation      enumSorologyInterpretation   @relation(fields: [interpretationId], references: [id])
+
+  @@map("analise_sorologica")
+}
+
+model enumSorologyInterpretation {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  sorologyAnalysis sorologyAnalysis[]
+
+  @@map("enum_interpretacao_analise_sorologica")
+}
+
+model sorologyTest {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  sorologyAnalysis sorologyAnalysis[]
+
+  @@map("teste_sorologico")
+}
+
+model sorologyAgent {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  sorologyAnalysis sorologyAnalysis[]
+
+  @@map("agente_sorologico")
+}
+
+model sampleAllocationVeterinarian {
+  id                  String                     @id @default(uuid())
+  veterinarianVisitId String                     @map("id_visita_veterinaria")
+  veterinarianVisit   veterinarianVisit          @relation(fields: [veterinarianVisitId], references: [id])
+  sampleTypeId        String                     @map("id_tipo_amostra")
+  sampleType          sampleType                 @relation(fields: [sampleTypeId], references: [id])
+  storageId           String                     @map("id_armazenamento")
+  storage             storage                    @relation(fields: [storageId], references: [id])
+  statusId            String                     @map("id_status")
+  status              enumSampleAllocationStatus @relation(fields: [statusId], references: [id])
+  sendDate            DateTime?                  @map("data_envio")
+  imageLink           String?                    @map("link_imagem")
+  note                String?                    @map("observacao")
+
+  sorologyAnalysis sorologyAnalysis[]
+
+  @@map("alocacao_amostra_veterinario")
+}
+
+model enumSampleAllocationStatus {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  sampleAllocationVeterinarian sampleAllocationVeterinarian[]
+  sampleAllocationNecropsy     sampleAllocationNecropsy[]
+
+  @@map("enum_status_alocacao_amostra")
+}
+
+model sampleType {
+  id          String @id @default(uuid())
+  description String @map("descricao")
+
+  sampleAllocationVeterinarian sampleAllocationVeterinarian[]
+  sampleAllocationNecropsy     sampleAllocationNecropsy[]
+  cpcrResult                   cpcrResult[]
+  qpcrResult                   qpcrResult[]
+
+  @@map("tipo_amostra")
+}
+
+model storage {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  sampleAllocationVeterinarian sampleAllocationVeterinarian[]
+  sampleAllocationNecropsy     sampleAllocationNecropsy[]
+
+  @@map("armazem")
+}
+
+// ==x== Dead Animal ==x==
+model deadAnimal {
+  id                      String                @id @default(uuid())
+  deadAnimalGroupId       String                @map("id_grupo_animal_morto")
+  deadAnimalGroup         deadAnimalGroup       @relation(fields: [deadAnimalGroupId], references: [id])
+  specieId                String                @map("id_especie")
+  specie                  specie                @relation(fields: [specieId], references: [id])
+  deadAnimalOriginId      String                @map("id_origem_animal_morto")
+  deadAnimalOrigin        enumDeadAnimalOrigin  @relation(fields: [deadAnimalOriginId], references: [id])
+  deadAnimalStatusId      String                @map("id_status_animal_morto")
+  deadAnimalStatus        enumDeadAnimalStatus  @relation(fields: [deadAnimalStatusId], references: [id])
+  collectionDate          DateTime              @map("data_coleta")
+  collectionResponsibleId String                @map("id_responsavel_coleta")
+  collectionResponsible   collectionResponsible @relation(fields: [collectionResponsibleId], references: [id])
+  collectionLongitude     Float                 @map("longitude_coleta")
+  collectionLatitude      Float                 @map("latitude_coleta")
+  imageLink               String?               @map("link_imagem")
+  note                    String?               @map("observacao")
+
+  necropsy necropsy?
+
+  @@map("animal_morto")
+}
+
+model deadAnimalGroup {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  deadAnimal deadAnimal[]
+
+  @@map("grupo_animal_morto")
+}
+
+model enumDeadAnimalOrigin {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  deadAnimal deadAnimal[]
+
+  @@map("enum_origem_animal_morto")
+}
+
+model enumDeadAnimalStatus {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  deadAnimal deadAnimal[]
+
+  @@map("enum_status_animal_morto")
+}
+
+model collectionResponsible {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  deadAnimal deadAnimal[]
+
+  @@map("responsavel_coleta")
+}
+
+model necropsy {
+  id                      String                    @id @default(uuid())
+  deadAnimalId            String                    @unique @map("id_animal_morto")
+  deadAnimal              deadAnimal                @relation(fields: [deadAnimalId], references: [id])
+  performedDate           DateTime                  @map("data_realizacao")
+  bodyConditionId         String                    @map("id_estado_corporal")
+  bodyCondition           enumBodyCondition         @relation(fields: [bodyConditionId], references: [id])
+  clinicalConditionId     String                    @map("id_estado_clinico")
+  clinicalCondition       enumClinicalCondition     @relation(fields: [clinicalConditionId], references: [id])
+  tutorId                 String?                   @map("id_tutor")
+  tutor                   tutor?                    @relation(fields: [tutorId], references: [id])
+  reproductiveConditionId String                    @map("id_condicao_reprodutiva")
+  reproductiveCondition   enumReproductiveCondition @relation(fields: [reproductiveConditionId], references: [id])
+  weight                  Float                     @map("peso")
+  ageId                   String                    @map("id_faixa_etaria")
+  age                     enumAge                   @relation(fields: [ageId], references: [id])
+  note                    String?                   @map("observacao")
+
+  bodyMeasurementNecropsy      bodyMeasurementNecropsy[]
+  helminthAnalysis             helminthAnalysis[]
+  ectoparasiteAnalysisNecropsy ectoparasiteAnalysisNecropsy[]
+  sampleAllocationNecropsy     sampleAllocationNecropsy[]
+  cpcrResult                   cpcrResult[]
+  qpcrResult                   qpcrResult[]
+
+  @@map("necropsia")
+}
+
+model enumBodyCondition {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  necropsy necropsy[]
+
+  @@map("enum_estado_corporal")
+}
+
+model enumClinicalCondition {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  necropsy necropsy[]
+
+  @@map("enum_estado_clinico")
+}
+
+model enumReproductiveCondition {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  necropsy necropsy[]
+
+  @@map("enum_condicao_reprodutiva")
+}
+
+model enumAge {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  necropsy necropsy[]
+
+  @@map("enum_faixa_etaria")
+}
+
+model bodyMeasurementNecropsy {
+  id                    String                      @id @default(uuid())
+  necropsyId            String                      @map("id_necropsia")
+  necropsy              necropsy                    @relation(fields: [necropsyId], references: [id])
+  bodyMeasurementTypeId String                      @map("id_tipo_medida_corporal")
+  bodyMeasurementType   bodyMeasurementTypeNecropsy @relation(fields: [bodyMeasurementTypeId], references: [id])
+  value                 Float                       @map("valor")
+
+  @@map("medida_corporal_necropsia")
+}
+
+model helminthAnalysis {
+  id               String         @id @default(uuid())
+  necropsyId       String         @map("id_necropsia")
+  necropsy         necropsy       @relation(fields: [necropsyId], references: [id])
+  helminthSpecieId String         @map("id_especie_helminto")
+  helminthSpecie   helminthSpecie @relation(fields: [helminthSpecieId], references: [id])
+  location         String         @map("localizacao")
+  maleQuantity     Int            @map("quantidade_machos")
+  femaleQuantity   Int            @map("quantidade_femeas")
+  totalQuantity    Int            @map("quantidade_total")
+  note             String?        @map("observacao")
+
+  @@map("analise_helminto")
+}
+
+model helminthSpecie {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  helminthAnalysis helminthAnalysis[]
+
+  @@map("especie_helminto")
+}
+
+model ectoparasiteAnalysisNecropsy {
+  id                      String             @id @default(uuid())
+  necropsyId              String             @map("id_necropsia")
+  necropsy                necropsy           @relation(fields: [necropsyId], references: [id])
+  ectoparasiteGenusId     String             @map("id_genero_ectoparasito")
+  ectoparasiteGenus       ectoparasiteGenus  @relation(fields: [ectoparasiteGenusId], references: [id])
+  ectoparasiteSpecieId    String             @map("id_especie_ectoparasito")
+  ectoparasiteSpecie      ectoparasiteSpecie @relation("specie", fields: [ectoparasiteSpecieId], references: [id])
+  ectoparasiteSubSpecieId String             @map("id_subespecie_ectoparasito")
+  ectoparasiteSubSpecie   ectoparasiteSpecie @relation("subspecie", fields: [ectoparasiteSubSpecieId], references: [id])
+  maleQuantity            Int                @map("quantidade_machos")
+  femaleQuantity          Int                @map("quantidade_femeas")
+  nymphQuantity           Int                @map("quantidade_ninfas")
+  larvaeQuantity          Int                @map("quantidade_larvas")
+  eggQuantity             Int                @map("quantidade_ovos")
+  note                    String?            @map("observacao")
+
+  @@map("analise_ectoparasito_necropsia")
+}
+
+model sampleAllocationNecropsy {
+  id           String                     @id @default(uuid())
+  necropsyId   String                     @map("id_necropsia")
+  necropsy     necropsy                   @relation(fields: [necropsyId], references: [id])
+  sampleTypeId String                     @map("id_tipo_amostra")
+  sampleType   sampleType                 @relation(fields: [sampleTypeId], references: [id])
+  storageId    String                     @map("id_armazenamento")
+  storage      storage                    @relation(fields: [storageId], references: [id])
+  statusId     String                     @map("id_status")
+  status       enumSampleAllocationStatus @relation(fields: [statusId], references: [id])
+  sendDate     DateTime?                  @map("data_envio")
+  imageLink    String?                    @map("link_imagem")
+  note         String?                    @map("observacao")
+
+  @@map("alocacao_amostra_necropsia")
+}
+
+model cpcrResult {
+  id                String          @id @default(uuid())
+  necropsyId        String          @map("id_necropsia")
+  necropsy          necropsy        @relation(fields: [necropsyId], references: [id])
+  sampleTypeId      String          @map("id_tipo_amostra")
+  sampleType        sampleType      @relation(fields: [sampleTypeId], references: [id])
+  performedDate     DateTime        @map("data_realizacao")
+  extractionTypeId  String          @map("id_tipo_extracao")
+  extractionType    extractionType  @relation(fields: [extractionTypeId], references: [id])
+  targetGeneId      String          @map("id_gene_alvo")
+  targetGene        targetGene      @relation(fields: [targetGeneId], references: [id])
+  primer            String          @map("primer")
+  pb                Int             @map("pb")
+  suspiciousAgentId String          @map("id_agente_suspeito")
+  suspiciousAgent   suspiciousAgent @relation(fields: [suspiciousAgentId], references: [id])
+  cpcrMethodId      String          @map("id_metodo_cpcr")
+  cpcrMethod        enumCpcrMethod  @relation(fields: [cpcrMethodId], references: [id])
+  cpcrStatusId      String          @map("id_resultado_cpcr")
+  cpcrStatus        enumCpcrStatus  @relation(fields: [cpcrStatusId], references: [id])
+  control           String          @map("controle")
+
+  @@map("resultado_cpcr")
+}
+
+model qpcrResult {
+  id                String          @id @default(uuid())
+  necropsyId        String          @map("id_necropsia")
+  necropsy          necropsy        @relation(fields: [necropsyId], references: [id])
+  sampleTypeId      String          @map("id_tipo_amostra")
+  sampleType        sampleType      @relation(fields: [sampleTypeId], references: [id])
+  performedDate     DateTime        @map("data_realizacao")
+  targetGeneId      String          @map("id_gene_alvo")
+  targetGene        targetGene      @relation(fields: [targetGeneId], references: [id])
+  suspiciousAgentId String          @map("id_agente_suspeito")
+  suspiciousAgent   suspiciousAgent @relation(fields: [suspiciousAgentId], references: [id])
+  meanCt            Float           @map("ct_medio")
+  estimatedCopies   Float           @map("copias_estimadas")
+  qpcrStatusId      String          @map("id_resultado_qpcr")
+  qpcrStatus        enumQpcrStatus  @relation(fields: [qpcrStatusId], references: [id])
+  control           String          @map("controle")
+
+  @@map("resultado_qpcr")
+}
+
+model extractionType {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  cpcrResult cpcrResult[]
+
+  @@map("tipo_extracao")
+}
+
+model targetGene {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  cpcrResult cpcrResult[]
+  qpcrResult qpcrResult[]
+
+  @@map("gene_alvo")
+}
+
+model suspiciousAgent {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  cpcrResult cpcrResult[]
+  qpcrResult qpcrResult[]
+
+  @@map("agente_suspeito")
+}
+
+model enumCpcrMethod {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  cpcrResult cpcrResult[]
+
+  @@map("enum_metodo_cpcr")
+}
+
+model enumCpcrStatus {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  cpcrResult cpcrResult[]
+
+  @@map("enum_status_cpcr")
+}
+
+model enumQpcrStatus {
+  id   String @id @default(uuid())
+  name String @map("nome")
+
+  qpcrResult qpcrResult[]
+
+  @@map("enum_status_qpcr")
 }

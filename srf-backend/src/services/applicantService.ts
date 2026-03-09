@@ -43,13 +43,7 @@ class ApplicantService {
                 message: true,
             }
         });
-        return applicants.map(applicant => ({
-            id: applicant.id,
-            name: applicant.name,
-            email: applicant.email,
-            date: `${applicant.date.getDate()}/${applicant.date.getMonth() + 1}/${applicant.date.getFullYear()}`,
-            message: applicant.message,
-        }));
+        return applicants;
     }
 
     async acceptApplicant(id: string) {

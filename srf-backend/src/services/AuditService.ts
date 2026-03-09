@@ -1,5 +1,3 @@
-
-import { PrismaClient } from '../../generated/prisma/client';
 import { prisma } from '../index';
 
 type ChangeDetail = {
@@ -33,58 +31,76 @@ class AuditService {
         });
     }
 
-    async revertTransaction(auditLogId: string) {
-        return prisma.$transaction(async (tx) => {
-
-            // 1. Fetch the AuditLog with all ChangeLogs
-            const auditLog = await tx.auditLog.findUnique({
-                where: { id: auditLogId },
-                include: {
-                    changes: {
-                        orderBy: { id: 'asc' }
-                    }
-                }
-            });
-
-            if (!auditLog) {
-                throw new Error("Registro de auditoria não encontrado");
-            }
-
-            // 2. Reverse the changes to undo them in LIFO order (Last In, First Out)
-            const changesToRevert = [...auditLog.changes].reverse();
-
-            for (const change of changesToRevert) {
-                const model = (tx as any)[change.table]; // Dynamic model access
-                if (!model) {
-                    console.warn(`Model ${change.table} não encontrado no PrismaClient`);
-                    continue;
-                }
-
-                if (change.action === 'CREATE') {
-                    // Undo CREATE -> DELETE
-                    await model.delete({
-                        where: { id: change.recordId }
-                    });
-                } else if (change.action === 'DELETE') {
-                    // Undo DELETE -> CREATE (using oldData)
-                    if (change.oldData) {
-                        await model.create({
-                            data: change.oldData
-                        });
-                    }
-                } else if (change.action === 'UPDATE') {
-                    // Undo UPDATE -> UPDATE (set to oldData)
-                    if (change.oldData) {
-                        await model.update({
-                            where: { id: change.recordId },
-                            data: change.oldData
-                        });
-                    }
+    async findRecordCreatorId(table: string, recordId: string): Promise<string | null> {
+        const createLog = await prisma.changeLog.findFirst({
+            where: {
+                table: table,
+                recordId: recordId,
+                action: 'CREATE',
+            },
+            select: {
+                auditLog: {
+                    select: { userId: true }
                 }
             }
-
-            return { success: true, originalAction: auditLog.action };
         });
+
+        return createLog?.auditLog.userId ?? null;
+    }
+
+    async canUserEditRecord(userId: string, table: string, recordId: string, formId: string) {
+        // Check if user is admin/owner
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { role: { select: { name: true } } }
+        });
+
+        if (!user) {
+            return { canEdit: false, reason: 'Usuário não encontrado' };
+        }
+
+        if (user.role.name === 'admin' || user.role.name === 'owner') {
+            return { canEdit: true, reason: 'Usuário é administrador' };
+        }
+
+        // Get user's access level for this form
+        const userAccess = await prisma.userAccess.findFirst({
+            where: { userId, formId }
+        });
+
+        if (!userAccess || !userAccess.accessLevelId) {
+            return { canEdit: false, reason: 'Sem acesso ao formulário' };
+        }
+
+        // Check access level
+        const levels = await prisma.enumAccessLevel.findMany({
+            select: { id: true, value: true }
+        });
+
+        const userLevel = levels.find(l => l.id === userAccess.accessLevelId);
+        if (!userLevel) {
+            return { canEdit: false, reason: 'Nível de acesso não encontrado' };
+        }
+
+        const editUnrestrictedLevel = levels.find(l => l.id === 'edit_unrestricted');
+        const editLevel = levels.find(l => l.id === 'edit');
+
+        // edit_unrestricted -> can edit any record
+        if (editUnrestrictedLevel && userLevel.value >= editUnrestrictedLevel.value) {
+            return { canEdit: true, reason: 'Edição irrestrita' };
+        }
+
+        // edit -> can only edit own records
+        if (editLevel && userLevel.value >= editLevel.value) {
+            const creatorId = await this.findRecordCreatorId(table, recordId);
+            if (creatorId === userId) {
+                return { canEdit: true, reason: 'Criador do registro' };
+            }
+            return { canEdit: false, reason: 'Somente o criador pode editar este registro' };
+        }
+
+        // read -> cannot edit
+        return { canEdit: false, reason: 'Permissão insuficiente para edição' };
     }
 }
 

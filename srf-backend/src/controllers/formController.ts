@@ -3,9 +3,9 @@ import { FormService } from "../services/formService";
 
 class FormController {
 
-    async getOptions(req: Request, res: Response) {
+    async getNavigationOptions(req: Request, res: Response) {
         const formService = new FormService();
-        const options = await formService.getOptions();
+        const options = await formService.getNavigationOptions();
         return res.status(200).json(options);
     }
 

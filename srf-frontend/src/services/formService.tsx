@@ -1,7 +1,7 @@
 import { api } from "./api";
 
-export async function getOptions() {
-    const request = await api.get('/options');
+export async function getNavigationOptions() {
+    const request = await api.get('/navigation/options');
     return request.data;
 }
 

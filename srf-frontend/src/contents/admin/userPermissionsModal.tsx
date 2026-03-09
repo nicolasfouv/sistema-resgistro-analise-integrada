@@ -134,7 +134,7 @@ export function UserPermissionsModal({ user, close }: UserPermissionsModalProps)
 
     return (
         <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100">
-            <div className="relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl p-10 w-320 h-[90%]">
+            <div className="relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-6 w-320 h-[90%]">
 
                 <button
                     onClick={() => close()}

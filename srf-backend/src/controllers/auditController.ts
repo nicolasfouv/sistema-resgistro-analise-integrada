@@ -1,6 +1,6 @@
 
 import { Request, Response } from "express";
-import { AuditService } from "../services/AuditService";
+import { AuditService } from "../services/auditService";
 
 class AuditController {
 
@@ -12,8 +12,7 @@ class AuditController {
                 return res.status(400).json({ error: "Campos obrigatórios não informados" });
             }
 
-            const auditService = new AuditService();
-            const log = await auditService.logTransaction(userId, formId, actionType, changes);
+            const log = await new AuditService().logTransaction(userId, formId, actionType, changes);
             return res.status(201).json(log);
         } catch (error: any) {
             console.error(error);
@@ -21,15 +20,16 @@ class AuditController {
         }
     }
 
-    async revertLog(req: Request, res: Response) {
+    async checkEditPermission(req: Request, res: Response) {
         try {
-            const { auditLogId } = req.body;
-            if (!auditLogId) {
-                return res.status(400).json({ error: "auditLogId é obrigatório" });
+            const { table, recordId, formId } = req.query;
+            const userId = req.userId;
+
+            if (!table || !recordId || !formId) {
+                return res.status(400).json({ error: "table, recordId e formId são obrigatórios" });
             }
 
-            const auditService = new AuditService();
-            const result = await auditService.revertTransaction(auditLogId);
+            const result = await new AuditService().canUserEditRecord(userId, String(table), String(recordId), String(formId));
             return res.status(200).json(result);
         } catch (error: any) {
             console.error(error);

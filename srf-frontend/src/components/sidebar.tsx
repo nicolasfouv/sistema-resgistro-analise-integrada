@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react"
-import { getOptions } from "../services/formService";
+import { getNavigationOptions } from "../services/formService";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import userImg from "../assets/loginUser.svg"
 import permissionsImg from "../assets/permissions.svg"
 
 interface SubCategoryProps {
+    id: string,
     name: string,
 }
 
 interface CategoryProps {
+    id: string,
     name: string,
     categoryIcon?: string,
     subCategory: SubCategoryProps[] | null,
@@ -27,7 +29,7 @@ export function Sidebar() {
     const [isResizing, setIsResizing] = useState(false);
 
     useEffect(() => {
-        getOptions().then(options => setOptions(options));
+        getNavigationOptions().then(options => setOptions(options));
     }, []);
 
     useEffect(() => {
@@ -85,7 +87,7 @@ export function Sidebar() {
                                 <ul className="flex flex-col text-text-main text-[16px]">
                                     {option.subCategory.map((subCategory) => (
                                         <li key={subCategory.name}>
-                                            <Link to={`/form/${subCategory.name}`} onClick={() => setSelected(subCategory.name)} className={`block py-1 pl-16 w-full cursor-pointer overflow-hidden whitespace-nowrap text-ellipsis ${selected === subCategory.name ? 'bg-selected-bg' : 'hover:bg-hover-bg'}`}>
+                                            <Link to={`/${option.id.split('_')[1]}/${subCategory.id}`} onClick={() => setSelected(subCategory.name)} className={`block py-1 pl-16 w-full cursor-pointer overflow-hidden whitespace-nowrap text-ellipsis ${selected === subCategory.name ? 'bg-selected-bg' : 'hover:bg-hover-bg'}`}>
                                                 {subCategory.name}
                                             </Link>
                                         </li>
@@ -118,7 +120,7 @@ export function Sidebar() {
 
             {/* Resize bar */}
             <div
-                className="absolute right-0 top-0 w-0.5 h-full cursor-col-resize hover:bg-standard-blue transition-colors opacity-0 group-hover:opacity-100"
+                className="absolute right-0 top-0 w-0.5 h-full cursor-col-resize hover:bg-standard-blue transition-colors group-hover:opacity-100"
                 onMouseDown={() => setIsResizing(true)}
             />
         </aside>

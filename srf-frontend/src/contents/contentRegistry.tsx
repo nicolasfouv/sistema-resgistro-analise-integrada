@@ -48,19 +48,28 @@ export function getPageConfig(categoryId: string, subCategoryId: string): PageCo
 
 import { fetchUsersData, UsersPermissionsContent } from "./admin/users";
 import { ApplicantPermissionsContent, fetchApplicantsData } from "./admin/applicants";
+import { fetchVeterinarianVisitData, VeterinarianVisitContent } from "./liveanimals/veterinarianVisit";
 
 export function initRegistry() {
     registerContent('admin', 'permissoes', 'Permissões', {
-        id: 'usuarios',
-        label: 'Usuários',
+        id: UsersPermissionsContent.id,
+        label: UsersPermissionsContent.label,
         loader: fetchUsersData,
         component: UsersPermissionsContent
     }, true);
 
     registerContent('admin', 'permissoes', 'Permissões', {
-        id: 'solicitacoes',
-        label: 'Solicitações',
+        id: ApplicantPermissionsContent.id,
+        label: ApplicantPermissionsContent.label,
         loader: fetchApplicantsData,
         component: ApplicantPermissionsContent
     }, true);
+
+    registerContent('animaisvivos', 'veterinario', 'Veterinário', {
+        id: VeterinarianVisitContent.id,
+        label: VeterinarianVisitContent.label,
+        loader: fetchVeterinarianVisitData,
+        component: VeterinarianVisitContent
+    });
 }
+

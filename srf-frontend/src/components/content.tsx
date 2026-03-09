@@ -44,9 +44,12 @@ export function Content({
 
     useEffect(() => {
         setFilteredData(activeContent?.data);
+    }, [activeContent?.data])
+
+    useEffect(() => {
         setExpandedId(null);
         setSortConfig({ key: null, direction: 'asc' });
-    }, [activeContent])
+    }, [activeFormId])
 
     const sortedData = useMemo(() => {
         if (!filteredData) return [];

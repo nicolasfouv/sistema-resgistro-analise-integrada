@@ -4,6 +4,9 @@
     --color-white: #ffffff;
     --color-text-main: #333333;
     --color-text-light-gray: #999999;
+    --color-text-input: #555555;
+    --color-button-green: oklch(62.7% 0.194 149.214);
+    --color-button-red: oklch(57.7% 0.245 27.325);
     --color-hover-bg: rgba(224, 224, 244, 0.5);
     --color-selected-bg: #e0e0e0;
     --color-border: #ddd;
