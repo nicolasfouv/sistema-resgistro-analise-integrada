@@ -6,6 +6,7 @@ import { FormController } from "./controllers/formController";
 import { GroupController } from "./controllers/groupController";
 import { AuditController } from "./controllers/auditController";
 import { VeterinarianVisitController } from "./controllers/veterinarianVisitController";
+import { VeterinarianSampleController } from "./controllers/veterinarianSampleController";
 
 const router = Router();
 
@@ -45,5 +46,8 @@ router.get('/veterinarian-visit/options', authMiddleware(), new VeterinarianVisi
 router.post('/veterinarian-visit/create', authMiddleware(), new VeterinarianVisitController().create);
 router.put('/veterinarian-visit/update/:id', authMiddleware(), new VeterinarianVisitController().update);
 router.delete('/veterinarian-visit/delete/:id', authMiddleware(), new VeterinarianVisitController().delete);
+
+// Sample routes
+router.get('/veterinarian-sample/get-all', authMiddleware(), new VeterinarianSampleController().getAll);
 
 export { router };
