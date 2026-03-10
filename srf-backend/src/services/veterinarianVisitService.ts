@@ -46,13 +46,13 @@ class VeterinarianVisitService {
             orderBy: { date: 'desc' }
         });
 
-
         const visitsWithPermission = await Promise.all(
             visits.map(async (v) => {
                 const permission = await this.auditService.canUserEditRecord(userId, 'veterinarianVisit', v.id, this.formId);
                 return {
                     id: v.id,
                     canEdit: permission.canEdit,
+                    hasSample: await prisma.sampleAllocationVeterinarian.count({ where: { veterinarianVisitId: v.id } }) > 0,
                     liveAnimalId: v.liveAnimal.id,
                     liveAnimalName: v.liveAnimal.name,
                     veterinarianId: v.veterinarian.id,
