@@ -27,6 +27,7 @@ export interface PageProps {
     contents: ContentProps<any>[],
     onRefresh?: () => void,
     hasAccess?: boolean,
+    initialFilter?: { column: string; term: string },
 }
 
 export function Content({
@@ -35,7 +36,8 @@ export function Content({
     formChange,
     contents,
     onRefresh,
-    hasAccess
+    hasAccess,
+    initialFilter
 }: PageProps) {
     const activeContent = contents.find(content => content.id === activeFormId);
     const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -43,7 +45,15 @@ export function Content({
     const [sortConfig, setSortConfig] = useState<{ key: string | null, direction: 'asc' | 'desc' }>({ key: null, direction: 'asc' });
 
     useEffect(() => {
-        setFilteredData(activeContent?.data);
+        if (initialFilter && activeContent?.data) {
+            const searchTerm = initialFilter.term.toLocaleLowerCase();
+            const newData = activeContent.data.filter(item =>
+                String(item[initialFilter.column]).toLowerCase().includes(searchTerm)
+            );
+            setFilteredData(newData);
+        } else {
+            setFilteredData(activeContent?.data);
+        }
     }, [activeContent?.data])
 
     useEffect(() => {
@@ -116,6 +126,8 @@ export function Content({
                         key={activeContent?.id}
                         columns={activeContent?.columns || []}
                         onFilter={handleFilter}
+                        initialColumn={initialFilter?.column}
+                        initialTerm={initialFilter?.term}
                     />
 
                     {/* Table */}

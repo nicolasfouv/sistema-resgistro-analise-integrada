@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { type ContentProps } from "../../components/content";
 import {
     getVeterinarianVisits,
@@ -382,6 +383,7 @@ function VisitToolBar({ refresh }: { refresh: () => void }) {
 function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <>
@@ -468,7 +470,7 @@ function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData;
                     </div>
                     <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
                         <button
-                            // onClick={() => setShowCreateModal(true)}
+                            onClick={() => navigate(`/animaisvivos/veterinario/amostraveterinaria?column=veterinarianVisitId&filter=${encodeURIComponent(item.id)}`)}
                             className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                         >
                             Visualizar

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Content } from "../components/content";
 import { getPageConfig, initRegistry } from "../contents/contentRegistry";
 import { useAuth } from "../contexts/AuthContext";
@@ -12,6 +12,7 @@ export function DynamicContent() {
     const { categoryId, subCategoryId, formId } = useParams();
     const navigate = useNavigate();
     const { user } = useAuth();
+    const [searchParams] = useSearchParams();
 
     const [config, setConfig] = useState(getPageConfig(categoryId!, subCategoryId!));
     const [contents, setContents] = useState<any[]>([]);
@@ -116,6 +117,10 @@ export function DynamicContent() {
 
     const currentHasAccess = checkAccess(formId);
 
+    const filterColumn = searchParams.get('column');
+    const filterTerm = searchParams.get('filter');
+    const initialFilter = filterColumn && filterTerm ? { column: filterColumn, term: filterTerm } : undefined;
+
     return (
         <Content
             title={config.title}
@@ -124,6 +129,7 @@ export function DynamicContent() {
             contents={contents}
             onRefresh={loadData}
             hasAccess={currentHasAccess}
+            initialFilter={initialFilter}
         />
     );
 }

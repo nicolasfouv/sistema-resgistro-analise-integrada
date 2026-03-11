@@ -9,11 +9,13 @@ interface FilterBarProps<T> {
         column: keyof T | string,
         term: string
     ) => void,
+    initialColumn?: string,
+    initialTerm?: string,
 }
 
-export function FilterBar<T>({ columns, onFilter }: FilterBarProps<T>) {
-    const [selectedCol, setSelectedCol] = useState<string>(String(columns[0].key || ''));
-    const [searchTerm, setSearchTerm] = useState('');
+export function FilterBar<T>({ columns, onFilter, initialColumn, initialTerm }: FilterBarProps<T>) {
+    const [selectedCol, setSelectedCol] = useState<string>(initialColumn || String(columns[0].key || ''));
+    const [searchTerm, setSearchTerm] = useState(initialTerm || '');
 
     function handleApplyFilter(e: React.FormEvent) {
         e.preventDefault();
