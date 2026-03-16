@@ -218,6 +218,14 @@ class VeterinarianVisitService {
                 throw new Error('Visita veterinária não encontrada');
             }
 
+            // Check for linked sample allocations
+            const linkedSamples = await tx.sampleAllocationVeterinarian.count({
+                where: { veterinarianVisitId: visitId }
+            });
+            if (linkedSamples > 0) {
+                throw new Error('Não é possível excluir a visita pois existem amostras vinculadas a ela. Remova as amostras antes de excluir a visita.');
+            }
+
             // Delete body measurements first
             await tx.bodyMeasurementVeterinarian.deleteMany({
                 where: { veterinarianVisitId: visitId }

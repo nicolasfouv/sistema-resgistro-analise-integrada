@@ -27,6 +27,7 @@ export interface PageProps {
     contents: ContentProps<any>[],
     onRefresh?: () => void,
     hasAccess?: boolean,
+    canCreate?: boolean,
     initialFilter?: { column: string; term: string },
 }
 
@@ -37,6 +38,7 @@ export function Content({
     contents,
     onRefresh,
     hasAccess,
+    canCreate,
     initialFilter
 }: PageProps) {
     const activeContent = contents.find(content => content.id === activeFormId);
@@ -110,7 +112,7 @@ export function Content({
                             <button
                                 key={content.id}
                                 onClick={() => formChange(content.id)}
-                                className={`pb-3 px-6 text-sm font-bold transition-all relative ${activeFormId === content.id ? 'text-standard-red border-b-2 border-standard-red' : 'text-text-main hover:text-standard-red'}`}
+                                className={`pb-3 px-6 text-sm font-bold transition-all relative cursor-pointer ${activeFormId === content.id ? 'text-standard-red border-b-2 border-standard-red' : 'text-text-main hover:text-standard-red'}`}
                             >
                                 {content.label}
                             </button>
@@ -120,7 +122,7 @@ export function Content({
 
                 {/* ToolBar */}
                 {activeContent && hasAccess !== false && <>
-                    {activeContent?.toolBar && activeContent?.toolBar(onRefresh || (() => { }))}
+                    {canCreate !== false && activeContent?.toolBar && activeContent?.toolBar(onRefresh || (() => { }))}
 
                     <FilterBar
                         key={activeContent?.id}

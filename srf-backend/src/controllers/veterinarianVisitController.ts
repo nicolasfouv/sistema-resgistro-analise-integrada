@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import { VeterinarianVisitService } from "../services/veterinarianVisitService";
+import { AuditService } from "../services/auditService";
 
 class VeterinarianVisitController {
+    private auditService = new AuditService();
 
-    async getAll(req: Request, res: Response) {
+    getAll = async (req: Request, res: Response) => {
         try {
             const visits = await new VeterinarianVisitService().getAll(req.userId);
             return res.status(200).json(visits);
@@ -13,7 +15,7 @@ class VeterinarianVisitController {
         }
     }
 
-    async getFormOptions(req: Request, res: Response) {
+    getFormOptions = async (req: Request, res: Response) => {
         try {
             const options = await new VeterinarianVisitService().getFormOptions();
             return res.status(200).json(options);
@@ -23,8 +25,13 @@ class VeterinarianVisitController {
         }
     }
 
-    async create(req: Request, res: Response) {
+    create = async (req: Request, res: Response) => {
         try {
+            const permissionCheck = await this.auditService.canUserCreateRecord(req.userId, 'visitaveterinaria');
+            if (!permissionCheck.canCreate) {
+                return res.status(403).json({ error: permissionCheck.reason });
+            }
+
             const { id, liveAnimalId, veterinarianId, date, cardLink, bodyMeasurements } = req.body;
 
             if (!liveAnimalId || !veterinarianId || !date) {
@@ -44,7 +51,7 @@ class VeterinarianVisitController {
         }
     }
 
-    async update(req: Request, res: Response) {
+    update = async (req: Request, res: Response) => {
         try {
             const { id } = req.params;
             const { liveAnimalId, veterinarianId, date, cardLink, bodyMeasurements } = req.body;
@@ -65,13 +72,16 @@ class VeterinarianVisitController {
         }
     }
 
-    async delete(req: Request, res: Response) {
+    delete = async (req: Request, res: Response) => {
         try {
             const { id } = req.params;
             const result = await new VeterinarianVisitService().delete(String(id), req.userId);
             return res.status(200).json(result);
         } catch (error: any) {
             console.error(error);
+            if (error.message)
+                if (error.message === 'Visita veterinária não encontrada') return res.status(404).json({ error: error.message });
+            if (error.message === 'Não é possível excluir a visita pois existem amostras vinculadas a ela. Remova as amostras antes de excluir a visita.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }

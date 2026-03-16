@@ -73,6 +73,21 @@ export function DynamicContent() {
         return userLevel.value >= readLevel.value;
     }
 
+    function checkEditAccess(fId: string) {
+        if (user?.role === 'admin' || user?.role === 'owner') return true;
+
+        const editLevel = accessLevels.find(level => level.id === 'edit');
+        if (!editLevel) return false;
+
+        const hasFormAccess = userAccess.find(access => access.formId === fId);
+        if (!hasFormAccess) return false;
+
+        const userLevel = accessLevels.find(level => level.id === hasFormAccess.accessLevelId);
+        if (!userLevel) return false;
+
+        return userLevel.value >= editLevel.value;
+    }
+
     const loadData = async () => {
         if (!config || loadingAuth) return;
         const loadedContents = await Promise.all(config.contents.map(async (contentConf) => {
@@ -116,6 +131,7 @@ export function DynamicContent() {
     }
 
     const currentHasAccess = checkAccess(formId);
+    const currentCanCreate = checkEditAccess(formId);
 
     const filterColumn = searchParams.get('column');
     const filterTerm = searchParams.get('filter');
@@ -129,6 +145,7 @@ export function DynamicContent() {
             contents={contents}
             onRefresh={loadData}
             hasAccess={currentHasAccess}
+            canCreate={currentCanCreate}
             initialFilter={initialFilter}
         />
     );

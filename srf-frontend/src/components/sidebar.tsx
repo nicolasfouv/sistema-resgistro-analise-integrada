@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { getNavigationOptions } from "../services/formService";
 import { useAuth } from "../contexts/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import userImg from "../assets/loginUser.svg"
 import permissionsImg from "../assets/permissions.svg"
 
@@ -18,6 +18,7 @@ interface CategoryProps {
 }
 
 export function Sidebar() {
+    const location = useLocation();
     const { user } = useAuth();
 
     const [options, setOptions] = useState<CategoryProps[]>([]);
@@ -87,7 +88,7 @@ export function Sidebar() {
                                 <ul className="flex flex-col text-text-main text-[16px]">
                                     {option.subCategory.map((subCategory) => (
                                         <li key={subCategory.name}>
-                                            <Link to={`/${option.id.split('_')[1]}/${subCategory.id}`} onClick={() => setSelected(subCategory.name)} className={`block py-1 pl-16 w-full cursor-pointer overflow-hidden whitespace-nowrap text-ellipsis ${selected === subCategory.name ? 'bg-selected-bg' : 'hover:bg-hover-bg'}`}>
+                                            <Link to={`/${option.id.split('_')[1]}/${subCategory.id}`} className={`block py-1 pl-16 w-full cursor-pointer overflow-hidden whitespace-nowrap text-ellipsis ${location.pathname.split('/')[2] === subCategory.id ? 'bg-selected-bg' : 'hover:bg-hover-bg'}`}>
                                                 {subCategory.name}
                                             </Link>
                                         </li>
@@ -103,8 +104,7 @@ export function Sidebar() {
             <div className="border-t border-border mt-auto">
                 {(user?.role === 'admin' || user?.role === 'owner') && (
                     <Link to="/admin/permissoes/usuarios"
-                        onClick={() => setSelected('permissions')}
-                        className={`flex items-center py-3.75 px-3.5 gap-3 text-text-main text-[16px] font-bold cursor-pointer ${selected === 'permissions' ? 'bg-selected-bg' : 'hover:bg-hover-bg'}`}>
+                        className={`flex items-center py-3.75 px-3.5 gap-3 text-text-main text-[16px] font-bold cursor-pointer ${location.pathname.split('/')[2] === 'permissoes' ? 'bg-selected-bg' : 'hover:bg-hover-bg'}`}>
                         <img src={permissionsImg} alt="Image for Permissions Settings" />
                         <span className="overflow-hidden whitespace-nowrap text-ellipsis">Gerenciar Permissões</span>
                     </Link>

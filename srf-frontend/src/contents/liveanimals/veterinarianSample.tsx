@@ -68,7 +68,7 @@ function SampleExpansion({ item, close, refresh }: { item: VeterinarianSampleDat
 
 // ===================== CONTENT DEFINITION =====================
 export const VeterinarianSampleContentDefinition = {
-    id: 'amostraveterinaria',
+    id: 'amostras-av',
     label: 'Amostra',
     columns: [
         { key: 'veterinarianVisitId', label: 'Visita Veterinária', width: 'w-1/4' },

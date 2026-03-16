@@ -102,6 +102,46 @@ class AuditService {
         // read -> cannot edit
         return { canEdit: false, reason: 'Permissão insuficiente para edição' };
     }
+
+    async canUserCreateRecord(userId: string, formId: string): Promise<{ canCreate: boolean; reason: string }> {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { role: { select: { name: true } } }
+        });
+
+        if (!user) {
+            return { canCreate: false, reason: 'Usuário não encontrado' };
+        }
+
+        if (user.role.name === 'admin' || user.role.name === 'owner') {
+            return { canCreate: true, reason: 'Usuário é administrador' };
+        }
+
+        const userAccess = await prisma.userAccess.findFirst({
+            where: { userId, formId }
+        });
+
+        if (!userAccess || !userAccess.accessLevelId) {
+            return { canCreate: false, reason: 'Sem acesso ao formulário' };
+        }
+
+        const levels = await prisma.enumAccessLevel.findMany({
+            select: { id: true, value: true }
+        });
+
+        const userLevel = levels.find(l => l.id === userAccess.accessLevelId);
+        const editLevel = levels.find(l => l.id === 'edit');
+
+        if (!userLevel || !editLevel) {
+            return { canCreate: false, reason: 'Nível de acesso não encontrado' };
+        }
+
+        if (userLevel.value >= editLevel.value) {
+            return { canCreate: true, reason: 'Permissão suficiente para criação' };
+        }
+
+        return { canCreate: false, reason: 'Permissão insuficiente para criação' };
+    }
 }
 
 export { AuditService };

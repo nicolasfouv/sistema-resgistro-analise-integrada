@@ -298,6 +298,7 @@ interface DeleteVisitModalProps {
 
 function DeleteVisitModal({ visit, close, refresh }: DeleteVisitModalProps) {
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     async function handleDelete(e: React.FormEvent) {
         e.preventDefault();
@@ -306,8 +307,9 @@ function DeleteVisitModal({ visit, close, refresh }: DeleteVisitModalProps) {
             await deleteVeterinarianVisit(visit.id);
             refresh();
             close();
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
+            setError(error.response?.data?.error || 'Erro ao excluir');
         } finally {
             setLoading(false);
         }
@@ -331,6 +333,8 @@ function DeleteVisitModal({ visit, close, refresh }: DeleteVisitModalProps) {
                     <p className="text-xl text-center">
                         Deseja realmente excluir a visita <span className="font-bold">{visit.id}</span>?
                     </p>
+
+                    {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
                     <div className="flex justify-center items-center gap-5 mt-4">
                         <button
@@ -455,7 +459,7 @@ function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData;
                     </div>
                     <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
                         {item.bodyMeasurements.map(bm => (
-                            <div className="flex flex-col w-full">
+                            <div key={bm.bodyMeasurementTypeId + bm.value} className="flex flex-col w-full">
                                 <label htmlFor="email" className="ml-1 font-bold">{bm.bodyMeasurementTypeDescription} ({bm.bodyMeasurementTypeUnit})</label>
                                 <input type="text" disabled value={bm.value} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                             </div>
@@ -470,7 +474,7 @@ function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData;
                     </div>
                     <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
                         <button
-                            onClick={() => navigate(`/animaisvivos/veterinario/amostraveterinaria?column=veterinarianVisitId&filter=${encodeURIComponent(item.id)}`)}
+                            onClick={() => navigate(`/animaisvivos/veterinario/amostras-av?column=veterinarianVisitId&filter=${encodeURIComponent(item.id)}`)}
                             className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                         >
                             Visualizar
