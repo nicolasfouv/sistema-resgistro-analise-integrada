@@ -176,7 +176,7 @@ model liveAnimal {
 }
 
 model specie {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   liveAnimal liveAnimal[]
@@ -186,7 +186,7 @@ model specie {
 }
 
 model enumAnimalGender {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   liveAnimal liveAnimal[]
@@ -216,7 +216,7 @@ model gpsTracking {
 }
 
 model monitoringMethod {
-  id          Int @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   description String @map("descricao")
 
   gpsTracking gpsTracking[]
@@ -261,7 +261,7 @@ model animalAnswer {
 }
 
 model animalQuestion {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   text String @map("pergunta")
 
   animalAnswerOption animalAnswerOption[]
@@ -306,7 +306,7 @@ model tutor {
 }
 
 model enumGender {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   tutor tutor[]
@@ -340,7 +340,7 @@ model tutorAnswerOption {
 }
 
 model tutorQuestion {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   text String @map("pergunta")
 
   tutorAnswerOption tutorAnswerOption[]
@@ -387,7 +387,7 @@ model veterinarianVisit {
 }
 
 model veterinarian {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   veterinarianVisit veterinarianVisit[]
@@ -396,7 +396,7 @@ model veterinarian {
 }
 
 model vaccine {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   vaccineApplication vaccineApplication[]
@@ -420,7 +420,7 @@ model vaccineApplication {
 }
 
 model enumVaccineType {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   vaccineApplication vaccineApplication[]
@@ -444,7 +444,7 @@ model exam {
 }
 
 model enumExamGeneralCondition {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   exam exam[]
@@ -453,7 +453,7 @@ model enumExamGeneralCondition {
 }
 
 model enumExamInterpretation {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   exam exam[]
@@ -475,7 +475,7 @@ model examValue {
 }
 
 model enumExamValueInterpretation {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   examValue examValue[]
@@ -484,7 +484,7 @@ model enumExamValueInterpretation {
 }
 
 model examType {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   examValue examValue[]
@@ -508,7 +508,7 @@ model stoolAnalysis {
 }
 
 model processingTechnology {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   stoolAnalysis stoolAnalysis[]
@@ -529,7 +529,7 @@ model eggCystAnalysis {
 }
 
 model eggCystSpecie {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   eggCystAnalysis   eggCystAnalysis[]
@@ -573,7 +573,7 @@ model physicalExam {
 }
 
 model enumPhysicalExamGeneralCondition {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   physicalExam physicalExam[]
@@ -582,7 +582,7 @@ model enumPhysicalExamGeneralCondition {
 }
 
 model enumMucous {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   physicalExam physicalExam[]
@@ -591,7 +591,7 @@ model enumMucous {
 }
 
 model enumHydration {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   physicalExam physicalExam[]
@@ -612,7 +612,7 @@ model bodyMeasurementVeterinarian {
 }
 
 model bodyMeasurementTypeVeterinarian {
-  id          Int @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   description String @map("descricao")
   unit        String @map("unidade")
 
@@ -622,7 +622,7 @@ model bodyMeasurementTypeVeterinarian {
 }
 
 model bodyMeasurementTypeNecropsy {
-  id          Int @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   description String @map("descricao")
   unit        String @map("unidade")
 
@@ -652,7 +652,7 @@ model ectoparasiteAnalysisVeterinarian {
 }
 
 model ectoparasiteGenus {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   ectoparasiteAnalysisVeterinarian ectoparasiteAnalysisVeterinarian[]
@@ -662,7 +662,7 @@ model ectoparasiteGenus {
 }
 
 model ectoparasiteSpecie {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   ectoparasiteAnalysisVeterinarianSpecie    ectoparasiteAnalysisVeterinarian[] @relation("specie")
@@ -692,7 +692,7 @@ model sorologyAnalysis {
 }
 
 model enumSorologyInterpretation {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   sorologyAnalysis sorologyAnalysis[]
@@ -701,7 +701,7 @@ model enumSorologyInterpretation {
 }
 
 model sorologyTest {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   sorologyAnalysis sorologyAnalysis[]
@@ -710,7 +710,7 @@ model sorologyTest {
 }
 
 model sorologyAgent {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   sorologyAnalysis sorologyAnalysis[]
@@ -728,27 +728,45 @@ model sampleAllocationVeterinarian {
   storage             storage                    @relation(fields: [storageId], references: [id])
   statusId            Int                        @map("id_status")
   status              enumSampleAllocationStatus @relation(fields: [statusId], references: [id])
-  sendDate            DateTime?                  @map("data_envio")
+  quantity            Int                        @map("quantidade")
   imageLink           String?                    @map("link_imagem")
   note                String?                    @map("observacao")
 
-  sorologyAnalysis sorologyAnalysis[]
+  sorologyAnalysis       sorologyAnalysis[]
+  sendSampleVeterinarian sendSampleVeterinarian[]
 
   @@map("alocacao_amostra_veterinario")
 }
 
+model sendSampleVeterinarian {
+  id                             Int                          @id @default(autoincrement())
+  sampleAllocationVeterinarianId Int                          @map("id_alocacao_amostra_veterinario")
+  sampleAllocationVeterinarian   sampleAllocationVeterinarian @relation(fields: [sampleAllocationVeterinarianId], references: [id])
+  storageId                      Int                          @map("id_armazenamento")
+  storage                        storage                      @relation(fields: [storageId], references: [id])
+  statusId                       Int                          @map("id_status")
+  status                         enumSampleAllocationStatus   @relation(fields: [statusId], references: [id])
+  quantity                       Int                          @map("quantidade")
+  sendDate                       DateTime                     @map("data_envio")
+  note                           String?                      @map("observacao")
+
+  @@map("envio_amostra_veterinario")
+}
+
 model enumSampleAllocationStatus {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   sampleAllocationVeterinarian sampleAllocationVeterinarian[]
+  sendSampleVeterinarian       sendSampleVeterinarian[]
   sampleAllocationNecropsy     sampleAllocationNecropsy[]
+  sendSampleNecropsy           sendSampleNecropsy[]
 
   @@map("enum_status_alocacao_amostra")
 }
 
 model sampleType {
-  id          Int @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   description String @map("descricao")
 
   sampleAllocationVeterinarian sampleAllocationVeterinarian[]
@@ -760,11 +778,13 @@ model sampleType {
 }
 
 model storage {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   sampleAllocationVeterinarian sampleAllocationVeterinarian[]
+  sendSampleVeterinarian       sendSampleVeterinarian[]
   sampleAllocationNecropsy     sampleAllocationNecropsy[]
+  sendSampleNecropsy           sendSampleNecropsy[]
 
   @@map("armazem")
 }
@@ -794,7 +814,7 @@ model deadAnimal {
 }
 
 model deadAnimalGroup {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   deadAnimal deadAnimal[]
@@ -803,7 +823,7 @@ model deadAnimalGroup {
 }
 
 model enumDeadAnimalOrigin {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   deadAnimal deadAnimal[]
@@ -812,7 +832,7 @@ model enumDeadAnimalOrigin {
 }
 
 model enumDeadAnimalStatus {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   deadAnimal deadAnimal[]
@@ -821,7 +841,7 @@ model enumDeadAnimalStatus {
 }
 
 model collectionResponsible {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   deadAnimal deadAnimal[]
@@ -858,7 +878,7 @@ model necropsy {
 }
 
 model enumBodyCondition {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   necropsy necropsy[]
@@ -867,7 +887,7 @@ model enumBodyCondition {
 }
 
 model enumClinicalCondition {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   necropsy necropsy[]
@@ -876,7 +896,7 @@ model enumClinicalCondition {
 }
 
 model enumReproductiveCondition {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   necropsy necropsy[]
@@ -885,7 +905,7 @@ model enumReproductiveCondition {
 }
 
 model enumAge {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   necropsy necropsy[]
@@ -921,7 +941,7 @@ model helminthAnalysis {
 }
 
 model helminthSpecie {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   helminthAnalysis helminthAnalysis[]
@@ -959,11 +979,28 @@ model sampleAllocationNecropsy {
   storage      storage                    @relation(fields: [storageId], references: [id])
   statusId     Int                        @map("id_status")
   status       enumSampleAllocationStatus @relation(fields: [statusId], references: [id])
-  sendDate     DateTime?                  @map("data_envio")
+  quantity     Int                        @map("quantidade")
   imageLink    String?                    @map("link_imagem")
   note         String?                    @map("observacao")
 
+  sendSampleNecropsy sendSampleNecropsy[]
+
   @@map("alocacao_amostra_necropsia")
+}
+
+model sendSampleNecropsy {
+  id                         Int                        @id @default(autoincrement())
+  sampleAllocationNecropsyId Int                        @map("id_alocacao_amostra_necropsia")
+  sampleAllocationNecropsy   sampleAllocationNecropsy   @relation(fields: [sampleAllocationNecropsyId], references: [id])
+  storageId                  Int                        @map("id_armazenamento")
+  storage                    storage                    @relation(fields: [storageId], references: [id])
+  statusId                   Int                        @map("id_status")
+  status                     enumSampleAllocationStatus @relation(fields: [statusId], references: [id])
+  quantity                   Int                        @map("quantidade")
+  sendDate                   DateTime                   @map("data_envio")
+  note                       String?                    @map("observacao")
+
+  @@map("envio_amostra_necropsia")
 }
 
 model cpcrResult {
@@ -1011,7 +1048,7 @@ model qpcrResult {
 }
 
 model extractionType {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   cpcrResult cpcrResult[]
@@ -1020,7 +1057,7 @@ model extractionType {
 }
 
 model targetGene {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   cpcrResult cpcrResult[]
@@ -1030,7 +1067,7 @@ model targetGene {
 }
 
 model suspiciousAgent {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   cpcrResult cpcrResult[]
@@ -1040,7 +1077,7 @@ model suspiciousAgent {
 }
 
 model enumCpcrMethod {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   cpcrResult cpcrResult[]
@@ -1049,7 +1086,7 @@ model enumCpcrMethod {
 }
 
 model enumCpcrStatus {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   cpcrResult cpcrResult[]
@@ -1058,7 +1095,7 @@ model enumCpcrStatus {
 }
 
 model enumQpcrStatus {
-  id   Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   qpcrResult qpcrResult[]

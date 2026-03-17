@@ -21,7 +21,6 @@ export class VeterinarianSampleService {
                 id: true,
                 veterinarianVisit: { select: { id: true, date: true } },
                 sampleType: { select: { id: true, description: true } },
-                sendDate: true,
                 status: { select: { id: true, name: true } },
                 storage: { select: { id: true, name: true } },
                 //quantity: true, for necropsy
@@ -44,7 +43,6 @@ export class VeterinarianSampleService {
                     veterinarianVisitDate: s.veterinarianVisit.date,
                     sampleTypeId: s.sampleType.id,
                     sampleTypeDescription: s.sampleType.description,
-                    sendDate: s.sendDate,
                     statusId: s.status.id,
                     statusName: s.status.name,
                     storageId: s.storage.id,
