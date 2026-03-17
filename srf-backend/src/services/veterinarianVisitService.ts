@@ -1,26 +1,7 @@
 import { prisma } from "..";
+import z from "zod";
 import { AuditService } from "./auditService";
-
-interface BodyMeasurementInput {
-    bodyMeasurementTypeId: number,
-    value: number,
-}
-
-interface VeterinarianVisitCreateInput {
-    liveAnimalId: number,
-    veterinarianId: number,
-    date: string,
-    cardLink: string | null,
-    bodyMeasurements: BodyMeasurementInput[],
-}
-
-interface VeterinarianVisitUpdateInput {
-    liveAnimalId: number,
-    veterinarianId: number,
-    date: string,
-    cardLink: string | null,
-    bodyMeasurements: BodyMeasurementInput[],
-}
+import { veterinarianVisitCreateInput, veterinarianVisitUpdateInput } from "../models/veterinarianVisitModel";
 
 export class VeterinarianVisitService {
     private auditService = new AuditService();
@@ -91,7 +72,7 @@ export class VeterinarianVisitService {
         return { liveAnimals, veterinarians, bodyMeasurementTypes };
     }
 
-    async create(data: VeterinarianVisitCreateInput, userId: string) {
+    async create(data: z.infer<typeof veterinarianVisitCreateInput>, userId: string) {
 
         return prisma.$transaction(async (tx) => {
             // Check if veterinarian visit already exists
@@ -117,26 +98,29 @@ export class VeterinarianVisitService {
                 }
             });
 
-            // Check for duplicate body measurements
-            data.bodyMeasurements.forEach(e => {
-                const countTypeId = data.bodyMeasurements.filter(bm => bm.bodyMeasurementTypeId === e.bodyMeasurementTypeId).length;
-                if (countTypeId > 1) {
-                    throw new Error('Não é possível criar uma visita veterinária com o tipo de medida corporal duplicado.');
-                }
-            });
-
+            if (data.bodyMeasurements) {
+                // Check for duplicate body measurements
+                data.bodyMeasurements.forEach(e => {
+                    const countTypeId = data.bodyMeasurements!.filter(bm => bm.bodyMeasurementTypeId === e.bodyMeasurementTypeId).length;
+                    if (countTypeId > 1) {
+                        throw new Error('Não é possível criar uma visita veterinária com o tipo de medida corporal duplicado.');
+                    }
+                });
+            }
 
             // Create body measurements
             const measurements = [];
-            for (const bm of data.bodyMeasurements) {
-                const measurement = await tx.bodyMeasurementVeterinarian.create({
-                    data: {
-                        veterinarianVisitId: visit.id,
-                        bodyMeasurementTypeId: bm.bodyMeasurementTypeId,
-                        value: bm.value,
-                    }
-                });
-                measurements.push(measurement);
+            if (data.bodyMeasurements) {
+                for (const bm of data.bodyMeasurements) {
+                    const measurement = await tx.bodyMeasurementVeterinarian.create({
+                        data: {
+                            veterinarianVisitId: visit.id,
+                            bodyMeasurementTypeId: bm.bodyMeasurementTypeId,
+                            value: bm.value,
+                        }
+                    });
+                    measurements.push(measurement);
+                }
             }
 
             // Audit log
@@ -161,7 +145,7 @@ export class VeterinarianVisitService {
         });
     }
 
-    async update(visitId: number, data: VeterinarianVisitUpdateInput, userId: string) {
+    async update(visitId: number, data: z.infer<typeof veterinarianVisitUpdateInput>, userId: string) {
 
         return prisma.$transaction(async (tx) => {
             // Get old data
@@ -191,12 +175,14 @@ export class VeterinarianVisitService {
             }
 
             // Check for duplicate body measurements
-            data.bodyMeasurements.forEach(e => {
-                const countTypeId = data.bodyMeasurements.filter(bm => bm.bodyMeasurementTypeId === e.bodyMeasurementTypeId).length;
-                if (countTypeId > 1) {
-                    throw new Error('Não é possível alterar uma visita veterinária com o tipo de medida corporal duplicado.');
-                }
-            });
+            if (data.bodyMeasurements) {
+                data.bodyMeasurements.forEach(e => {
+                    const countTypeId = data.bodyMeasurements!.filter(bm => bm.bodyMeasurementTypeId === e.bodyMeasurementTypeId).length;
+                    if (countTypeId > 1) {
+                        throw new Error('Não é possível alterar uma visita veterinária com o tipo de medida corporal duplicado.');
+                    }
+                });
+            }
 
             // Update veterinarian visit
             const updatedVisit = await tx.veterinarianVisit.update({
@@ -216,15 +202,17 @@ export class VeterinarianVisitService {
 
             // Create new body measurements
             const newMeasurements = [];
-            for (const bm of data.bodyMeasurements) {
-                const measurement = await tx.bodyMeasurementVeterinarian.create({
-                    data: {
-                        veterinarianVisitId: visitId,
-                        bodyMeasurementTypeId: bm.bodyMeasurementTypeId,
-                        value: bm.value,
-                    }
-                });
-                newMeasurements.push(measurement);
+            if (data.bodyMeasurements) {
+                for (const bm of data.bodyMeasurements) {
+                    const measurement = await tx.bodyMeasurementVeterinarian.create({
+                        data: {
+                            veterinarianVisitId: visitId,
+                            bodyMeasurementTypeId: bm.bodyMeasurementTypeId,
+                            value: bm.value,
+                        }
+                    });
+                    newMeasurements.push(measurement);
+                }
             }
 
             // Audit log

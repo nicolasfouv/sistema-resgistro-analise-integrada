@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
 import { VeterinarianVisitService } from "../services/veterinarianVisitService";
 import { AuditService } from "../services/auditService";
+import { veterinarianVisitCreateInput, veterinarianVisitUpdateInput } from "../models/veterinarianVisitModel";
 
 class VeterinarianVisitController {
     private auditService = new AuditService();
+    private veterinarianVisitService = new VeterinarianVisitService();
 
     getAll = async (req: Request, res: Response) => {
         try {
-            const visits = await new VeterinarianVisitService().getAll(req.userId);
+            const visits = await this.veterinarianVisitService.getAll(req.userId);
             return res.status(200).json(visits);
         } catch (error: any) {
             console.error(error);
@@ -17,7 +19,7 @@ class VeterinarianVisitController {
 
     getFormOptions = async (req: Request, res: Response) => {
         try {
-            const options = await new VeterinarianVisitService().getFormOptions();
+            const options = await this.veterinarianVisitService.getFormOptions();
             return res.status(200).json(options);
         } catch (error: any) {
             console.error(error);
@@ -32,14 +34,10 @@ class VeterinarianVisitController {
                 return res.status(403).json({ error: permissionCheck.reason });
             }
 
-            const { liveAnimalId, veterinarianId, date, cardLink, bodyMeasurements } = req.body;
+            const { liveAnimalId, veterinarianId, date, cardLink, bodyMeasurements } = veterinarianVisitCreateInput.parse(req.body);
 
-            if (!liveAnimalId || !veterinarianId || !date) {
-                return res.status(400).json({ error: "Campos obrigatórios não informados" });
-            }
-
-            const visit = await new VeterinarianVisitService().create(
-                { liveAnimalId: Number(liveAnimalId), veterinarianId: Number(veterinarianId), date, cardLink, bodyMeasurements: (bodyMeasurements || []).map((bm: any) => ({ bodyMeasurementTypeId: Number(bm.bodyMeasurementTypeId), value: bm.value })) },
+            const visit = await this.veterinarianVisitService.create(
+                { liveAnimalId, veterinarianId, date, cardLink, bodyMeasurements },
                 req.userId
             );
             return res.status(201).json(visit);
@@ -54,15 +52,11 @@ class VeterinarianVisitController {
     update = async (req: Request, res: Response) => {
         try {
             const { id } = req.params;
-            const { liveAnimalId, veterinarianId, date, cardLink, bodyMeasurements } = req.body;
+            const { liveAnimalId, veterinarianId, date, cardLink, bodyMeasurements } = veterinarianVisitUpdateInput.parse(req.body);
 
-            if (!liveAnimalId || !veterinarianId || !date) {
-                return res.status(400).json({ error: "Campos obrigatórios não informados" });
-            }
-
-            const visit = await new VeterinarianVisitService().update(
+            const visit = await this.veterinarianVisitService.update(
                 Number(id),
-                { liveAnimalId: Number(liveAnimalId), veterinarianId: Number(veterinarianId), date, cardLink, bodyMeasurements: (bodyMeasurements || []).map((bm: any) => ({ bodyMeasurementTypeId: Number(bm.bodyMeasurementTypeId), value: bm.value })) },
+                { liveAnimalId, veterinarianId, date, cardLink, bodyMeasurements },
                 req.userId
             );
             return res.status(200).json(visit);
@@ -77,7 +71,7 @@ class VeterinarianVisitController {
     delete = async (req: Request, res: Response) => {
         try {
             const { id } = req.params;
-            const result = await new VeterinarianVisitService().delete(Number(id), req.userId);
+            const result = await this.veterinarianVisitService.delete(Number(id), req.userId);
             return res.status(200).json(result);
         } catch (error: any) {
             console.error(error);

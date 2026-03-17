@@ -1,16 +1,6 @@
 import { prisma } from "..";
 import { AuditService } from "./auditService";
 
-interface SampleInput {
-    visitId: number,
-    sampleTypeId: number,
-    date: string | null,
-    statusId: number,
-    storageId: number,
-    quantity: number,
-    note: string | null,
-}
-
 export class VeterinarianSampleService {
     private auditService = new AuditService();
     private formId = 'amostras-av';
