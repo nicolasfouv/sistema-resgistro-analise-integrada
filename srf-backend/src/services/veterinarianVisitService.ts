@@ -26,31 +26,91 @@ export class VeterinarianVisitService {
             orderBy: { date: 'desc' }
         });
 
-        const visitsWithPermission = await Promise.all(
-            visits.map(async (v) => {
-                const permission = await this.auditService.canUserEditRecord(userId, 'veterinarianVisit', String(v.id), this.formId);
-                return {
-                    id: v.id,
-                    canEdit: permission.canEdit,
-                    hasSample: await prisma.sampleAllocationVeterinarian.count({ where: { veterinarianVisitId: v.id } }) > 0,
-                    liveAnimalId: v.liveAnimal.id,
-                    liveAnimalName: v.liveAnimal.name,
-                    veterinarianId: v.veterinarian.id,
-                    veterinarianName: v.veterinarian.name,
-                    date: v.date,
-                    cardLink: v.cardLink,
-                    bodyMeasurements: v.bodyMeasurement.map(bm => ({
-                        id: bm.id,
-                        bodyMeasurementTypeId: bm.bodyMeasurementType.id,
-                        bodyMeasurementTypeDescription: bm.bodyMeasurementType.description,
-                        bodyMeasurementTypeUnit: bm.bodyMeasurementType.unit,
-                        value: bm.value,
-                    }))
-                };
-            })
-        );
+        if (visits.length === 0) return [];
 
-        return visitsWithPermission;
+        const visitIds = visits.map(v => v.id);
+
+        const sampleCounts = await prisma.sampleAllocationVeterinarian.groupBy({
+            by: ['veterinarianVisitId'],
+            where: { veterinarianVisitId: { in: visitIds } },
+            _count: true,
+        });
+        const visitIdsWithSamples = new Set(sampleCounts.map(s => s.veterinarianVisitId));
+
+        const [user, userAccess, levels] = await Promise.all([
+            prisma.user.findUnique({
+                where: { id: userId },
+                select: { role: { select: { name: true } } }
+            }),
+            prisma.userAccess.findFirst({
+                where: { userId, formId: this.formId }
+            }),
+            prisma.enumAccessLevel.findMany({
+                select: { id: true, value: true }
+            }),
+        ]);
+
+        let editPermission: 'all' | 'own' | 'none' = 'none';
+
+        if (user?.role.name === 'admin' || user?.role.name === 'owner') {
+            editPermission = 'all';
+        } else if (userAccess?.accessLevelId) {
+            const userLevel = levels.find(l => l.id === userAccess.accessLevelId);
+            const editUnrestrictedLevel = levels.find(l => l.id === 'edit_unrestricted');
+            const editLevel = levels.find(l => l.id === 'edit');
+
+            if (userLevel && editUnrestrictedLevel && userLevel.value >= editUnrestrictedLevel.value) {
+                editPermission = 'all';
+            } else if (userLevel && editLevel && userLevel.value >= editLevel.value) {
+                editPermission = 'own';
+            }
+        }
+
+        let creatorMap = new Map<string, string>();
+        if (editPermission === 'own') {
+            const createLogs = await prisma.changeLog.findMany({
+                where: {
+                    table: 'veterinarianVisit',
+                    recordId: { in: visitIds.map(String) },
+                    action: 'CREATE',
+                },
+                select: {
+                    recordId: true,
+                    auditLog: { select: { userId: true } }
+                }
+            });
+            for (const log of createLogs) {
+                creatorMap.set(log.recordId, log.auditLog.userId);
+            }
+        }
+
+        return visits.map(v => {
+            let canEdit = false;
+            if (editPermission === 'all') {
+                canEdit = true;
+            } else if (editPermission === 'own') {
+                canEdit = creatorMap.get(String(v.id)) === userId;
+            }
+
+            return {
+                id: v.id,
+                canEdit: canEdit,
+                hasSample: visitIdsWithSamples.has(v.id),
+                liveAnimalId: v.liveAnimal.id,
+                liveAnimalName: v.liveAnimal.name,
+                veterinarianId: v.veterinarian.id,
+                veterinarianName: v.veterinarian.name,
+                date: v.date,
+                cardLink: v.cardLink,
+                bodyMeasurements: v.bodyMeasurement.map(bm => ({
+                    id: bm.id,
+                    bodyMeasurementTypeId: bm.bodyMeasurementType.id,
+                    bodyMeasurementTypeDescription: bm.bodyMeasurementType.description,
+                    bodyMeasurementTypeUnit: bm.bodyMeasurementType.unit,
+                    value: bm.value,
+                }))
+            };
+        });
     }
 
     async getFormOptions() {
