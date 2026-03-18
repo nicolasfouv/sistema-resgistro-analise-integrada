@@ -48,8 +48,8 @@ export function getPageConfig(categoryId: string, subCategoryId: string): PageCo
 
 import { fetchUsersData, UsersPermissionsContent } from "./admin/users";
 import { ApplicantPermissionsContent, fetchApplicantsData } from "./admin/applicants";
-import { fetchVeterinarianVisitData, VeterinarianVisitContent } from "./liveanimals/veterinarianVisit";
-import { fetchVeterinarianSampleData, VeterinarianSampleContent } from "./liveanimals/veterinarianSample";
+import { fetchVeterinarianVisitData, VeterinarianVisitContent } from "./liveanimals/veterinarianVisit/index";
+import { fetchVeterinarianSampleData, VeterinarianSampleContent } from "./liveanimals/veterinarianSample/index";
 
 export function initRegistry() {
     registerContent('admin', 'permissoes', 'Permissões', {
