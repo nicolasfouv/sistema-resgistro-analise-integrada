@@ -3,6 +3,7 @@ import {
     type VeterinarianVisitData,
     deleteVeterinarianVisit
 } from "../../../services/veterinarianVisitService";
+import { ModalPortal } from "../../../components/modalPortal";
 
 interface DeleteVisitModalProps {
     visit: VeterinarianVisitData;
@@ -30,44 +31,46 @@ export function DeleteVisitModal({ visit, close, refresh }: DeleteVisitModalProp
     }
 
     return (
-        <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 p-4">
-            <div className="relative flex flex-col bg-white w-full max-w-lg justify-center items-center rounded-2xl shadow-xl p-6 md:p-10">
-                <button
-                    onClick={() => close()}
-                    className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
-                >
-                    ✕
-                </button>
+        <ModalPortal>
+            <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 p-4">
+                <div className="relative flex flex-col bg-white w-full max-w-lg justify-center items-center rounded-2xl shadow-xl p-6 md:p-10">
+                    <button
+                        onClick={() => close()}
+                        className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
+                    >
+                        ✕
+                    </button>
 
-                <h2 className="text-2xl text-standard-blue font-bold -mt-6 mb-6">
-                    Confirmação de Exclusão
-                </h2>
+                    <h2 className="text-2xl text-standard-blue font-bold -mt-6 mb-6">
+                        Confirmação de Exclusão
+                    </h2>
 
-                <form onSubmit={handleDelete} className="w-full h-full flex flex-col items-center justify-center">
-                    <p className="text-xl text-center">
-                        Deseja realmente excluir a visita <span className="font-bold">{visit.id}</span>?
-                    </p>
+                    <form onSubmit={handleDelete} className="w-full h-full flex flex-col items-center justify-center">
+                        <p className="text-xl text-center">
+                            Deseja realmente excluir a visita <span className="font-bold">{visit.id}</span>?
+                        </p>
 
-                    {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+                        {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-                    <div className="flex justify-center items-center gap-5 mt-4">
-                        <button
-                            type="submit"
-                            className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer"
-                            disabled={loading}
-                        >
-                            {loading ? 'Confirmando...' : 'Confirmar'}
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => close()}
-                            className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer"
-                        >
-                            Cancelar
-                        </button>
-                    </div>
-                </form>
+                        <div className="flex justify-center items-center gap-5 mt-4">
+                            <button
+                                type="submit"
+                                className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer"
+                                disabled={loading}
+                            >
+                                {loading ? 'Confirmando...' : 'Confirmar'}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => close()}
+                                className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer"
+                            >
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+        </ModalPortal>
     );
 }

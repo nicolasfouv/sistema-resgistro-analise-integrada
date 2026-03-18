@@ -7,6 +7,7 @@ import {
     createVeterinarianVisit,
     updateVeterinarianVisit
 } from "../../../services/veterinarianVisitService";
+import { ModalPortal } from "../../../components/modalPortal";
 
 interface VeterinarianVisitFormModalProps {
     visit?: VeterinarianVisitData;
@@ -100,169 +101,173 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
 
     if (!options) {
         return (
-            <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100">
-                <div className="bg-white rounded-2xl shadow-xl p-10">Carregando opções...</div>
-            </div>
+            <ModalPortal>
+                <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100">
+                    <div className="bg-white rounded-2xl shadow-xl p-10">Carregando opções...</div>
+                </div>
+            </ModalPortal>
         );
     }
 
     return (
-        <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 overflow-y-auto p-4">
-            <div className="relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-6 gap-5 w-200 max-h-[90vh]">
-                <button
-                    onClick={() => close()}
-                    className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
-                >
-                    ✕
-                </button>
+        <ModalPortal>
+            <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 overflow-y-auto p-4">
+                <div className="relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-6 gap-5 w-200 max-h-[90vh]">
+                    <button
+                        onClick={() => close()}
+                        className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
+                    >
+                        ✕
+                    </button>
 
-                <h2 className="absolute top-2 text-2xl text-standard-blue font-bold">
-                    {isEditing ? 'Editando Visita Veterinária' : 'Nova Visita Veterinária'}
-                </h2>
+                    <h2 className="absolute top-2 text-2xl text-standard-blue font-bold">
+                        {isEditing ? 'Editando Visita Veterinária' : 'Nova Visita Veterinária'}
+                    </h2>
 
-                <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4 mt-2 flex-1 min-h-0">
-                    <div className="grid grid-cols-2 gap-4">
-                        {/* Animal */}
-                        <div className="flex flex-col">
-                            <label className="text-sm font-bold mb-1 text-left">Animal</label>
-                            <select
-                                value={liveAnimalId}
-                                onChange={(e) => setLiveAnimalId(Number(e.target.value))}
-                                className="border border-border rounded p-2 bg-white"
-                                required
+                    <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4 mt-2 flex-1 min-h-0">
+                        <div className="grid grid-cols-2 gap-4">
+                            {/* Animal */}
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Animal</label>
+                                <select
+                                    value={liveAnimalId}
+                                    onChange={(e) => setLiveAnimalId(Number(e.target.value))}
+                                    className="border border-border rounded p-2 bg-white"
+                                    required
+                                >
+                                    <option value="">Selecione...</option>
+                                    {options.liveAnimals.map(a => (
+                                        <option key={a.id} value={a.id}>{a.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {/* Veterinarian */}
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Veterinário</label>
+                                <select
+                                    value={veterinarianId}
+                                    onChange={(e) => setVeterinarianId(Number(e.target.value))}
+                                    className="border border-border rounded p-2 bg-white"
+                                    required
+                                >
+                                    <option value="">Selecione...</option>
+                                    {options.veterinarians.map(v => (
+                                        <option key={v.id} value={v.id}>{v.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {/* Date */}
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Data da Realização</label>
+                                <input
+                                    type="date"
+                                    value={date}
+                                    onChange={(e) => setDate(e.target.value)}
+                                    className="border border-border rounded p-2"
+                                    required
+                                />
+                            </div>
+
+                            {/* Card Link */}
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Link da Carteirinha</label>
+                                <input
+                                    type="text"
+                                    value={cardLink}
+                                    onChange={(e) => setCardLink(e.target.value)}
+                                    className="border border-border rounded p-2"
+                                    placeholder="https://..."
+                                />
+                            </div>
+                        </div>
+
+                        {/* Body Measurements */}
+                        <div className="flex flex-col gap-2 mt-2 flex-1 min-h-0 overflow-y-auto">
+                            <div className="flex justify-between items-center">
+                                <label className="text-sm font-bold text-left">Medidas Corporais</label>
+                                <button
+                                    type="button"
+                                    onClick={addMeasurement}
+                                    className="text-sm bg-standard-blue text-white px-3 py-1 rounded cursor-pointer"
+                                >
+                                    + Adicionar Medida
+                                </button>
+                            </div>
+
+                            {bodyMeasurements.length === 0 && (
+                                <p className="text-sm text-text-light-gray italic text-center">Nenhuma medida adicionada</p>
+                            )}
+
+                            {bodyMeasurements.map((bm, index) => {
+                                const selectedType = options.bodyMeasurementTypes.find(t => t.id === bm.bodyMeasurementTypeId);
+                                return (
+                                    <div key={index} className="flex gap-2 items-end bg-form-bg p-3 rounded">
+                                        <div className="flex flex-col flex-1">
+                                            <label className="text-xs font-bold mb-1 text-left">Tipo</label>
+                                            <select
+                                                value={bm.bodyMeasurementTypeId}
+                                                onChange={(e) => updateMeasurement(index, 'bodyMeasurementTypeId', e.target.value)}
+                                                className="border border-border rounded p-2 bg-white"
+                                                required
+                                            >
+                                                <option value="">Selecione...</option>
+                                                {options.bodyMeasurementTypes.map(t => (
+                                                    <option key={t.id} value={t.id} disabled={bodyMeasurements.some(bm => bm.bodyMeasurementTypeId === t.id)}>{t.description} ({t.unit})</option>
+                                                ))}
+                                            </select>
+                                        </div>
+
+                                        <div className="flex flex-col w-32">
+                                            <label className="text-xs font-bold mb-1 text-left">
+                                                Valor {selectedType ? `(${selectedType.unit})` : ''}
+                                            </label>
+                                            <input
+                                                type="number"
+                                                step="0.01"
+                                                value={bm.value}
+                                                onChange={(e) => updateMeasurement(index, 'value', e.target.value)}
+                                                className={`border border-border rounded p-2 ${selectedType ? 'bg-white' : 'bg-gray-100'}`}
+                                                disabled={!selectedType}
+                                                required
+                                            />
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            onClick={() => removeMeasurement(index)}
+                                            className="text-button-red font-bold text-xl cursor-pointer px-2 pb-2"
+                                            title="Remover medida"
+                                        >
+                                            ✕
+                                        </button>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {error && <p className="text-red-500 text-sm">{error}</p>}
+
+                        <div className="flex justify-center items-center gap-5 mt-2">
+                            <button
+                                type="submit"
+                                className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer"
+                                disabled={loading}
                             >
-                                <option value="">Selecione...</option>
-                                {options.liveAnimals.map(a => (
-                                    <option key={a.id} value={a.id}>{a.name}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        {/* Veterinarian */}
-                        <div className="flex flex-col">
-                            <label className="text-sm font-bold mb-1 text-left">Veterinário</label>
-                            <select
-                                value={veterinarianId}
-                                onChange={(e) => setVeterinarianId(Number(e.target.value))}
-                                className="border border-border rounded p-2 bg-white"
-                                required
-                            >
-                                <option value="">Selecione...</option>
-                                {options.veterinarians.map(v => (
-                                    <option key={v.id} value={v.id}>{v.name}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        {/* Date */}
-                        <div className="flex flex-col">
-                            <label className="text-sm font-bold mb-1 text-left">Data da Realização</label>
-                            <input
-                                type="date"
-                                value={date}
-                                onChange={(e) => setDate(e.target.value)}
-                                className="border border-border rounded p-2"
-                                required
-                            />
-                        </div>
-
-                        {/* Card Link */}
-                        <div className="flex flex-col">
-                            <label className="text-sm font-bold mb-1 text-left">Link da Carteirinha</label>
-                            <input
-                                type="text"
-                                value={cardLink}
-                                onChange={(e) => setCardLink(e.target.value)}
-                                className="border border-border rounded p-2"
-                                placeholder="https://..."
-                            />
-                        </div>
-                    </div>
-
-                    {/* Body Measurements */}
-                    <div className="flex flex-col gap-2 mt-2 flex-1 min-h-0 overflow-y-auto">
-                        <div className="flex justify-between items-center">
-                            <label className="text-sm font-bold text-left">Medidas Corporais</label>
+                                {loading ? 'Salvando...' : 'Salvar'}
+                            </button>
                             <button
                                 type="button"
-                                onClick={addMeasurement}
-                                className="text-sm bg-standard-blue text-white px-3 py-1 rounded cursor-pointer"
+                                onClick={() => close()}
+                                className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer"
                             >
-                                + Adicionar Medida
+                                Cancelar
                             </button>
                         </div>
-
-                        {bodyMeasurements.length === 0 && (
-                            <p className="text-sm text-text-light-gray italic text-center">Nenhuma medida adicionada</p>
-                        )}
-
-                        {bodyMeasurements.map((bm, index) => {
-                            const selectedType = options.bodyMeasurementTypes.find(t => t.id === bm.bodyMeasurementTypeId);
-                            return (
-                                <div key={index} className="flex gap-2 items-end bg-form-bg p-3 rounded">
-                                    <div className="flex flex-col flex-1">
-                                        <label className="text-xs font-bold mb-1 text-left">Tipo</label>
-                                        <select
-                                            value={bm.bodyMeasurementTypeId}
-                                            onChange={(e) => updateMeasurement(index, 'bodyMeasurementTypeId', e.target.value)}
-                                            className="border border-border rounded p-2 bg-white"
-                                            required
-                                        >
-                                            <option value="">Selecione...</option>
-                                            {options.bodyMeasurementTypes.map(t => (
-                                                <option key={t.id} value={t.id} disabled={bodyMeasurements.some(bm => bm.bodyMeasurementTypeId === t.id)}>{t.description} ({t.unit})</option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    <div className="flex flex-col w-32">
-                                        <label className="text-xs font-bold mb-1 text-left">
-                                            Valor {selectedType ? `(${selectedType.unit})` : ''}
-                                        </label>
-                                        <input
-                                            type="number"
-                                            step="0.01"
-                                            value={bm.value}
-                                            onChange={(e) => updateMeasurement(index, 'value', e.target.value)}
-                                            className={`border border-border rounded p-2 ${selectedType ? 'bg-white' : 'bg-gray-100'}`}
-                                            disabled={!selectedType}
-                                            required
-                                        />
-                                    </div>
-
-                                    <button
-                                        type="button"
-                                        onClick={() => removeMeasurement(index)}
-                                        className="text-button-red font-bold text-xl cursor-pointer px-2 pb-2"
-                                        title="Remover medida"
-                                    >
-                                        ✕
-                                    </button>
-                                </div>
-                            );
-                        })}
-                    </div>
-
-                    {error && <p className="text-red-500 text-sm">{error}</p>}
-
-                    <div className="flex justify-center items-center gap-5 mt-2">
-                        <button
-                            type="submit"
-                            className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer"
-                            disabled={loading}
-                        >
-                            {loading ? 'Salvando...' : 'Salvar'}
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => close()}
-                            className="bg-standard-blue text-white text-xl font-bold py-2 px-5 rounded-xl cursor-pointer"
-                        >
-                            Cancelar
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+        </ModalPortal>
     );
 }

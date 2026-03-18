@@ -3,6 +3,7 @@ import type { User } from "./users";
 import { getGroups } from "../../services/groupsService";
 import { getAccessLevelOptions, getForms } from "../../services/formService";
 import { getUserAccess, updateUserAccess } from "../../services/userService";
+import { ModalPortal } from "../../components/modalPortal";
 
 interface UserPermissionsModalProps {
     user: User,
@@ -133,8 +134,9 @@ export function UserPermissionsModal({ user, close }: UserPermissionsModalProps)
     }
 
     return (
-        <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100">
-            <div className="relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-6 w-320 h-[90%]">
+        <ModalPortal>
+            <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100">
+                <div className="relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-6 w-320 h-[90%]">
 
                 <button
                     onClick={() => close()}
@@ -232,7 +234,8 @@ export function UserPermissionsModal({ user, close }: UserPermissionsModalProps)
                         </div>
                     </form>
                 </div>
+                </div>
             </div>
-        </div>
+        </ModalPortal>
     )
 }

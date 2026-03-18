@@ -1,4 +1,5 @@
 import { type VeterinarianSampleData } from "../../../services/veterinarianSampleService";
+import { ModalPortal } from "../../../components/modalPortal";
 
 interface DeleteSampleModalProps {
     sample: VeterinarianSampleData;
@@ -8,7 +9,9 @@ interface DeleteSampleModalProps {
 export function DeleteSampleModal({ sample, close, refresh }: DeleteSampleModalProps) {
     // ...
     return (
-        <>
-        </>
+        <ModalPortal>
+            <>
+            </>
+        </ModalPortal>
     )
 }
