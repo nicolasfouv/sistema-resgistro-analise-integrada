@@ -14,6 +14,10 @@ export const VeterinarianVisitContentDefinition = {
         { key: 'liveAnimalName', label: 'Animal', width: 'w-3/6' },
         { key: 'dateFormatted', label: 'Data da Realização', width: 'w-1/6' },
     ],
+    filterFields: [
+        { key: 'liveAnimalName', label: 'Animal' },
+        { key: 'veterinarianName', label: 'Veterinário' },
+    ],
     rowIdField: 'id',
     renderActions: (item: VeterinarianVisitData, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
         <button

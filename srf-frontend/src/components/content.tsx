@@ -8,12 +8,18 @@ export interface ColumnProps<T> {
     width?: string,
 }
 
+export interface FilterFieldProps<T> {
+    key: keyof T | string,
+    label: string,
+}
+
 export interface ContentProps<T> {
     id: string,
     label: string,
     columns: ColumnProps<T>[],
     firstColumnDetail?: (item: T) => ReactNode,
     data: T[],
+    filterFields?: FilterFieldProps<T>[],
     rowIdField: keyof T,
     renderActions: (item: T, isExpanded: boolean, toggleRow: (id: string) => void, refresh: () => void) => ReactNode,
     renderExpansion?: (item: T, close: () => void, refresh: () => void) => ReactNode,
@@ -127,7 +133,7 @@ export function Content({
                         {canCreate !== false && activeContent?.toolBar && activeContent?.toolBar(onRefresh || (() => { }))}
                         <FilterBar
                             key={activeContent?.id}
-                            columns={activeContent?.columns || []}
+                            columns={activeContent?.filterFields || activeContent?.columns || []}
                             onFilter={handleFilter}
                             initialColumn={initialFilter?.column}
                             initialTerm={initialFilter?.term}
