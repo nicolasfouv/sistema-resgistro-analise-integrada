@@ -4,28 +4,28 @@ import blueFilterIcon from "../assets/blueFilter.svg";
 import grayFilterIcon from "../assets/grayFilter.svg";
 
 interface FilterBarProps<T> {
-    columns: {
+    fields: {
         key: T | string,
         label: string,
     }[],
     onFilter: (
-        column: keyof T | string,
+        field: keyof T | string,
         term: string
     ) => void,
-    initialColumn?: string,
+    initialField?: string,
     initialTerm?: string,
 }
 
-export function FilterBar<T>({ columns, onFilter, initialColumn, initialTerm }: FilterBarProps<T>) {
-    const [selectedCol, setSelectedCol] = useState<string>(initialColumn || String(columns[0].key || ''));
+export function FilterBar<T>({ fields, onFilter, initialField, initialTerm }: FilterBarProps<T>) {
+    const [selectedField, setSelectedField] = useState<string>(initialField || String(fields[0].key || ''));
     const [searchTerm, setSearchTerm] = useState(initialTerm || '');
     const [hasFilter, setHasFilter] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
     function handleApplyFilter(e: React.FormEvent) {
         e.preventDefault();
-        onFilter(selectedCol, searchTerm);
-        if (searchTerm !== '' && selectedCol !== '') {
+        onFilter(selectedField, searchTerm);
+        if (searchTerm !== '' && selectedField !== '') {
             setHasFilter(true);
         } else {
             setHasFilter(false);
@@ -38,7 +38,7 @@ export function FilterBar<T>({ columns, onFilter, initialColumn, initialTerm }: 
             setIsOpen(false);
         } else {
             setSearchTerm('');
-            setSelectedCol(String(columns[0].key || ''));
+            setSelectedField(String(fields[0].key || ''));
             setHasFilter(false);
             setIsOpen(false);
         }
@@ -68,13 +68,13 @@ export function FilterBar<T>({ columns, onFilter, initialColumn, initialTerm }: 
                             <form onSubmit={handleApplyFilter} className="flex w-full gap-4">
                                 <div className="w-1/5">
                                     <select
-                                        value={selectedCol}
-                                        onChange={(e) => setSelectedCol(e.target.value)}
+                                        value={selectedField}
+                                        onChange={(e) => setSelectedField(e.target.value)}
                                         className="bg-white border border-border p-2 rounded w-full"
                                     >
-                                        {columns.map((col) => (
-                                            <option key={String(col.key)} value={String(col.key)}>
-                                                {col.label}
+                                        {fields.map((field) => (
+                                            <option key={String(field.key)} value={String(field.key)}>
+                                                {field.label}
                                             </option>
                                         ))}
                                     </select>

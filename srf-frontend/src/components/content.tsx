@@ -34,7 +34,7 @@ export interface PageProps {
     onRefresh?: () => void,
     hasAccess?: boolean,
     canCreate?: boolean,
-    initialFilter?: { column: string; term: string },
+    initialFilter?: { field: string; term: string },
 }
 
 export function Content({
@@ -56,7 +56,7 @@ export function Content({
         if (initialFilter && activeContent?.data) {
             const searchTerm = initialFilter.term.toLocaleLowerCase();
             const newData = activeContent.data.filter(item =>
-                String(item[initialFilter.column]).toLowerCase().includes(searchTerm)
+                String(item[initialFilter.field]).toLowerCase().includes(searchTerm)
             );
             setFilteredData(newData);
         } else {
@@ -133,9 +133,9 @@ export function Content({
                         {canCreate !== false && activeContent?.toolBar && activeContent?.toolBar(onRefresh || (() => { }))}
                         <FilterBar
                             key={activeContent?.id}
-                            columns={activeContent?.filterFields || activeContent?.columns || []}
+                            fields={activeContent?.filterFields || activeContent?.columns || []}
                             onFilter={handleFilter}
-                            initialColumn={initialFilter?.column}
+                            initialField={initialFilter?.field}
                             initialTerm={initialFilter?.term}
                         />
                     </div>

@@ -94,7 +94,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     </div>
                     <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
                         <button
-                            onClick={() => navigate(`/animaisvivos/veterinario/amostras-av?column=veterinarianVisitId&filter=${encodeURIComponent(item.id)}`)}
+                            onClick={() => navigate(`/animaisvivos/veterinario/amostras-av?field=veterinarianVisitId&filter=${encodeURIComponent(item.id)}`)}
                             className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                         >
                             Visualizar
