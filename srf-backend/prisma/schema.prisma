@@ -735,6 +735,7 @@ model sampleAllocationVeterinarian {
   sorologyAnalysis       sorologyAnalysis[]
   sendSampleVeterinarian sendSampleVeterinarian[]
 
+  @@unique([veterinarianVisitId, sampleTypeId])
   @@map("alocacao_amostra_veterinario")
 }
 
@@ -750,6 +751,7 @@ model sendSampleVeterinarian {
   sendDate                       DateTime                     @map("data_envio")
   note                           String?                      @map("observacao")
 
+  @@unique([sampleAllocationVeterinarianId, storageId])
   @@map("envio_amostra_veterinario")
 }
 
@@ -985,6 +987,7 @@ model sampleAllocationNecropsy {
 
   sendSampleNecropsy sendSampleNecropsy[]
 
+  @@unique([necropsyId, sampleTypeId])
   @@map("alocacao_amostra_necropsia")
 }
 
@@ -1000,6 +1003,7 @@ model sendSampleNecropsy {
   sendDate                   DateTime                   @map("data_envio")
   note                       String?                    @map("observacao")
 
+  @@unique([sampleAllocationNecropsyId, storageId])
   @@map("envio_amostra_necropsia")
 }
 
