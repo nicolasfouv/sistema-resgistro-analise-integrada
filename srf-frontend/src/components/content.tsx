@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import React, { type ReactNode } from "react";
-import { FilterBar } from "./filter";
+import { FilterBar, type FilterValue } from "./filter";
 
 export interface ColumnProps<T> {
     key: keyof T | string,
@@ -8,10 +8,35 @@ export interface ColumnProps<T> {
     width?: string,
 }
 
-export interface FilterFieldProps<T> {
-    key: keyof T | string,
-    label: string,
+interface FilterFieldBase<T> {
+    key: keyof T | string;
+    label: string;
 }
+
+export interface TextFilterField<T> extends FilterFieldBase<T> {
+    type: 'text';
+}
+
+export interface DateFilterField<T> extends FilterFieldBase<T> {
+    type: 'date';
+}
+
+export interface BooleanFilterField<T> extends FilterFieldBase<T> {
+    type: 'boolean';
+    trueLabel: string;
+    falseLabel: string;
+}
+
+export interface EnumFilterField<T> extends FilterFieldBase<T> {
+    type: 'enum';
+    options: { value: string; label: string }[];
+}
+
+export type FilterFieldProps<T> =
+    | TextFilterField<T>
+    | DateFilterField<T>
+    | BooleanFilterField<T>
+    | EnumFilterField<T>;
 
 export interface ContentProps<T> {
     id: string,
@@ -87,12 +112,40 @@ export function Content({
         setExpandedId(prev => (prev === id ? null : id));
     }
 
-    function handleFilter(column: string, term: string) {
-        const searchTerm = term.toLocaleLowerCase();
-        const newData = activeContent?.data.filter(item =>
-            String(item[column]).toLowerCase().includes(searchTerm)
-        );
-        setFilteredData(newData);
+    function handleFilter(field: string, filterValue: FilterValue) {
+        if (!activeContent?.data) return;
+
+        if (filterValue.type === 'text') {
+            const searchTerm = filterValue.term.toLocaleLowerCase();
+            const newData = activeContent.data.filter(item =>
+                String(item[field]).toLowerCase().includes(searchTerm)
+            );
+            setFilteredData(newData);
+        } else if (filterValue.type === 'date') {
+            const from = filterValue.from ? new Date(filterValue.from + 'T00:00:00') : null;
+            const to = filterValue.to ? new Date(filterValue.to + 'T23:59:59') : null;
+            const newData = activeContent.data.filter(item => {
+                const raw = item[field];
+                if (!raw) return false;
+                const itemDate = new Date(raw);
+                if (from && itemDate < from) return false;
+                if (to && itemDate > to) return false;
+                return true;
+            });
+            setFilteredData(newData);
+        } else if (filterValue.type === 'boolean') {
+            const target = filterValue.value;
+            const newData = activeContent.data.filter(item =>
+                String(item[field]).toLowerCase() === target
+            );
+            setFilteredData(newData);
+        } else if (filterValue.type === 'enum') {
+            const target = filterValue.value;
+            const newData = activeContent.data.filter(item =>
+                String(item[field]).toLowerCase() === target.toLowerCase()
+            );
+            setFilteredData(newData);
+        }
     }
 
     function handleSort(key: string | any) {
@@ -133,7 +186,7 @@ export function Content({
                         {canCreate !== false && activeContent?.toolBar && activeContent?.toolBar(onRefresh || (() => { }))}
                         <FilterBar
                             key={activeContent?.id}
-                            fields={activeContent?.filterFields || activeContent?.columns || []}
+                            fields={activeContent?.filterFields || (activeContent?.columns || []).map(c => ({ ...c, type: 'text' as const }))}
                             onFilter={handleFilter}
                             initialField={initialFilter?.field}
                             initialTerm={initialFilter?.term}

@@ -15,8 +15,10 @@ export const VeterinarianVisitContentDefinition = {
         { key: 'dateFormatted', label: 'Data da Realização', width: 'w-1/6' },
     ],
     filterFields: [
-        { key: 'liveAnimalName', label: 'Animal' },
-        { key: 'veterinarianName', label: 'Veterinário' },
+        { key: 'liveAnimalName', label: 'Animal', type: 'text' },
+        { key: 'veterinarianName', label: 'Veterinário', type: 'text' },
+        { key: 'date', label: 'Data da Realização', type: 'date' },
+        { key: 'hasSample', label: 'Possui Amostra', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
     ],
     rowIdField: 'id',
     renderActions: (item: VeterinarianVisitData, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
