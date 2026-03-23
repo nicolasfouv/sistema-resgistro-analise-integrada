@@ -1,0 +1,17 @@
+{
+  "name": "sistema-de-rastreio-de-fauna",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm start --workspace=srf-backend",
+    "dev:frontend": "npm run dev --workspace=srf-frontend"
+  },
+  "workspaces": [
+    "srf-backend",
+    "srf-frontend",
+    "srf-shared-types"
+  ],
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
