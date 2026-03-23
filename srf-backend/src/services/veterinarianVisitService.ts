@@ -66,22 +66,20 @@ export class VeterinarianVisitService {
             }
         }
 
-        let creatorMap = new Map<string, string>();
-        if (editPermission === 'own') {
-            const createLogs = await prisma.changeLog.findMany({
-                where: {
-                    table: 'veterinarianVisit',
-                    recordId: { in: visitIds.map(String) },
-                    action: 'CREATE',
-                },
-                select: {
-                    recordId: true,
-                    auditLog: { select: { userId: true } }
-                }
-            });
-            for (const log of createLogs) {
-                creatorMap.set(log.recordId, log.auditLog.userId);
+        const createLogs = await prisma.changeLog.findMany({
+            where: {
+                table: 'veterinarianVisit',
+                recordId: { in: visitIds.map(String) },
+                action: 'CREATE',
+            },
+            select: {
+                recordId: true,
+                auditLog: { select: { userId: true } }
             }
+        });
+        const creatorMap = new Map<string, string>();
+        for (const log of createLogs) {
+            creatorMap.set(log.recordId, log.auditLog.userId);
         }
 
         return visits.map(v => {
@@ -95,6 +93,7 @@ export class VeterinarianVisitService {
             return {
                 id: v.id,
                 canEdit: canEdit,
+                createdByMe: creatorMap.get(String(v.id)) === userId,
                 hasSample: visitIdsWithSamples.has(v.id),
                 liveAnimalId: v.liveAnimal.id,
                 liveAnimalName: v.liveAnimal.name,

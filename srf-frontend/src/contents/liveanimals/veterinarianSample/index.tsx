@@ -12,6 +12,11 @@ export const VeterinarianSampleContentDefinition = {
         { key: 'sampleTypeDescription', label: 'Tipo da Amostra', width: 'w-1/4' },
         { key: 'statusName', label: 'Status', width: 'w-1/4' },
     ],
+    filterFields: [
+        { key: 'sampleTypeDescription', label: 'Tipo da Amostra', type: 'text' },
+        { key: 'statusName', label: 'Status', type: 'text' },
+        { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
+    ],
     rowIdField: 'id',
     renderActions: (item: VeterinarianSampleData, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
         <button

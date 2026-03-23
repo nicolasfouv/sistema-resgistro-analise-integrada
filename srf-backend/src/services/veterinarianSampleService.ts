@@ -23,12 +23,31 @@ export class VeterinarianSampleService {
             }
         });
 
+        const sampleIds = samples.map(s => s.id);
+
+        const createLogs = await prisma.changeLog.findMany({
+            where: {
+                table: 'sampleAllocationVeterinarian',
+                recordId: { in: sampleIds.map(String) },
+                action: 'CREATE',
+            },
+            select: {
+                recordId: true,
+                auditLog: { select: { userId: true } }
+            }
+        });
+        const creatorMap = new Map<string, string>();
+        for (const log of createLogs) {
+            creatorMap.set(log.recordId, log.auditLog.userId);
+        }
+
         const samplesWithPermission = await Promise.all(
             samples.map(async (s) => {
                 const permission = await this.auditService.canUserEditRecord(userId, 'sampleAllocationVeterinarian', String(s.id), this.formId);
                 return {
                     id: s.id,
                     canEdit: permission.canEdit,
+                    createdByMe: creatorMap.get(String(s.id)) === userId,
                     veterinarianVisitId: s.veterinarianVisit.id,
                     veterinarianVisitDate: s.veterinarianVisit.date,
                     sampleTypeId: s.sampleType.id,

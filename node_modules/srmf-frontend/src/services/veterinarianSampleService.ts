@@ -3,6 +3,7 @@ import { api } from "./api";
 export interface VeterinarianSampleData {
     id: number,
     canEdit: boolean,
+    createdByMe: boolean,
     veterinarianVisitId: number,
     sampleTypeId: number,
     sampleTypeDescription: string,

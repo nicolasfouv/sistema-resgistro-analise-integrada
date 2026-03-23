@@ -144,12 +144,12 @@ export function FilterBar<T>({ fields, onFilter, initialFilters }: FilterBarProp
                         placeholder='Termo para o filtro...'
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="flex-1 bg-white border border-border p-2 rounded"
+                        className="flex-1 h-10 bg-white border border-border p-2 rounded"
                     />
                 );
             case 'date':
                 return (
-                    <div className="flex-1 flex items-center gap-2">
+                    <div className="flex-1 h-10 flex items-center gap-2">
                         <label className="text-sm text-text-main font-bold whitespace-nowrap">De</label>
                         <input
                             type='date'
@@ -172,7 +172,7 @@ export function FilterBar<T>({ fields, onFilter, initialFilters }: FilterBarProp
                     <select
                         value={selectedOption}
                         onChange={(e) => setSelectedOption(e.target.value)}
-                        className="flex-1 bg-white border border-border p-2 rounded"
+                        className="flex-1 h-10 bg-white border border-border p-2 rounded"
                     >
                         <option value="">Selecione...</option>
                         <option value="true">{boolField.trueLabel}</option>
@@ -186,7 +186,7 @@ export function FilterBar<T>({ fields, onFilter, initialFilters }: FilterBarProp
                     <select
                         value={selectedOption}
                         onChange={(e) => setSelectedOption(e.target.value)}
-                        className="flex-1 bg-white border border-border p-2 rounded"
+                        className="flex-1 h-10 bg-white border border-border p-2 rounded"
                     >
                         <option value="">Selecione...</option>
                         {enumField.options.map(opt => (
@@ -211,7 +211,7 @@ export function FilterBar<T>({ fields, onFilter, initialFilters }: FilterBarProp
             {isOpen && (
                 <ModalPortal>
                     <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 p-4">
-                        <div className="relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-6 gap-5 w-200 max-h-[90vh]">
+                        <div className="relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-14 pb-6 gap-4 w-200 max-h-[90vh]">
                             <button
                                 onClick={handleClose}
                                 className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
@@ -244,7 +244,7 @@ export function FilterBar<T>({ fields, onFilter, initialFilters }: FilterBarProp
 
                             {availableFields.length > 0 && (
                                 <form onSubmit={handleAddFilter} className="flex w-full gap-4">
-                                    <div className="w-1/5">
+                                    <div className="w-3/12">
                                         <select
                                             value={selectedField}
                                             onChange={(e) => handleFieldChange(e.target.value)}
