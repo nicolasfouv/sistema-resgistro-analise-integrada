@@ -719,18 +719,18 @@ model sorologyAgent {
 }
 
 model sampleAllocationVeterinarian {
-  id                  Int                        @id @default(autoincrement())
-  veterinarianVisitId Int                        @map("id_visita_veterinaria")
-  veterinarianVisit   veterinarianVisit          @relation(fields: [veterinarianVisitId], references: [id])
-  sampleTypeId        Int                        @map("id_tipo_amostra")
-  sampleType          sampleType                 @relation(fields: [sampleTypeId], references: [id])
-  storageId           Int                        @map("id_armazenamento")
-  storage             storage                    @relation(fields: [storageId], references: [id])
-  statusId            Int                        @map("id_status")
-  status              enumSampleAllocationStatus @relation(fields: [statusId], references: [id])
-  quantity            Int                        @map("quantidade")
-  imageLink           String?                    @map("link_imagem")
-  note                String?                    @map("observacao")
+  id                  Int                                    @id @default(autoincrement())
+  veterinarianVisitId Int                                    @map("id_visita_veterinaria")
+  veterinarianVisit   veterinarianVisit                      @relation(fields: [veterinarianVisitId], references: [id])
+  sampleTypeId        Int                                    @map("id_tipo_amostra")
+  sampleType          veterinarianSampleType                 @relation(fields: [sampleTypeId], references: [id])
+  storageId           Int                                    @map("id_armazenamento")
+  storage             storage                                @relation(fields: [storageId], references: [id])
+  statusId            Int                                    @map("id_status")
+  status              enumVeterinarianSampleAllocationStatus @relation(fields: [statusId], references: [id])
+  quantity            Int                                    @map("quantidade")
+  imageLink           String?                                @map("link_imagem")
+  note                String?                                @map("observacao")
 
   sorologyAnalysis       sorologyAnalysis[]
   sendSampleVeterinarian sendSampleVeterinarian[]
@@ -740,43 +740,57 @@ model sampleAllocationVeterinarian {
 }
 
 model sendSampleVeterinarian {
-  id                             Int                          @id @default(autoincrement())
-  sampleAllocationVeterinarianId Int                          @map("id_alocacao_amostra_veterinario")
-  sampleAllocationVeterinarian   sampleAllocationVeterinarian @relation(fields: [sampleAllocationVeterinarianId], references: [id])
-  storageId                      Int                          @map("id_armazenamento")
-  storage                        storage                      @relation(fields: [storageId], references: [id])
-  statusId                       Int                          @map("id_status")
-  status                         enumSampleAllocationStatus   @relation(fields: [statusId], references: [id])
-  quantity                       Int                          @map("quantidade")
-  sendDate                       DateTime                     @map("data_envio")
-  note                           String?                      @map("observacao")
+  id                             Int                                    @id @default(autoincrement())
+  sampleAllocationVeterinarianId Int                                    @map("id_alocacao_amostra_veterinario")
+  sampleAllocationVeterinarian   sampleAllocationVeterinarian           @relation(fields: [sampleAllocationVeterinarianId], references: [id])
+  storageId                      Int                                    @map("id_armazenamento")
+  storage                        storage                                @relation(fields: [storageId], references: [id])
+  statusId                       Int                                    @map("id_status")
+  status                         enumVeterinarianSampleAllocationStatus @relation(fields: [statusId], references: [id])
+  quantity                       Int                                    @map("quantidade")
+  sendDate                       DateTime                               @map("data_envio")
+  note                           String?                                @map("observacao")
 
   @@unique([sampleAllocationVeterinarianId, storageId])
   @@map("envio_amostra_veterinario")
 }
 
-model enumSampleAllocationStatus {
+model enumVeterinarianSampleAllocationStatus {
   id   Int    @id @default(autoincrement())
   name String @map("nome")
 
   sampleAllocationVeterinarian sampleAllocationVeterinarian[]
   sendSampleVeterinarian       sendSampleVeterinarian[]
-  sampleAllocationNecropsy     sampleAllocationNecropsy[]
-  sendSampleNecropsy           sendSampleNecropsy[]
 
-  @@map("enum_status_alocacao_amostra")
+  @@map("enum_status_alocacao_amostra_veterinario")
 }
 
-model sampleType {
+model enumNecropsySampleAllocationStatus {
+  id   Int    @id @default(autoincrement())
+  name String @map("nome")
+
+  sampleAllocationNecropsy sampleAllocationNecropsy[]
+  sendSampleNecropsy       sendSampleNecropsy[]
+
+  @@map("enum_status_alocacao_amostra_necropsia")
+}
+
+model veterinarianSampleType {
   id          Int    @id @default(autoincrement())
   description String @map("descricao")
 
   sampleAllocationVeterinarian sampleAllocationVeterinarian[]
-  sampleAllocationNecropsy     sampleAllocationNecropsy[]
-  cpcrResult                   cpcrResult[]
-  qpcrResult                   qpcrResult[]
 
-  @@map("tipo_amostra")
+  @@map("tipo_amostra_veterinaria")
+}
+
+model necropsySampleType {
+  id          Int    @id @default(autoincrement())
+  description String @map("descricao")
+
+  sampleAllocationNecropsy sampleAllocationNecropsy[]
+
+  @@map("tipo_amostra_necropsia")
 }
 
 model storage {
@@ -972,18 +986,18 @@ model ectoparasiteAnalysisNecropsy {
 }
 
 model sampleAllocationNecropsy {
-  id           Int                        @id @default(autoincrement())
-  necropsyId   Int                        @map("id_necropsia")
-  necropsy     necropsy                   @relation(fields: [necropsyId], references: [id])
-  sampleTypeId Int                        @map("id_tipo_amostra")
-  sampleType   sampleType                 @relation(fields: [sampleTypeId], references: [id])
-  storageId    Int                        @map("id_armazenamento")
-  storage      storage                    @relation(fields: [storageId], references: [id])
-  statusId     Int                        @map("id_status")
-  status       enumSampleAllocationStatus @relation(fields: [statusId], references: [id])
-  quantity     Int                        @map("quantidade")
-  imageLink    String?                    @map("link_imagem")
-  note         String?                    @map("observacao")
+  id           Int                                @id @default(autoincrement())
+  necropsyId   Int                                @map("id_necropsia")
+  necropsy     necropsy                           @relation(fields: [necropsyId], references: [id])
+  sampleTypeId Int                                @map("id_tipo_amostra")
+  sampleType   necropsySampleType                 @relation(fields: [sampleTypeId], references: [id])
+  storageId    Int                                @map("id_armazenamento")
+  storage      storage                            @relation(fields: [storageId], references: [id])
+  statusId     Int                                @map("id_status")
+  status       enumNecropsySampleAllocationStatus @relation(fields: [statusId], references: [id])
+  quantity     Int                                @map("quantidade")
+  imageLink    String?                            @map("link_imagem")
+  note         String?                            @map("observacao")
 
   sendSampleNecropsy sendSampleNecropsy[]
 
@@ -992,19 +1006,37 @@ model sampleAllocationNecropsy {
 }
 
 model sendSampleNecropsy {
-  id                         Int                        @id @default(autoincrement())
-  sampleAllocationNecropsyId Int                        @map("id_alocacao_amostra_necropsia")
-  sampleAllocationNecropsy   sampleAllocationNecropsy   @relation(fields: [sampleAllocationNecropsyId], references: [id])
-  storageId                  Int                        @map("id_armazenamento")
-  storage                    storage                    @relation(fields: [storageId], references: [id])
-  statusId                   Int                        @map("id_status")
-  status                     enumSampleAllocationStatus @relation(fields: [statusId], references: [id])
-  quantity                   Int                        @map("quantidade")
-  sendDate                   DateTime                   @map("data_envio")
-  note                       String?                    @map("observacao")
+  id                         Int                                @id @default(autoincrement())
+  sampleAllocationNecropsyId Int                                @map("id_alocacao_amostra_necropsia")
+  sampleAllocationNecropsy   sampleAllocationNecropsy           @relation(fields: [sampleAllocationNecropsyId], references: [id])
+  storageId                  Int                                @map("id_armazenamento")
+  storage                    storage                            @relation(fields: [storageId], references: [id])
+  statusId                   Int                                @map("id_status")
+  status                     enumNecropsySampleAllocationStatus @relation(fields: [statusId], references: [id])
+  quantity                   Int                                @map("quantidade")
+  sendDate                   DateTime                           @map("data_envio")
+  note                       String?                            @map("observacao")
 
   @@unique([sampleAllocationNecropsyId, storageId])
   @@map("envio_amostra_necropsia")
+}
+
+model cpcrSampleType {
+  id          Int    @id @default(autoincrement())
+  description String @map("descricao")
+
+  cpcrResult cpcrResult[]
+
+  @@map("tipo_amostra_cpcr")
+}
+
+model qpcrSampleType {
+  id          Int    @id @default(autoincrement())
+  description String @map("descricao")
+
+  qpcrResult qpcrResult[]
+
+  @@map("tipo_amostra_qpcr")
 }
 
 model cpcrResult {
@@ -1012,7 +1044,7 @@ model cpcrResult {
   necropsyId        Int             @map("id_necropsia")
   necropsy          necropsy        @relation(fields: [necropsyId], references: [id])
   sampleTypeId      Int             @map("id_tipo_amostra")
-  sampleType        sampleType      @relation(fields: [sampleTypeId], references: [id])
+  sampleType        cpcrSampleType  @relation(fields: [sampleTypeId], references: [id])
   performedDate     DateTime        @map("data_realizacao")
   extractionTypeId  Int             @map("id_tipo_extracao")
   extractionType    extractionType  @relation(fields: [extractionTypeId], references: [id])
@@ -1036,7 +1068,7 @@ model qpcrResult {
   necropsyId        Int             @map("id_necropsia")
   necropsy          necropsy        @relation(fields: [necropsyId], references: [id])
   sampleTypeId      Int             @map("id_tipo_amostra")
-  sampleType        sampleType      @relation(fields: [sampleTypeId], references: [id])
+  sampleType        qpcrSampleType  @relation(fields: [sampleTypeId], references: [id])
   performedDate     DateTime        @map("data_realizacao")
   targetGeneId      Int             @map("id_gene_alvo")
   targetGene        targetGene      @relation(fields: [targetGeneId], references: [id])

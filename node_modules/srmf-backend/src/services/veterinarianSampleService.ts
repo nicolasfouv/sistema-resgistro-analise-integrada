@@ -120,11 +120,11 @@ export class VeterinarianSampleService {
                 },
                 orderBy: { date: 'desc' }
             }),
-            prisma.sampleType.findMany({
+            prisma.veterinarianSampleType.findMany({
                 select: { id: true, description: true },
                 orderBy: { description: 'asc' }
             }),
-            prisma.enumSampleAllocationStatus.findMany({
+            prisma.enumVeterinarianSampleAllocationStatus.findMany({
                 select: { id: true, name: true },
                 orderBy: { name: 'asc' }
             }),
