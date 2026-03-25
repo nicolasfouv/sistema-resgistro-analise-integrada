@@ -1,20 +1,51 @@
 import { prisma } from "..";
 import { AuditService } from "./auditService";
+import {
+    type GetAllVeterinarianSampleOutput,
+    type GetFormOptionsVeterinarianSampleOutput
+} from "srf-shared-types";
+
+import {
+    type CreateVeterinarianSampleInput
+} from "srf-shared-types";
 
 export class VeterinarianSampleService {
     private auditService = new AuditService();
     private formId = 'amostras-av';
 
-    async getAll(userId: string) {
+    async getAll(userId: string): Promise<GetAllVeterinarianSampleOutput[]> {
         const samples = await prisma.sampleAllocationVeterinarian.findMany({
             select: {
                 id: true,
-                veterinarianVisit: { select: { id: true, date: true } },
-                sampleType: { select: { id: true, description: true } },
-                status: { select: { id: true, name: true } },
-                storage: { select: { id: true, name: true } },
-                //quantity: true, for necropsy
+                veterinarianVisit: {
+                    select: { id: true, date: true }
+                },
+                sampleType: {
+                    select: { id: true, description: true }
+                },
+                status: {
+                    select: { id: true, name: true }
+                },
+                storage: {
+                    select: { id: true, name: true }
+                },
+                quantity: true,
+                imageLink: true,
                 note: true,
+                sendSampleVeterinarian: {
+                    select: {
+                        id: true,
+                        storage: {
+                            select: { id: true, name: true }
+                        },
+                        status: {
+                            select: { id: true, name: true }
+                        },
+                        quantity: true,
+                        sendDate: true,
+                        note: true
+                    }
+                }
             },
             orderBy: {
                 veterinarianVisit: {
@@ -56,12 +87,122 @@ export class VeterinarianSampleService {
                     statusName: s.status.name,
                     storageId: s.storage.id,
                     storageName: s.storage.name,
-                    note: s.note,
+                    quantity: s.quantity,
+                    imageLink: s.imageLink || undefined,
+                    note: s.note || undefined,
+                    sendSamples: s.sendSampleVeterinarian.map(sends => ({
+                        id: sends.id,
+                        storageId: sends.storage.id,
+                        storageName: sends.storage.name,
+                        statusId: sends.status.id,
+                        statusName: sends.status.name,
+                        sendDate: sends.sendDate,
+                        quantity: sends.quantity,
+                        note: sends.note || undefined
+                    }))
                 };
             })
         );
 
         return samplesWithPermission;
+    }
+
+    async getFormOptions(): Promise<GetFormOptionsVeterinarianSampleOutput> {
+        const [veterinarianVisits, sampleTypes, status, storages] = await Promise.all([
+            prisma.veterinarianVisit.findMany({
+                select: {
+                    date: true,
+                    liveAnimal: { select: { id: true, name: true } }
+                },
+                orderBy: { date: 'desc' }
+            }),
+            prisma.sampleType.findMany({
+                select: { id: true, description: true },
+                orderBy: { description: 'asc' }
+            }),
+            prisma.enumSampleAllocationStatus.findMany({
+                select: { id: true, name: true },
+                orderBy: { name: 'asc' }
+            }),
+            prisma.storage.findMany({
+                select: { id: true, name: true },
+                orderBy: { name: 'asc' }
+            })
+        ]);
+
+        return { veterinarianVisits, sampleTypes, status, storages };
+    }
+
+    async create(data: CreateVeterinarianSampleInput, requesterId: string) {
+
+        return prisma.$transaction(async (tx) => {
+            // Verifica se a amostra já existe
+            const existingSample = await tx.sampleAllocationVeterinarian.findFirst({
+                where: {
+                    veterinarianVisitId: data.veterinarianVisitId,
+                    sampleTypeId: data.sampleTypeId
+                }
+            });
+            if (existingSample) throw new Error('Não é possível criar amostras que compartilhem visita veteriária e tipo.');
+
+            // Cria a amostra veterinária
+            const sample = await tx.sampleAllocationVeterinarian.create({
+                data: {
+                    veterinarianVisitId: data.veterinarianVisitId,
+                    sampleTypeId: data.sampleTypeId,
+                    storageId: data.storageId,
+                    statusId: data.statusId,
+                    quantity: data.quantity,
+                    imageLink: data.imageLink || null,
+                }
+            });
+
+            if (data.sendSamples) {
+                // Verifica duplicidade de amostras enviadas
+                data.sendSamples.forEach(sendSample => {
+                    const countStorageId = data.sendSamples!.filter(sends => sends.storageId === sendSample.storageId).length;
+                    if (countStorageId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo local.')
+                });
+            }
+
+            // Cria as amostras enviadas
+            const sendSamples = [];
+            if (data.sendSamples) {
+                for (const sendSample of data.sendSamples) {
+                    const sendSampleCreated = await tx.sendSampleVeterinarian.create({
+                        data: {
+                            sampleAllocationVeterinarianId: sample.id,
+                            storageId: sendSample.storageId,
+                            statusId: sendSample.statusId,
+                            quantity: sendSample.quantity,
+                            sendDate: sendSample.sendDate,
+                            note: sendSample.note || null
+                        }
+                    });
+                    sendSamples.push(sendSampleCreated);
+                }
+            }
+
+            // Audit log
+            const changes = [
+                {
+                    table: 'sampleAllocationVeterinarian',
+                    recordId: String(sample.id),
+                    action: 'CREATE' as const,
+                    newData: sample
+
+                },
+                ...sendSamples.map(sendSample => ({
+                    table: 'sendSampleVeterinarian',
+                    recordId: String(sendSample.id),
+                    action: 'CREATE' as const,
+                    newData: sendSample
+                }))
+            ];
+            await this.auditService.logTransaction(requesterId, this.formId, 'SUBMIT', changes);
+
+            return { sample, sendSamples };
+        });
     }
 
 }

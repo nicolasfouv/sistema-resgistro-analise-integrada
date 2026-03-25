@@ -51,6 +51,7 @@ class VeterinarianVisitController {
 
     update = async (req: Request, res: Response) => {
         try {
+            // sem verificação de permissão
             const { id } = req.params;
             const { liveAnimalId, veterinarianId, date, cardLink, bodyMeasurements } = veterinarianVisitUpdateInput.parse(req.body);
 
