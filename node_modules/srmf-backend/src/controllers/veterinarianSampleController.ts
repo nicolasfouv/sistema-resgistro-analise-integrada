@@ -3,10 +3,11 @@ import { ZodError } from "zod";
 import { VeterinarianSampleService } from "../services/veterinarianSampleService";
 import { AuditService } from "../services/auditService";
 import {
-    type CreateVeterinarianSampleInput
+    type CreateVeterinarianSampleInput,
+    type UpdateVeterinarianSampleInput
 } from "srf-shared-types";
 
-class VeterinarianSampleController {
+export class VeterinarianSampleController {
     private auditService = new AuditService();
     private veterinarianSampleService = new VeterinarianSampleService();
     private formId = 'amostras-av' as const;
@@ -48,7 +49,8 @@ class VeterinarianSampleController {
             const { veterinarianVisitId, sampleTypeId, storageId, statusId, quantity, imageLink, note, sendSamples } = req.body as CreateVeterinarianSampleInput;
 
             const result = await this.veterinarianSampleService.create(
-                { veterinarianVisitId, sampleTypeId, storageId, statusId, quantity, imageLink, note, sendSamples }, requesterId
+                { veterinarianVisitId, sampleTypeId, storageId, statusId, quantity, imageLink, note, sendSamples },
+                requesterId
             );
             return res.status(201).json(result);
         } catch (error: any) {
@@ -62,37 +64,56 @@ class VeterinarianSampleController {
         }
     }
 
-    // async update(req: Request, res: Response) {
-    //     try {
-    //         const { id } = req.params;
-    //         const { visitId, sampleTypeId, date, statusId, storageId, quantity, note } = req.body;
+    update = async (req: Request, res: Response) => {
+        try {
+            const recordId = req.params.id as string;
+            const requesterId = req.userId as string;
+            const permissionCheck = await this.auditService.canUserEditRecord(requesterId, "amostras-av", recordId, this.formId);
+            if (!permissionCheck.canEdit) {
+                return res.status(403).json({ error: permissionCheck.reason });
+            }
 
-    //         if (!visitId || !sampleTypeId || !statusId || !storageId || !quantity) {
-    //             return res.status(400).json({ error: "Campos obrigatórios não informados" });
-    //         }
+            const { veterinarianVisitId, sampleTypeId, storageId, statusId, quantity, imageLink, note, sendSamples } = req.body as UpdateVeterinarianSampleInput;
 
-    //         const sample = await new VeterinarianSampleService().update(
-    //             String(id),
-    //             { visitId, sampleTypeId, date, statusId, storageId, quantity, note },
-    //             req.userId
-    //         );
-    //         return res.status(200).json(sample);
-    //     } catch (error: any) {
-    //         console.error(error);
-    //         return res.status(500).json({ error: error.message });
-    //     }
-    // }
+            const result = await this.veterinarianSampleService.update(
+                Number(recordId),
+                { veterinarianVisitId, sampleTypeId, storageId, statusId, quantity, imageLink, note, sendSamples },
+                requesterId
+            );
+            return res.status(200).json(result);
+        } catch (error: any) {
+            console.error(error);
+            if (error instanceof ZodError) {
+                return res.status(400).json({ message: error.flatten().fieldErrors });
+            }
+            if (error.message === 'Amostra veterinária não encontrada.') return res.status(404).json({ error: error.message });
+            if (error.message === 'Não é possível atualizar amostras que compartilhem visita veteriária e tipo.') return res.status(400).json({ error: error.message });
+            if (error.message === 'Não é possível enviar a mesma amostra para o mesmo local.') return res.status(400).json({ error: error.message });
+            return res.status(500).json({ error: error.message });
+        }
+    }
 
-    // async delete(req: Request, res: Response) {
-    //     try {
-    //         const { id } = req.params;
-    //         const result = await new VeterinarianSampleService().delete(String(id), req.userId);
-    //         return res.status(200).json(result);
-    //     } catch (error: any) {
-    //         console.error(error);
-    //         return res.status(500).json({ error: error.message });
-    //     }
-    // }
+    delete = async (req: Request, res: Response) => {
+        try {
+            const recordId = req.params.id as string;
+            const requesterId = req.userId as string;
+            const permissionCheck = await this.auditService.canUserEditRecord(requesterId, "amostras-av", recordId, this.formId);
+            if (!permissionCheck.canEdit) {
+                return res.status(403).json({ error: permissionCheck.reason });
+            }
+
+            const result = await this.veterinarianSampleService.delete(
+                Number(recordId),
+                requesterId
+            );
+            return res.status(200).json(result);
+        } catch (error: any) {
+            console.error(error);
+            if (error instanceof ZodError) {
+                return res.status(400).json({ message: error.flatten().fieldErrors });
+            }
+            if (error.message === 'Amostra veterinária não encontrada.') return res.status(404).json({ error: error.message });
+            return res.status(500).json({ error: error.message });
+        }
+    }
 }
-
-export { VeterinarianSampleController };

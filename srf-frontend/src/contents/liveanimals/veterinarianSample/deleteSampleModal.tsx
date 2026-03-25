@@ -1,8 +1,8 @@
-import { type VeterinarianSampleData } from "../../../services/veterinarianSampleService";
+import { type GetAllVeterinarianSampleOutput } from "srf-shared-types";
 import { ModalPortal } from "../../../components/modalPortal";
 
 interface DeleteSampleModalProps {
-    sample: VeterinarianSampleData;
+    sample: GetAllVeterinarianSampleOutput;
     close: () => void;
     refresh: () => void;
 }

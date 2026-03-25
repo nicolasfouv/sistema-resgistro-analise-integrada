@@ -1,8 +1,8 @@
 import { type ContentProps } from "../../../components/content";
-import { type VeterinarianSampleData } from "../../../services/veterinarianSampleService";
+import { type GetAllVeterinarianSampleOutput } from "srf-shared-types";
+import { getVeterinarianSamples } from "../../../services/veterinarianSampleService";
 import { SampleToolBar } from "./sampleToolBar";
 import { SampleExpansion } from "./sampleExpansion";
-import { getVeterinarianSamples } from "../../../services/veterinarianSampleService";
 
 export const VeterinarianSampleContentDefinition = {
     id: 'amostras-av',
@@ -18,7 +18,7 @@ export const VeterinarianSampleContentDefinition = {
         { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
     ],
     rowIdField: 'id',
-    renderActions: (item: VeterinarianSampleData, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
+    renderActions: (item: GetAllVeterinarianSampleOutput, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
         <button
             onClick={() => toggle(String(item.id))}
             className="text-standard-blue text-xs font-bold uppercase cursor-pointer"
@@ -26,7 +26,7 @@ export const VeterinarianSampleContentDefinition = {
             Expandir
         </button>
     ),
-    renderExpansion: (item: VeterinarianSampleData, close: () => void, refresh: () => void) => (
+    renderExpansion: (item: GetAllVeterinarianSampleOutput, close: () => void, refresh: () => void) => (
         <SampleExpansion item={item} close={close} refresh={refresh} />
     ),
     toolBar: (refresh: () => void) => (
@@ -38,11 +38,15 @@ export async function fetchVeterinarianSampleData() {
     const samples = await getVeterinarianSamples();
     return samples.map(s => ({
         ...s,
-        sendDateFormatted: s.sendDate ? new Date(s.sendDate).toLocaleDateString('pt-BR') : '-',
+        veterinarianVisitDate: s.veterinarianVisitDate ? new Date(s.veterinarianVisitDate).toLocaleDateString('pt-BR') : '',
+        sendSamples: s.sendSamples?.map(ss => ({
+            ...ss,
+            sendDate: ss.sendDate ? new Date(ss.sendDate).toLocaleDateString('pt-BR') : '',
+        })),
     }));
 };
 
-export const VeterinarianSampleContent: ContentProps<VeterinarianSampleData> = {
+export const VeterinarianSampleContent: ContentProps<GetAllVeterinarianSampleOutput> = {
     ...VeterinarianSampleContentDefinition,
     data: [],
-} as unknown as ContentProps<VeterinarianSampleData>;
+} as unknown as ContentProps<GetAllVeterinarianSampleOutput>;

@@ -6,7 +6,8 @@ import {
 } from "srf-shared-types";
 
 import {
-    type CreateVeterinarianSampleInput
+    type CreateVeterinarianSampleInput,
+    type UpdateVeterinarianSampleInput
 } from "srf-shared-types";
 
 export class VeterinarianSampleService {
@@ -18,7 +19,7 @@ export class VeterinarianSampleService {
             select: {
                 id: true,
                 veterinarianVisit: {
-                    select: { id: true, date: true }
+                    select: { id: true, date: true, liveAnimal: { select: { id: true, name: true } } }
                 },
                 sampleType: {
                     select: { id: true, description: true }
@@ -80,7 +81,9 @@ export class VeterinarianSampleService {
                     canEdit: permission.canEdit,
                     createdByMe: creatorMap.get(String(s.id)) === userId,
                     veterinarianVisitId: s.veterinarianVisit.id,
-                    veterinarianVisitDate: s.veterinarianVisit.date,
+                    veterinarianVisitDate: s.veterinarianVisit.date.toISOString(),
+                    liveAnimalId: s.veterinarianVisit.liveAnimal.id,
+                    liveAnimalName: s.veterinarianVisit.liveAnimal.name,
                     sampleTypeId: s.sampleType.id,
                     sampleTypeDescription: s.sampleType.description,
                     statusId: s.status.id,
@@ -96,7 +99,7 @@ export class VeterinarianSampleService {
                         storageName: sends.storage.name,
                         statusId: sends.status.id,
                         statusName: sends.status.name,
-                        sendDate: sends.sendDate,
+                        sendDate: sends.sendDate.toISOString(),
                         quantity: sends.quantity,
                         note: sends.note || undefined
                     }))
@@ -111,6 +114,7 @@ export class VeterinarianSampleService {
         const [veterinarianVisits, sampleTypes, status, storages] = await Promise.all([
             prisma.veterinarianVisit.findMany({
                 select: {
+                    id: true,
                     date: true,
                     liveAnimal: { select: { id: true, name: true } }
                 },
@@ -130,11 +134,17 @@ export class VeterinarianSampleService {
             })
         ]);
 
-        return { veterinarianVisits, sampleTypes, status, storages };
+        return {
+            veterinarianVisits: veterinarianVisits.map(v => ({
+                id: v.id,
+                date: v.date.toISOString(),
+                liveAnimal: v.liveAnimal
+            })),
+            sampleTypes, status, storages
+        };
     }
 
     async create(data: CreateVeterinarianSampleInput, requesterId: string) {
-
         return prisma.$transaction(async (tx) => {
             // Verifica se a amostra já existe
             const existingSample = await tx.sampleAllocationVeterinarian.findFirst({
@@ -202,6 +212,137 @@ export class VeterinarianSampleService {
             await this.auditService.logTransaction(requesterId, this.formId, 'SUBMIT', changes);
 
             return { sample, sendSamples };
+        });
+    }
+
+    async update(recordId: number, data: UpdateVeterinarianSampleInput, requesterId: string) {
+        return prisma.$transaction(async (tx) => {
+            // Verifica se a amostra veterinária existe
+            const existingSample = await tx.sampleAllocationVeterinarian.findUnique({
+                where: { id: recordId }
+            });
+            if (!existingSample) throw new Error('Amostra veterinária não encontrada.');
+
+            // Verifica se a amostra veterinária já existe
+            const existingSampleWithSameData = await tx.sampleAllocationVeterinarian.findFirst({
+                where: {
+                    veterinarianVisitId: data.veterinarianVisitId,
+                    sampleTypeId: data.sampleTypeId,
+                    id: { not: recordId }
+                }
+            });
+            if (existingSampleWithSameData) throw new Error('Não é possível atualizar amostras que compartilhem visita veteriária e tipo.');
+
+            // Atualiza a amostra veterinária
+            const sample = await tx.sampleAllocationVeterinarian.update({
+                where: { id: recordId },
+                data: {
+                    veterinarianVisitId: data.veterinarianVisitId,
+                    sampleTypeId: data.sampleTypeId,
+                    storageId: data.storageId,
+                    statusId: data.statusId,
+                    quantity: data.quantity,
+                    imageLink: data.imageLink || null,
+                }
+            });
+
+            if (data.sendSamples) {
+                // Verifica duplicidade de amostras enviadas
+                data.sendSamples.forEach(sendSample => {
+                    const countStorageId = data.sendSamples!.filter(sends => sends.storageId === sendSample.storageId).length;
+                    if (countStorageId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo local.')
+                });
+            }
+
+            // Atualiza as amostras enviadas
+            const sendSamples = [];
+            if (data.sendSamples) {
+                for (const sendSample of data.sendSamples) {
+                    const sendSampleUpdated = await tx.sendSampleVeterinarian.update({
+                        where: { id: sendSample.id },
+                        data: {
+                            sampleAllocationVeterinarianId: sample.id,
+                            storageId: sendSample.storageId,
+                            statusId: sendSample.statusId,
+                            quantity: sendSample.quantity,
+                            sendDate: sendSample.sendDate,
+                            note: sendSample.note || null
+                        }
+                    });
+                    sendSamples.push(sendSampleUpdated);
+                }
+            }
+
+            // Audit log
+            const changes = [
+                {
+                    table: 'sampleAllocationVeterinarian',
+                    recordId: String(sample.id),
+                    action: 'UPDATE' as const,
+                    newData: sample
+
+                },
+                ...sendSamples.map(sendSample => ({
+                    table: 'sendSampleVeterinarian',
+                    recordId: String(sendSample.id),
+                    action: 'UPDATE' as const,
+                    newData: sendSample
+                }))
+            ];
+            await this.auditService.logTransaction(requesterId, this.formId, 'SUBMIT', changes);
+
+            return { sample, sendSamples };
+        });
+    }
+
+    async delete(recordId: number, requesterId: string) {
+        return prisma.$transaction(async (tx) => {
+            // Verifica se a amostra veterinária existe
+            const existingSample = await tx.sampleAllocationVeterinarian.findUnique({
+                where: { id: recordId },
+                include: {
+                    sendSampleVeterinarian: true
+                }
+            });
+            if (!existingSample) throw new Error('Amostra veterinária não encontrada.');
+
+            // Salva dados para o audit log
+            const oldData = {
+                ...existingSample,
+                sendSamples: existingSample.sendSampleVeterinarian
+            };
+
+            // Verifica se há algum registro ligado a amostra (que não seja amostras enviadas)
+            // Atualmente não há registros "fora" da página de amostra veterinária que dependam dela.
+
+            // Deleta as amostras enviadas
+            await tx.sendSampleVeterinarian.deleteMany({
+                where: { sampleAllocationVeterinarianId: recordId }
+            });
+
+            // Deleta a amostra veterinária
+            await tx.sampleAllocationVeterinarian.delete({
+                where: { id: recordId }
+            });
+
+            // Audit log
+            const changes = [
+                ...oldData.sendSamples.map(sendSample => ({
+                    table: 'sendSampleVeterinarian',
+                    recordId: String(sendSample.id),
+                    action: 'DELETE' as const,
+                    oldData: sendSample
+                })),
+                {
+                    table: 'sampleAllocationVeterinarian',
+                    recordId: String(recordId),
+                    action: 'DELETE' as const,
+                    oldData: oldData
+                }
+            ];
+            await this.auditService.logTransaction(requesterId, this.formId, 'DELETE', changes);
+
+            return { message: 'Amostra veterinária deletada com sucesso.' };
         });
     }
 

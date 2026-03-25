@@ -172,7 +172,7 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
 
                             {/* Card Link */}
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Link da Carteirinha</label>
+                                <label className="text-sm font-bold mb-1 text-left">Link da Carteirinha (Opcional)</label>
                                 <input
                                     type="text"
                                     value={cardLink}
@@ -230,6 +230,7 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                                                 onChange={(e) => updateMeasurement(index, 'value', e.target.value)}
                                                 className={`border border-border rounded p-2 ${selectedType ? 'bg-white' : 'bg-gray-100'}`}
                                                 disabled={!selectedType}
+                                                placeholder="0"
                                                 required
                                             />
                                         </div>
