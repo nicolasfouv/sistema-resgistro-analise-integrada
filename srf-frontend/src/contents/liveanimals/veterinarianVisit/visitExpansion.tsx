@@ -68,7 +68,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                 </div>
             </div>
 
-            {item.bodyMeasurements?.length > 0 && (
+            {item.bodyMeasurements.length > 0 && (
                 <>
                     <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                         <h3 className="font-bold text-text-main uppercase">Medidas Corporais</h3>
