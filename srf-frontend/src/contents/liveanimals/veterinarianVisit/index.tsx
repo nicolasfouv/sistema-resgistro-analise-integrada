@@ -10,16 +10,17 @@ export const VeterinarianVisitContentDefinition = {
     id: 'visitaveterinaria',
     label: 'Visita Veterinária',
     columns: [
-        { key: 'id', label: 'Código', width: 'w-1/6' },
-        { key: 'liveAnimalName', label: 'Animal', width: 'w-3/6' },
-        { key: 'dateFormatted', label: 'Data da Realização', width: 'w-1/6' },
+        { key: 'dateFormatted', label: 'Data', width: 'w-1/12' },
+        { key: 'liveAnimalName', label: 'Animal', width: 'w-5/12' },
+        { key: 'veterinarianName', label: 'Veterinário', width: 'w-5/12' },
+        // deixar w-1/12 sobrando para ações
     ],
     filterFields: [
+        { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
         { key: 'liveAnimalName', label: 'Animal', type: 'text' },
         { key: 'veterinarianName', label: 'Veterinário', type: 'text' },
         { key: 'date', label: 'Data da Realização', type: 'date' },
         { key: 'hasSample', label: 'Possui Amostra', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
-        { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
     ],
     rowIdField: 'id',
     renderActions: (item: VeterinarianVisitData, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (

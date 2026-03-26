@@ -38,6 +38,8 @@ export const getAllVeterinarianSampleOutputSchema = veterinarianSampleSchema.omi
     sampleTypeDescription: z.string().nonempty(),
     liveAnimalId: z.number().int(),
     liveAnimalName: z.string().nonempty(),
+    veterinarianId: z.number().int(),
+    veterinarianName: z.string().nonempty(),
     storageName: z.string().nonempty(),
     statusName: z.string().nonempty(),
     sendSamples: z.array(z.object({

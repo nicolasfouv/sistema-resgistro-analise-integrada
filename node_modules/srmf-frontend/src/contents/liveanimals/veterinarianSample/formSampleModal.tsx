@@ -33,6 +33,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
     const [statusId, setStatusId] = useState<number | ''>(sample?.statusId || '');
     const [storageId, setStorageId] = useState<number | ''>(sample?.storageId || '');
     const [quantity, setQuantity] = useState<number | ''>(sample?.quantity || '');
+    const [imageLink, setImageLink] = useState(sample?.imageLink || '');
     const [note, setNote] = useState(sample?.note || '');
 
     useEffect(() => {
@@ -322,6 +323,18 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                                     required
                                 />
                             </div>
+                        </div>
+
+                        {/* Link da Imagem */}
+                        <div className="flex flex-col">
+                            <label className="text-sm font-bold mb-1 text-left">Link da Imagem (Opcional)</label>
+                            <input
+                                type="text"
+                                value={imageLink}
+                                onChange={(e) => setImageLink(e.target.value)}
+                                className="border border-border rounded p-2"
+                                placeholder="Digite o link da imagem..."
+                            />
                         </div>
 
                         {/* Observações */}

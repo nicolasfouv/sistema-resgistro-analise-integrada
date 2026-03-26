@@ -14,9 +14,12 @@ export const VeterinarianSampleContentDefinition = {
     id: 'amostras-av',
     label: 'Amostra',
     columns: [
-        { key: 'veterinarianVisitId', label: 'Visita Veterinária', width: 'w-1/4' },
-        { key: 'sampleTypeDescription', label: 'Tipo da Amostra', width: 'w-1/4' },
-        { key: 'statusName', label: 'Status', width: 'w-1/4' },
+        { key: 'veterinarianVisitDate', label: 'Data da Visita', width: 'w-2/12' },
+        { key: 'liveAnimalName', label: 'Animal', width: 'w-2/12' },
+        { key: 'veterinarianName', label: 'Veterinário', width: 'w-2/12' },
+        { key: 'sampleTypeDescription', label: 'Tipo da Amostra', width: 'w-2/12' },
+        { key: 'statusName', label: 'Status', width: 'w-3/12' },
+        // deixar w-1/12 sobrando para ações
     ],
     filterFields: [
         { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },

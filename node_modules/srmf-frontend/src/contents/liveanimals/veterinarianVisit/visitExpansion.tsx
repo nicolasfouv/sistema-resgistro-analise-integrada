@@ -25,7 +25,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     refresh={refresh}
                 />
             )}
-            {/* ==== Expansion Header ==== */}
+            {/* ==== Cabeçalho de Expansão ==== */}
             <div className="sticky top-0 z-10 bg-form-bg pb-2">
                 <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                     <h3 className="font-bold text-text-main uppercase">Detalhes da Visita</h3>
@@ -44,35 +44,31 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     </div>
                 </div>
                 <div className="flex gap-2 w-full text-sm">
-                    <div className="flex flex-col w-1/6">
-                        <label htmlFor="name" className="ml-1 font-bold">Código da Visita</label>
-                        <input type="text" disabled value={item.id} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <div className="flex flex-col w-1/12">
+                        <label htmlFor="name" className="ml-1 font-bold">Data da Visita</label>
+                        <input type="text" disabled value={item.dateFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    <div className="flex flex-col w-3/6">
+                    <div className="flex flex-col w-5/12">
                         <label htmlFor="email" className="ml-1 font-bold">Animal</label>
                         <input type="text" disabled value={item.liveAnimalName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    <div className="flex flex-col w-1/6">
-                        <label htmlFor="date" className="ml-1 font-bold">Data da Realização</label>
-                        <input type="text" disabled value={item.dateFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <div className="flex flex-col w-5/12">
+                        <label htmlFor="date" className="ml-1 font-bold">Veterinário</label>
+                        <input type="text" disabled value={item.veterinarianName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                 </div>
                 <hr className="border-gray-200" />
 
             </div>
-            {/* ==== Expansion Body ==== */}
+            {/* ==== Corpo da Expansão ==== */}
             <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
-                <div className="flex flex-col w-full">
-                    <label htmlFor="email" className="ml-1 font-bold">Veterinário</label>
-                    <input type="text" disabled value={item.veterinarianName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                </div>
-                <div className="flex flex-col w-full col-span-2">
+                <div className="flex flex-col w-full col-span-3">
                     <label htmlFor="email" className="ml-1 font-bold">Link da Carteirinha</label>
                     <input type="text" disabled value={item.cardLink || 'Nenhum link informado'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
             </div>
 
-            {item.bodyMeasurements.length > 0 && (
+            {item.bodyMeasurements?.length > 0 && (
                 <>
                     <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                         <h3 className="font-bold text-text-main uppercase">Medidas Corporais</h3>

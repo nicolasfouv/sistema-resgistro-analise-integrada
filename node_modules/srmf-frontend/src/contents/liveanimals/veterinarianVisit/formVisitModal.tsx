@@ -178,7 +178,7 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                                     value={cardLink}
                                     onChange={(e) => setCardLink(e.target.value)}
                                     className="border border-border rounded p-2"
-                                    placeholder="https://..."
+                                    placeholder="Digite o link da carteirinha..."
                                 />
                             </div>
                         </div>
