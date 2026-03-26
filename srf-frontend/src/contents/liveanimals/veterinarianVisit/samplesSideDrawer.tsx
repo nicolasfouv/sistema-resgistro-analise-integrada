@@ -6,10 +6,13 @@ import { SideDrawer } from "../../../components/sideDrawer";
 
 interface SamplesSideDrawerProps {
     veterinarianVisitId: number;
+    veterinarianVisitDate: string;
+    liveAnimalName: string;
+    veterinarianName: string;
     onClose: () => void;
 }
 
-export function SamplesSideDrawer({ veterinarianVisitId, onClose }: SamplesSideDrawerProps) {
+export function SamplesSideDrawer({ veterinarianVisitId, veterinarianVisitDate, liveAnimalName, veterinarianName, onClose }: SamplesSideDrawerProps) {
     const [samples, setSamples] = useState<GetAllVeterinarianSampleOutput[]>([]);
     const [loading, setLoading] = useState(true);
     const [expandedId, setExpandedId] = useState<number | null>(null);
@@ -38,7 +41,12 @@ export function SamplesSideDrawer({ veterinarianVisitId, onClose }: SamplesSideD
             .finally(() => setLoading(false));
     }, [veterinarianVisitId]);
 
-    const pageUrl = `/animaisvivos/veterinario/amostras-av?field=veterinarianVisitId&filter=${encodeURIComponent(veterinarianVisitId)}`;
+    const filters = [
+        { field: 'veterinarianVisitDate', value: { type: 'date' as const, from: veterinarianVisitDate, to: veterinarianVisitDate } },
+        { field: 'liveAnimalName', value: { type: 'text' as const, term: liveAnimalName } },
+        { field: 'veterinarianName', value: { type: 'text' as const, term: veterinarianName } },
+    ];
+    const pageUrl = `/animaisvivos/veterinario/amostras-av?filters=${encodeURIComponent(JSON.stringify(filters))}`;
 
     return (
         <SideDrawer
@@ -75,7 +83,7 @@ export function SamplesSideDrawer({ veterinarianVisitId, onClose }: SamplesSideD
                                 key={sample.id}
                                 className="border border-border rounded bg-white"
                             >
-                                {/* Cabeçalho do Card */}
+                                {/* Cabeçalho do Registro */}
                                 <button
                                     onClick={() => setExpandedId(isExpanded ? null : sample.id)}
                                     className="w-full flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-hover-bg transition-colors"

@@ -28,6 +28,9 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
             {showSamplesDrawer && (
                 <SamplesSideDrawer
                     veterinarianVisitId={item.id}
+                    veterinarianVisitDate={item.dateFormatted}
+                    liveAnimalName={item.liveAnimalName}
+                    veterinarianName={item.veterinarianName}
                     onClose={() => setShowSamplesDrawer(false)}
                 />
             )}

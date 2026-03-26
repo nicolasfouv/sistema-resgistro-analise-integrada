@@ -59,7 +59,7 @@ export interface PageProps {
     onRefresh?: () => void,
     hasAccess?: boolean,
     canCreate?: boolean,
-    initialFilter?: { field: string; term: string },
+    initialFilter?: { field: string; type?: string; term?: string; value?: FilterValue }[],
 }
 
 export function Content({
@@ -77,14 +77,14 @@ export function Content({
     const [filteredData, setFilteredData] = useState(activeContent?.data);
     const [sortConfig, setSortConfig] = useState<{ key: string | null, direction: 'asc' | 'desc' }>({ key: null, direction: 'asc' });
 
-    const initialFilters: ActiveFilter[] | undefined = initialFilter
-        ? [{
-            field: initialFilter.field,
-            label: activeContent?.filterFields?.find(f => String(f.key) === initialFilter.field)?.label
-                || activeContent?.columns?.find(c => String(c.key) === initialFilter.field)?.label
-                || initialFilter.field,
-            value: { type: 'text' as const, term: initialFilter.term },
-        }]
+    const initialFilters: ActiveFilter[] | undefined = initialFilter && initialFilter.length > 0
+        ? initialFilter.map(filter => ({
+            field: filter.field,
+            label: activeContent?.filterFields?.find(f => String(f.key) === filter.field)?.label
+                || activeContent?.columns?.find(c => String(c.key) === filter.field)?.label
+                || filter.field,
+            value: filter.value ? filter.value : { type: 'text' as const, term: filter.term || '' },
+        }))
         : undefined;
 
     useEffect(() => {

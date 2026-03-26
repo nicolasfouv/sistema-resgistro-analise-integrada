@@ -133,9 +133,8 @@ export function DynamicContent() {
     const currentHasAccess = checkAccess(formId);
     const currentCanCreate = checkEditAccess(formId);
 
-    const filterColumn = searchParams.get('column');
-    const filterTerm = searchParams.get('filter');
-    const initialFilter = filterColumn && filterTerm ? { column: filterColumn, term: filterTerm } : undefined;
+    const filtersParam = searchParams.get('filters');
+    const initialFilters = filtersParam ? JSON.parse(filtersParam) : undefined;
 
     return (
         <Content
@@ -146,7 +145,7 @@ export function DynamicContent() {
             onRefresh={loadData}
             hasAccess={currentHasAccess}
             canCreate={currentCanCreate}
-            initialFilter={initialFilter}
+            initialFilter={initialFilters}
         />
     );
 }
