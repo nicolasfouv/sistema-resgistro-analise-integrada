@@ -238,7 +238,10 @@ export function Content({
                                         return (
                                             <React.Fragment key={id}>
 
-                                                <tr className="border-b border-border">
+                                                <tr
+                                                    className={`border-b border-border ${activeContent?.renderExpansion ? 'cursor-pointer hover:bg-hover-bg transition-colors' : ''}`}
+                                                    onClick={activeContent?.renderExpansion ? () => toggleRow(id) : undefined}
+                                                >
                                                     {activeContent?.columns.map(col => (
                                                         <td key={String(col.key)} className="px-4 py-4 text-sm text-text-main">
                                                             <div className="flex items-center gap-2">
@@ -247,7 +250,7 @@ export function Content({
                                                             </div>
                                                         </td>
                                                     ))}
-                                                    <td className="px-4 py-4 text-right">
+                                                    <td className="px-4 py-4 text-right" onClick={(e) => e.stopPropagation()}>
                                                         {activeContent?.renderActions!(item, isExpanded, () => toggleRow(id), onRefresh || (() => { }))}
                                                     </td>
                                                 </tr>

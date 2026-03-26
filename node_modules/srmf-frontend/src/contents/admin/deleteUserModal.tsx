@@ -34,7 +34,8 @@ export function DeleteUserModal({ user, close, refresh }: DeleteUserModalProps) 
 
                     <button
                         onClick={() => close()}
-                        className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
+                        className="absolute text-text-main hover:text-standard-red font-bold text-xl cursor-pointer leading-none top-3 right-3"
+                        title="Fechar"
                     >
                         ✕
                     </button>

@@ -218,7 +218,8 @@ export function FilterBar<T>({ fields, onFilter, initialFilters }: FilterBarProp
                         <div className="relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-14 pb-6 gap-4 w-200 max-h-[90vh]">
                             <button
                                 onClick={handleClose}
-                                className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
+                                className="absolute text-text-main hover:text-standard-red font-bold text-xl cursor-pointer leading-none top-3 right-3"
+                                title="Fechar"
                             >
                                 ✕
                             </button>

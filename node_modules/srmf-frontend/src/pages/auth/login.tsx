@@ -72,7 +72,7 @@ export function Login() {
       <div className={`${forgot ? 'flex justify-center items-center' : 'hidden'} absolute w-full h-full bg-black/50 z-99 `}>
         <div className="relative flex flex-col bg-white w-160 h-80 justify-center items-center rounded-2xl shadow-xl p-10">
 
-          <button onClick={() => setForgot(false)} className="absolute cursor-pointer bg-standard-blue size-10 rounded-xl top-2 right-2 text-white text-xl font-bold">✕</button>
+          <button onClick={() => setForgot(false)} className="absolute text-text-main hover:text-standard-red font-bold text-xl cursor-pointer leading-none top-3 right-3" title="Fechar">✕</button>
 
           <form onSubmit={handleForgotPassword} className="size-full flex flex-col items-center justify-center">
             <h2 className="text-2xl font-bold mb-5">Recuperar Senha</h2>

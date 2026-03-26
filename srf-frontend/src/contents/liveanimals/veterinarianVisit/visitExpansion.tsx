@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { type VeterinarianVisitData } from "../../../services/veterinarianVisitService";
 import { VeterinarianVisitFormModal } from "./formVisitModal";
 import { DeleteVisitModal } from "./deleteVisitModal";
+import { SamplesSideDrawer } from "./samplesSideDrawer";
 
 export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const navigate = useNavigate();
+    const [showSamplesDrawer, setShowSamplesDrawer] = useState(false);
 
     return (
         <>
@@ -23,6 +23,12 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     visit={item}
                     close={() => setShowDeleteModal(false)}
                     refresh={refresh}
+                />
+            )}
+            {showSamplesDrawer && (
+                <SamplesSideDrawer
+                    veterinarianVisitId={item.id}
+                    onClose={() => setShowSamplesDrawer(false)}
                 />
             )}
             {/* ==== Cabeçalho de Expansão ==== */}
@@ -90,7 +96,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     </div>
                     <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
                         <button
-                            onClick={() => navigate(`/animaisvivos/veterinario/amostras-av?field=veterinarianVisitId&filter=${encodeURIComponent(item.id)}`)}
+                            onClick={() => setShowSamplesDrawer(true)}
                             className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                         >
                             Visualizar
