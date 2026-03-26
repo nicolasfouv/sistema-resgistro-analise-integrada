@@ -66,9 +66,9 @@ export class VeterinarianSampleController {
 
     update = async (req: Request, res: Response) => {
         try {
-            const recordId = req.params.id as string;
+            const recordId = req.params.recordId as string;
             const requesterId = req.userId as string;
-            const permissionCheck = await this.auditService.canUserEditRecord(requesterId, "amostras-av", recordId, this.formId);
+            const permissionCheck = await this.auditService.canUserEditRecord(requesterId, "sampleAllocationVeterinarian", recordId, this.formId);
             if (!permissionCheck.canEdit) {
                 return res.status(403).json({ error: permissionCheck.reason });
             }
@@ -87,7 +87,7 @@ export class VeterinarianSampleController {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
             if (error.message === 'Amostra veterinária não encontrada.') return res.status(404).json({ error: error.message });
-            if (error.message === 'Não é possível atualizar amostras que compartilhem visita veteriária e tipo.') return res.status(400).json({ error: error.message });
+            if (error.message === 'Não foi possível atualizar a amostra veterinária, pois já existe uma amostra que compartilha a mesma visita veterinária e tipo de amostra.') return res.status(400).json({ error: error.message });
             if (error.message === 'Não é possível enviar a mesma amostra para o mesmo local.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
@@ -95,7 +95,7 @@ export class VeterinarianSampleController {
 
     delete = async (req: Request, res: Response) => {
         try {
-            const recordId = req.params.id as string;
+            const recordId = req.params.recordId as string;
             const requesterId = req.userId as string;
             const permissionCheck = await this.auditService.canUserEditRecord(requesterId, "amostras-av", recordId, this.formId);
             if (!permissionCheck.canEdit) {

@@ -42,22 +42,27 @@ export function SampleExpansion({ item, close, refresh }: { item: GetAllVeterina
                     </div>
                 </div>
                 <div className="flex gap-2 w-full text-sm">
+                    {/* Data da Visita */}
                     <div className="flex flex-col w-2/12">
                         <label htmlFor="date" className="ml-1 font-bold">Data da Visita</label>
-                        <input type="text" disabled value={item.veterinarianVisitDate} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
+                    {/* Animal */}
                     <div className="flex flex-col w-2/12">
                         <label className="ml-1 font-bold">Animal</label>
                         <input type="text" disabled value={item.liveAnimalName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
+                    {/* Veterinário */}
                     <div className="flex flex-col w-2/12">
                         <label className="ml-1 font-bold">Veterinário</label>
                         <input type="text" disabled value={item.veterinarianName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
+                    {/* Tipo da Amostra */}
                     <div className="flex flex-col w-2/12">
                         <label className="ml-1 font-bold">Tipo da Amostra</label>
                         <input type="text" disabled value={item.sampleTypeDescription} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
+                    {/* Status */}
                     <div className="flex flex-col w-2/12">
                         <label className="ml-1 font-bold">Status</label>
                         <input type="text" disabled value={item.statusName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
@@ -67,24 +72,67 @@ export function SampleExpansion({ item, close, refresh }: { item: GetAllVeterina
 
                 {/* ==== Corpo da Expansão ==== */}
                 <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
+                    {/* Armazenamento */}
                     <div className="flex flex-col w-full">
                         <label className="ml-1 font-bold">Armazenamento</label>
                         <input type="text" disabled value={item.storageName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
+                    {/* Quantidade Total */}
                     <div className="flex flex-col w-full">
-                        <label className="ml-1 font-bold">Quantidade</label>
+                        <label className="ml-1 font-bold">Quantidade Total</label>
                         <input type="text" disabled value={item.quantity} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
+                    {/* Link da Imagem */}
                     <div className="flex flex-col w-full">
                         <label className="ml-1 font-bold">Link da Imagem</label>
                         <input type="text" disabled value={item.imageLink || 'Nenhum link informado'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
+                    {/* Observações */}
                     <div className="flex flex-col w-full col-span-3">
                         <label htmlFor="email" className="ml-1 font-bold">Observações</label>
                         <input type="text" disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                 </div>
 
+                {/* Amostras Enviadas */}
+                {item.sendSamples && item.sendSamples.length > 0 && (
+                    <>
+                        <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
+                            <h3 className="font-bold text-text-main uppercase">Amostras Enviadas</h3>
+                        </div>
+                        {item.sendSamples.map(ss => (
+                            <div key={ss.id} className="gap-2 w-full text-sm grid grid-cols-4 mb-3 border border-border rounded p-2">
+                                {/* Local de Armazenamento */}
+                                <div className="flex flex-col w-full">
+                                    <label className="ml-1 font-bold">Local</label>
+                                    <input type="text" disabled value={ss.storageName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                                </div>
+                                {/* Status */}
+                                <div className="flex flex-col w-full">
+                                    <label className="ml-1 font-bold">Status</label>
+                                    <input type="text" disabled value={ss.statusName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                                </div>
+                                {/* Data de Envio */}
+                                <div className="flex flex-col w-full">
+                                    <label className="ml-1 font-bold">Data de Envio</label>
+                                    <input type="text" disabled value={ss.sendDateFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                                </div>
+                                {/* Quantidade */}
+                                <div className="flex flex-col w-full">
+                                    <label className="ml-1 font-bold">Quantidade</label>
+                                    <input type="text" disabled value={ss.quantity} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                                </div>
+                                {/* Observação */}
+                                {ss.note && (
+                                    <div className="flex flex-col w-full col-span-4">
+                                        <label className="ml-1 font-bold">Observação</label>
+                                        <input type="text" disabled value={ss.note} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </>
+                )}
             </div>
         </>
     );

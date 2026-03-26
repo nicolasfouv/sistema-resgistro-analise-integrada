@@ -193,7 +193,7 @@ export class VeterinarianSampleService {
                             storageId: sendSample.storageId,
                             statusId: sendSample.statusId,
                             quantity: sendSample.quantity,
-                            sendDate: sendSample.sendDate,
+                            sendDate: new Date(sendSample.sendDate + 'T12:00:00'),
                             note: sendSample.note || null
                         }
                     });
@@ -227,7 +227,8 @@ export class VeterinarianSampleService {
         return prisma.$transaction(async (tx) => {
             // Verifica se a amostra veterinária existe
             const existingSample = await tx.sampleAllocationVeterinarian.findUnique({
-                where: { id: recordId }
+                where: { id: recordId },
+                include: { sendSampleVeterinarian: true }
             });
             if (!existingSample) throw new Error('Amostra veterinária não encontrada.');
 
@@ -239,7 +240,7 @@ export class VeterinarianSampleService {
                     id: { not: recordId }
                 }
             });
-            if (existingSampleWithSameData) throw new Error('Não é possível atualizar amostras que compartilhem visita veteriária e tipo.');
+            if (existingSampleWithSameData) throw new Error('Não foi possível atualizar a amostra veterinária, pois já existe uma amostra que compartilha a mesma visita veterinária e tipo de amostra.');
 
             // Atualiza a amostra veterinária
             const sample = await tx.sampleAllocationVeterinarian.update({
@@ -262,22 +263,26 @@ export class VeterinarianSampleService {
                 });
             }
 
-            // Atualiza as amostras enviadas
+            // Deleta as amostras enviadas antigas
+            await tx.sendSampleVeterinarian.deleteMany({
+                where: { sampleAllocationVeterinarianId: sample.id }
+            });
+
+            // Cria as amostras enviadas novas
             const sendSamples = [];
             if (data.sendSamples) {
                 for (const sendSample of data.sendSamples) {
-                    const sendSampleUpdated = await tx.sendSampleVeterinarian.update({
-                        where: { id: sendSample.id },
+                    const sendSampleCreated = await tx.sendSampleVeterinarian.create({
                         data: {
                             sampleAllocationVeterinarianId: sample.id,
                             storageId: sendSample.storageId,
                             statusId: sendSample.statusId,
                             quantity: sendSample.quantity,
-                            sendDate: sendSample.sendDate,
+                            sendDate: new Date(sendSample.sendDate + 'T12:00:00'),
                             note: sendSample.note || null
                         }
                     });
-                    sendSamples.push(sendSampleUpdated);
+                    sendSamples.push(sendSampleCreated);
                 }
             }
 
@@ -287,13 +292,19 @@ export class VeterinarianSampleService {
                     table: 'sampleAllocationVeterinarian',
                     recordId: String(sample.id),
                     action: 'UPDATE' as const,
+                    oldData: existingSample,
                     newData: sample
-
                 },
+                ...existingSample.sendSampleVeterinarian.map(sendSample => ({
+                    table: 'sendSampleVeterinarian',
+                    recordId: String(sendSample.id),
+                    action: 'DELETE' as const,
+                    oldData: sendSample
+                })),
                 ...sendSamples.map(sendSample => ({
                     table: 'sendSampleVeterinarian',
                     recordId: String(sendSample.id),
-                    action: 'UPDATE' as const,
+                    action: 'CREATE' as const,
                     newData: sendSample
                 }))
             ];

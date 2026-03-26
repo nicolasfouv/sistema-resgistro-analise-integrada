@@ -14,7 +14,7 @@ export const VeterinarianSampleContentDefinition = {
     id: 'amostras-av',
     label: 'Amostra',
     columns: [
-        { key: 'veterinarianVisitDate', label: 'Data da Visita', width: 'w-2/12' },
+        { key: 'veterinarianVisitDateFormatted', label: 'Data da Visita', width: 'w-2/12' },
         { key: 'liveAnimalName', label: 'Animal', width: 'w-2/12' },
         { key: 'veterinarianName', label: 'Veterinário', width: 'w-2/12' },
         { key: 'sampleTypeDescription', label: 'Tipo da Amostra', width: 'w-2/12' },
@@ -51,10 +51,10 @@ export async function fetchVeterinarianSampleData() {
     const samples = await getVeterinarianSamples();
     return samples.map(s => ({
         ...s,
-        veterinarianVisitDate: s.veterinarianVisitDate ? new Date(s.veterinarianVisitDate).toLocaleDateString('pt-BR') : '',
+        veterinarianVisitDateFormatted: s.veterinarianVisitDate ? new Date(s.veterinarianVisitDate).toLocaleDateString('pt-BR') : '',
         sendSamples: s.sendSamples?.map(ss => ({
             ...ss,
-            sendDate: ss.sendDate ? new Date(ss.sendDate).toLocaleDateString('pt-BR') : '',
+            sendDateFormatted: ss.sendDate ? new Date(ss.sendDate).toLocaleDateString('pt-BR') : '',
         })),
     }));
 };

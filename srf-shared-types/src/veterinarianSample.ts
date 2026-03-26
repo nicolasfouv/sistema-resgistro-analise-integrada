@@ -4,7 +4,7 @@ export const sendVeterinarianSampleSchema = z.object({
     id: z.number().int({ error: 'ID do envio de amostra veterinária inválido' }),
     storageId: z.number().int({ error: 'ID do local de armazenamento inválido' }),
     statusId: z.number().int({ error: 'ID do status inválido' }),
-    sendDate: z.string().nonempty({ error: 'Data de envio inválida' }),
+    sendDate: z.string().nonempty(),
     quantity: z.number().int({ error: 'Valor deve ser inteiro' }).positive({ error: 'Valor deve ser positivo' }),
     note: z.string().optional()
 });
@@ -34,7 +34,8 @@ export const getAllVeterinarianSampleOutputSchema = veterinarianSampleSchema.omi
 }).extend({
     canEdit: z.boolean(),
     createdByMe: z.boolean(),
-    veterinarianVisitDate: z.date().transform((date) => date.toISOString()),
+    veterinarianVisitDate: z.string().nonempty(),
+    veterinarianVisitDateFormatted: z.string().optional(),
     sampleTypeDescription: z.string().nonempty(),
     liveAnimalId: z.number().int(),
     liveAnimalName: z.string().nonempty(),
@@ -48,7 +49,8 @@ export const getAllVeterinarianSampleOutputSchema = veterinarianSampleSchema.omi
         storageName: z.string().nonempty(),
         statusId: z.number().int(),
         statusName: z.string().nonempty(),
-        sendDate: z.date().transform((date) => date.toISOString()),
+        sendDate: z.string().nonempty(),
+        sendDateFormatted: z.string().optional(),
         quantity: z.number().int().positive(),
         note: z.string().optional()
     })).optional()

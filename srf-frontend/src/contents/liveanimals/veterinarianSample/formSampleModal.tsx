@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import {
     type GetAllVeterinarianSampleOutput,
     type GetFormOptionsVeterinarianSampleOutput,
+    type SendVeterinarianSample,
 } from "srf-shared-types";
 import { ModalPortal } from "../../../components/modalPortal";
 import {
@@ -35,6 +36,16 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
     const [quantity, setQuantity] = useState<number | ''>(sample?.quantity || '');
     const [imageLink, setImageLink] = useState(sample?.imageLink || '');
     const [note, setNote] = useState(sample?.note || '');
+    const [sendSamples, setSendSamples] = useState<SendVeterinarianSample[]>(
+        sample?.sendSamples?.map(s => ({
+            id: s.id,
+            storageId: s.storageId,
+            statusId: s.statusId,
+            sendDate: s.sendDate ? new Date(s.sendDate).toISOString().slice(0, 10) : '',
+            quantity: s.quantity,
+            note: s.note || ''
+        })) || []
+    );
 
     useEffect(() => {
         async function loadOptions() {
@@ -145,6 +156,20 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
         }
     }
 
+    function addSendSample() {
+        setSendSamples([...sendSamples, { id: 0, storageId: 0, statusId: 0, sendDate: '', quantity: 0, note: '' }]);
+    }
+
+    function removeSendSample(index: number) {
+        setSendSamples(sendSamples.filter((element, i) => i !== index));
+    }
+
+    function updateSendSample(index: number, field: string, value: any) {
+        const updated = [...sendSamples];
+        (updated[index] as any)[field] = ['storageId', 'statusId', 'quantity'].includes(field) ? Number(value) : value;
+        setSendSamples(updated);
+    }
+
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         if (!veterinarianVisitId) {
@@ -161,7 +186,16 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                 storageId: Number(storageId),
                 statusId: Number(statusId),
                 quantity: Number(quantity),
+                imageLink: imageLink || undefined,
                 note: note || undefined,
+                sendSamples: sendSamples.length > 0 ? sendSamples.map(s => ({
+                    id: s.id,
+                    storageId: s.storageId,
+                    statusId: s.statusId,
+                    sendDate: s.sendDate,
+                    quantity: s.quantity,
+                    note: s.note || undefined,
+                })) : undefined,
             };
 
             if (isEditing) {
@@ -193,7 +227,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
     return (
         <ModalPortal>
             <div className="flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 overflow-y-auto p-4">
-                <div className="relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-6 gap-5 w-200 max-h-[90vh]">
+                <div className="relative flex flex-col overflow-y-auto bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-6 gap-5 w-220 max-h-[90vh]">
                     <button
                         onClick={() => close()}
                         className="absolute cursor-pointer bg-standard-blue w-10 h-10 rounded-xl top-2 right-2 text-white text-xl font-bold flex items-center justify-center"
@@ -205,7 +239,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                         {isEditing ? 'Editando Amostra Veterinária' : 'Nova Amostra Veterinária'}
                     </h2>
 
-                    <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4 mt-2 flex-1 min-h-0">
+                    <form onSubmit={handleSubmit} className="w-full flex flex-col overflow-y-auto gap-4 mt-2 flex-1 min-h-0">
                         {/* Seleção da Visita Associada */}
                         <fieldset className="border border-border rounded p-4">
                             <legend className="text-sm font-bold text-standard-blue px-2">Visita Associada</legend>
@@ -349,8 +383,111 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                             />
                         </div>
 
-                        {/* Amostras enviadas */}
-                        {/* ... */}
+                        {/* Amostras Enviadas */}
+                        <div className={`flex flex-col gap-2 mt-2 flex-1 overflow-y-auto ${sendSamples.length === 0 ? 'min-h-20' : sendSamples.length === 1 ? 'min-h-60' : 'min-h-100 border border-border rounded p-2'}`}>
+                            <div className="flex justify-between items-center">
+                                <label className="text-sm font-bold text-left">Amostras Enviadas</label>
+                                <button
+                                    type="button"
+                                    onClick={addSendSample}
+                                    className="text-sm bg-standard-blue text-white px-3 py-1 rounded cursor-pointer"
+                                >
+                                    + Adicionar Envio
+                                </button>
+                            </div>
+
+                            <div className="flex flex-col gap-2 mt-2 flex-1 min-h-0 overflow-y-auto">
+                                {sendSamples.length === 0 && (
+                                    <p className="text-sm text-text-light-gray italic text-center">Nenhum envio adicionado</p>
+                                )}
+
+                                {sendSamples.map((ss, index) => (
+                                    <div key={index} className="flex flex-col gap-2 bg-form-bg p-3 rounded">
+                                        <div className="flex gap-2 items-end">
+                                            {/* Local de Armazenamento */}
+                                            <div className="flex flex-col flex-1">
+                                                <label className="text-xs font-bold mb-1 text-left">Local de Armazenamento</label>
+                                                <select
+                                                    value={ss.storageId}
+                                                    onChange={(e) => updateSendSample(index, 'storageId', e.target.value)}
+                                                    className="border border-border rounded p-2 bg-white"
+                                                    required
+                                                >
+                                                    <option value="">Selecione...</option>
+                                                    {options.storages.map(s => (
+                                                        <option key={s.id} value={s.id} disabled={sendSamples.some(existing => existing.storageId === s.id && existing !== ss)}>{s.name}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
+                                            {/* Status */}
+                                            <div className="flex flex-col flex-1">
+                                                <label className="text-xs font-bold mb-1 text-left">Status</label>
+                                                <select
+                                                    value={ss.statusId}
+                                                    onChange={(e) => updateSendSample(index, 'statusId', e.target.value)}
+                                                    className="border border-border rounded p-2 bg-white"
+                                                    required
+                                                >
+                                                    <option value="">Selecione...</option>
+                                                    {options.status.map(s => (
+                                                        <option key={s.id} value={s.id}>{s.name}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
+                                            {/* Data de Envio */}
+                                            <div className="flex flex-col w-36">
+                                                <label className="text-xs font-bold mb-1 text-left">Data de Envio</label>
+                                                <input
+                                                    type="date"
+                                                    value={ss.sendDate}
+                                                    onChange={(e) => updateSendSample(index, 'sendDate', e.target.value)}
+                                                    className="border border-border rounded p-2 bg-white"
+                                                    required
+                                                />
+                                            </div>
+
+                                            {/* Quantidade */}
+                                            <div className="flex flex-col w-24">
+                                                <label className="text-xs font-bold mb-1 text-left">Quantidade</label>
+                                                <input
+                                                    type="number"
+                                                    min={1}
+                                                    value={ss.quantity || ''}
+                                                    onChange={(e) => updateSendSample(index, 'quantity', e.target.value)}
+                                                    className="border border-border rounded p-2 bg-white"
+                                                    placeholder="0"
+                                                    required
+                                                />
+                                            </div>
+
+                                            {/* Botão de Remover */}
+                                            <button
+                                                type="button"
+                                                onClick={() => removeSendSample(index)}
+                                                className="text-button-red font-bold text-xl cursor-pointer px-2 pb-2"
+                                                title="Remover envio"
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
+
+                                        {/* Observação */}
+                                        <div className="flex flex-col">
+                                            <label className="text-xs font-bold mb-1 text-left">Observação (Opcional)</label>
+                                            <input
+                                                type="text"
+                                                value={ss.note || ''}
+                                                onChange={(e) => updateSendSample(index, 'note', e.target.value)}
+                                                className="border border-border rounded p-2 bg-white"
+                                                placeholder="Observação do envio..."
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
 
                         {error && <p className="text-red-500 text-sm">{error}</p>}
 
