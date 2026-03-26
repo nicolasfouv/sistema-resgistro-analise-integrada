@@ -1,8 +1,14 @@
 import { type ContentProps } from "../../../components/content";
 import { type GetAllVeterinarianSampleOutput } from "srf-shared-types";
 import { getVeterinarianSamples } from "../../../services/veterinarianSampleService";
+import { getVeterinarianSampleFormOptions } from "../../../services/veterinarianSampleService";
 import { SampleToolBar } from "./sampleToolBar";
 import { SampleExpansion } from "./sampleExpansion";
+
+const sampleOptions = await getVeterinarianSampleFormOptions();
+const sampleTypeOptions = sampleOptions.sampleTypes.map(st => ({ value: st.id, label: st.description }));
+const statusOptions = sampleOptions.status.map(s => ({ value: s.id, label: s.name }));
+const storageOptions = sampleOptions.storages.map(s => ({ value: s.id, label: s.name }));
 
 export const VeterinarianSampleContentDefinition = {
     id: 'amostras-av',
@@ -13,9 +19,13 @@ export const VeterinarianSampleContentDefinition = {
         { key: 'statusName', label: 'Status', width: 'w-1/4' },
     ],
     filterFields: [
-        { key: 'sampleTypeDescription', label: 'Tipo da Amostra', type: 'text' },
-        { key: 'statusName', label: 'Status', type: 'text' },
         { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
+        { key: 'veterinarianVisitDate', label: 'Data da Visita', type: 'date' },
+        { key: 'liveAnimalName', label: 'Animal', type: 'text' },
+        { key: 'veterinarianName', label: 'Veterinário', type: 'text' },
+        { key: 'sampleTypeId', label: 'Tipo da Amostra', type: 'enum', options: sampleTypeOptions },
+        { key: 'statusId', label: 'Status', type: 'enum', options: statusOptions },
+        { key: 'storageId', label: 'Armazenamento', type: 'enum', options: storageOptions },
     ],
     rowIdField: 'id',
     renderActions: (item: GetAllVeterinarianSampleOutput, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (

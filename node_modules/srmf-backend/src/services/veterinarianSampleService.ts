@@ -19,7 +19,11 @@ export class VeterinarianSampleService {
             select: {
                 id: true,
                 veterinarianVisit: {
-                    select: { id: true, date: true, liveAnimal: { select: { id: true, name: true } } }
+                    select: {
+                        id: true, date: true,
+                        liveAnimal: { select: { id: true, name: true } },
+                        veterinarian: { select: { id: true, name: true } }
+                    }
                 },
                 sampleType: {
                     select: { id: true, description: true }
@@ -84,6 +88,8 @@ export class VeterinarianSampleService {
                     veterinarianVisitDate: s.veterinarianVisit.date.toISOString(),
                     liveAnimalId: s.veterinarianVisit.liveAnimal.id,
                     liveAnimalName: s.veterinarianVisit.liveAnimal.name,
+                    veterinarianId: s.veterinarianVisit.veterinarian.id,
+                    veterinarianName: s.veterinarianVisit.veterinarian.name,
                     sampleTypeId: s.sampleType.id,
                     sampleTypeDescription: s.sampleType.description,
                     statusId: s.status.id,
@@ -116,7 +122,8 @@ export class VeterinarianSampleService {
                 select: {
                     id: true,
                     date: true,
-                    liveAnimal: { select: { id: true, name: true } }
+                    liveAnimal: { select: { id: true, name: true } },
+                    veterinarian: { select: { id: true, name: true } }
                 },
                 orderBy: { date: 'desc' }
             }),
@@ -138,7 +145,8 @@ export class VeterinarianSampleService {
             veterinarianVisits: veterinarianVisits.map(v => ({
                 id: v.id,
                 date: v.date.toISOString(),
-                liveAnimal: v.liveAnimal
+                liveAnimal: v.liveAnimal,
+                veterinarian: v.veterinarian
             })),
             sampleTypes, status, storages
         };

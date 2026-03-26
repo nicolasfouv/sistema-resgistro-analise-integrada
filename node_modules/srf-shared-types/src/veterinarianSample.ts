@@ -59,6 +59,10 @@ export const getFormOptionsVeterinarianSampleOutputSchema = z.object({
         liveAnimal: z.object({
             id: z.number().int(),
             name: z.string().nonempty()
+        }),
+        veterinarian: z.object({
+            id: z.number().int(),
+            name: z.string().nonempty()
         })
     })),
     sampleTypes: z.array(z.object({

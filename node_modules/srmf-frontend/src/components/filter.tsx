@@ -8,7 +8,7 @@ export type FilterValue =
     | { type: 'text'; term: string }
     | { type: 'date'; from: string; to: string }
     | { type: 'boolean'; value: string }
-    | { type: 'enum'; value: string };
+    | { type: 'enum'; value: string; label: string };
 
 export interface ActiveFilter {
     field: string;
@@ -25,7 +25,7 @@ function formatFilterValue(filter: ActiveFilter): string {
             return `${from} → ${to}`;
         }
         case 'boolean': return filter.value.value === 'true' ? 'Sim' : 'Não';
-        case 'enum': return filter.value.value;
+        case 'enum': return filter.value.label;
         default: return '';
     }
 }
@@ -84,7 +84,11 @@ export function FilterBar<T>({ fields, onFilter, initialFilters }: FilterBarProp
             case 'text': return { type: 'text', term: searchTerm };
             case 'date': return { type: 'date', from: dateFrom, to: dateTo };
             case 'boolean': return { type: 'boolean', value: selectedOption };
-            case 'enum': return { type: 'enum', value: selectedOption };
+            case 'enum': {
+                const enumField = currentField as Extract<FilterFieldProps<T>, { type: 'enum' }>;
+                const optLabel = enumField.options.find(o => String(o.value) === selectedOption)?.label || selectedOption;
+                return { type: 'enum', value: selectedOption, label: optLabel };
+            }
             default: return { type: 'text', term: searchTerm };
         }
     }
