@@ -175,7 +175,7 @@ export function Content({
     return (
         <section className="ml-sidebar-size p-8 min-h-screen min-w-[600px] text-text-main">
 
-            {/* Header */}
+            {/* Cabeçalho */}
             <h1 className="text-standard-red font-bold text-xl mb-1 uppercase">{title}</h1>
 
             <div className="max-2-6xl mx-auto bg-white rounded shadow-sm border border-border">
@@ -196,7 +196,6 @@ export function Content({
 
                 {/* ToolBar */}
                 {activeContent && hasAccess !== false && <>
-                    {/* Action Icons */}
                     <div className="flex justify-end items-end mx-6 gap-1 h-8">
                         {canCreate !== false && activeContent?.toolBar && activeContent?.toolBar(onRefresh || (() => { }))}
                         <FilterBar
@@ -207,7 +206,7 @@ export function Content({
                         />
                     </div>
 
-                    {/* Table */}
+                    {/* Tabela */}
                     <div className="px-6 pb-6">
                         <table className="w-full border-collapse">
                             <thead>
@@ -250,14 +249,16 @@ export function Content({
                                                             </div>
                                                         </td>
                                                     ))}
-                                                    <td className="px-4 py-4 text-right" onClick={(e) => e.stopPropagation()}>
-                                                        {activeContent?.renderActions!(item, isExpanded, () => toggleRow(id), onRefresh || (() => { }))}
+                                                    <td className="px-4 py-4 text-right">
+                                                        <div className="inline-block" onClick={(e) => e.stopPropagation()}>
+                                                            {activeContent?.renderActions!(item, isExpanded, () => toggleRow(id), onRefresh || (() => { }))}
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             </React.Fragment>
                                         )
                                     } else {
-                                        {/* Expansion */ }
+                                        {/* Expansão */ }
                                         return (
                                             <React.Fragment key={id}>
 
