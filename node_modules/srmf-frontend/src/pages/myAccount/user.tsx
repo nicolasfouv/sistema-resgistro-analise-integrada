@@ -57,8 +57,8 @@ export function User() {
                     </div>
                     <div
                         onClick={() => signOut()}
-                        className="flex cursor-pointer hover:bg-black/5 px-8 py-4 rounded-lg gap-8">
-                        <img src={grayExit} alt="Sair" className="size-6" />
+                        className="flex cursor-pointer hover:bg-black/5 px-8 py-[14px] rounded-lg gap-8">
+                        <img src={grayExit} alt="Sair" className="size-7" />
                         <p className="font-semibold">Sair</p>
                     </div>
                 </div>
