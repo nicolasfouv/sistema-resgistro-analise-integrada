@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import { forgotPassword } from "../../services/userService";
+import { ModalPortal } from "../../components/modalPortal";
 
 import loginEmailImg from '../../assets/loginEmail.svg';
 import loginUserImg from '../../assets/loginUser.svg';
@@ -69,8 +70,8 @@ export function Login() {
 
   return (
     <section className="flex flex-col w-full min-h-screen items-center justify-center">
-      <div className={`${forgot ? 'flex justify-center items-center' : 'hidden'} absolute w-full h-full bg-black/50 z-99 `}>
-        <div className="relative flex flex-col bg-white w-160 h-80 justify-center items-center rounded-2xl shadow-xl p-10">
+      <div className={`modal-overlay ${forgot ? 'flex justify-center items-center' : 'hidden'} absolute w-full h-full bg-black/50 z-99 `}>
+        <div className="modal relative flex flex-col bg-white w-160 h-80 justify-center items-center rounded-2xl shadow-xl p-10">
 
           <button onClick={() => setForgot(false)} className="absolute text-text-main hover:text-standard-red font-bold text-xl cursor-pointer leading-none top-3 right-3" title="Fechar">✕</button>
 

@@ -7,7 +7,7 @@
     --color-text-input: #555555;
     --color-button-green: oklch(62.7% 0.194 149.214);
     --color-button-red: oklch(57.7% 0.245 27.325);
-    --color-hover-bg: rgba(224, 224, 244, 0.5);
+    --color-hover-bg: rgba(160, 160, 160, 0.1);
     --color-selected-bg: #e0e0e0;
     --color-border: #ddd;
     --color-form-bg: #eeeeee;
@@ -23,13 +23,35 @@ body {
 }
 
 @keyframes slide-in-right {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
 }
 
 @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-in-grow {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .drawer-panel {
@@ -38,4 +60,17 @@ body {
 
 .drawer-overlay {
     animation: fade-in 0.2s ease-out forwards;
+}
+
+.modal-overlay {
+    animation: fade-in 0.2s ease-out forwards;
+}
+
+.modal {
+    animation: fade-in-grow 0.25s ease-out forwards;
+}
+
+.expand-record {
+    transform-origin: top;
+    animation: fade-in-grow 0.15s ease-out forwards;
 }

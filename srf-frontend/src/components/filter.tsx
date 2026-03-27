@@ -207,7 +207,7 @@ export function FilterBar<T>({ fields, onFilter, initialFilters }: FilterBarProp
     return (
         <>
             <button onClick={() => setIsOpen(true)}
-                className={`flex items-center justify-center bg-form-bg w-10 pt-0.5 rounded-t-xl cursor-pointer ${isOpen || hasFilter ? "h-8" : "h-6"}`}
+                className={`flex items-center justify-center bg-form-bg w-10 pt-0.5 rounded-t-xl cursor-pointer ${isOpen || hasFilter ? "h-8" : "h-6"} hover:h-8`}
                 title="Filtrar"
             >
                 <img src={hasFilter ? blueFilterIcon : grayFilterIcon} alt="Filtrar" className="w-5 h-5" />

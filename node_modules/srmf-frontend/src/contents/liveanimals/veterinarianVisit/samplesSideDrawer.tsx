@@ -101,7 +101,11 @@ export function SamplesSideDrawer({ veterinarianVisitId, veterinarianVisitDate, 
 
                                 {/* Detalhes Expandidos */}
                                 {isExpanded && (
+                                    
                                     <div className="px-4 pb-4 border-t border-border bg-form-bg">
+                                                <h4 className="font-bold text-text-main text-xs uppercase my-2 border-b border-gray-600 pb-1">
+                                                    Detalhes da Amostras
+                                                </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                             <Field label="Data da Visita" value={sample.veterinarianVisitDateFormatted || ''} />
                                             <Field label="Animal" value={sample.liveAnimalName} />
@@ -125,7 +129,7 @@ export function SamplesSideDrawer({ veterinarianVisitId, veterinarianVisitDate, 
                                                     Amostras Enviadas
                                                 </h4>
                                                 {sample.sendSamples.map(ss => (
-                                                    <div key={ss.id} className="gap-2 w-full text-sm grid grid-cols-2 mb-2 border border-border rounded p-2 bg-white">
+                                                    <div key={ss.id} className="gap-2 w-full text-sm grid grid-cols-2 mb-2 border border-border rounded p-2">
                                                         <Field label="Local" value={ss.storageName} />
                                                         <Field label="Status" value={ss.statusName} />
                                                         <Field label="Data de Envio" value={ss.sendDateFormatted || ''} />
