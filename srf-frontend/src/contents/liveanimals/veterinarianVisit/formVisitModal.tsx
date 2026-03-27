@@ -111,7 +111,9 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
 
     return (
         <ModalPortal>
-            <div className="modal-overlay flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 overflow-y-auto p-4">
+            <div
+                onClick={close}
+                className="modal-overlay flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 overflow-y-auto p-4">
                 <div className="modal relative flex flex-col bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-6 gap-5 w-200 max-h-[90vh]">
                     <button
                         onClick={() => close()}
