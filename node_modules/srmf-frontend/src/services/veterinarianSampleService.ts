@@ -25,3 +25,8 @@ export async function updateVeterinarianSample(recordId: number, data: UpdateVet
     const response = await api.put(`/veterinarian-sample/update/${recordId}`, data);
     return response.data;
 }
+
+export async function deleteVeterinarianSample(recordId: number) {
+    const response = await api.delete(`/veterinarian-sample/delete/${recordId}`);
+    return response.data;
+}
