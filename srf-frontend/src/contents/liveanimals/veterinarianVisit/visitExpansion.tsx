@@ -53,11 +53,11 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     </div>
                 </div>
                 <div className="flex gap-2 w-full text-sm">
-                    <div className="flex flex-col w-1/12">
-                        <label htmlFor="name" className="ml-1 font-bold">Data da Visita</label>
+                    <div className="flex flex-col w-2/12">
+                        <label htmlFor="name" className="ml-1 font-bold">Data da Realização</label>
                         <input type="text" disabled value={item.dateFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    <div className="flex flex-col w-5/12">
+                    <div className="flex flex-col w-4/12">
                         <label htmlFor="email" className="ml-1 font-bold">Animal</label>
                         <input type="text" disabled value={item.liveAnimalName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>

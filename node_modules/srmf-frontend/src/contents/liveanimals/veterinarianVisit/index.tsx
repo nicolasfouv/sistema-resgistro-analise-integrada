@@ -10,8 +10,8 @@ export const VeterinarianVisitContentDefinition = {
     id: 'visitaveterinaria',
     label: 'Visita Veterinária',
     columns: [
-        { key: 'dateFormatted', label: 'Data', width: 'w-1/12' },
-        { key: 'liveAnimalName', label: 'Animal', width: 'w-5/12' },
+        { key: 'dateFormatted', label: 'Data da Realização', width: 'w-2/12' },
+        { key: 'liveAnimalName', label: 'Animal', width: 'w-4/12' },
         { key: 'veterinarianName', label: 'Veterinário', width: 'w-5/12' },
         // deixar w-1/12 sobrando para ações
     ],

@@ -134,7 +134,7 @@ export function SamplesSideDrawer({ veterinarianVisitId, veterinarianVisitDate, 
                                                         <Field label="Status" value={ss.statusName} />
                                                         <Field label="Data de Envio" value={ss.sendDateFormatted || ''} />
                                                         <Field label="Quantidade" value={String(ss.quantity)} />
-                                                        {ss.note && <Field label="Observação" value={ss.note} fullWidth />}
+                                                        {ss.note && <Field label="Observações" value={ss.note} fullWidth />}
                                                     </div>
                                                 ))}
                                             </div>

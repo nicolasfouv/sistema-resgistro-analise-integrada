@@ -13,11 +13,21 @@ class FormService {
                     select: {
                         id: true,
                         name: true,
+                    },
+                    orderBy: {
+                        name: 'asc'
                     }
                 }
             }
         });
-        return options;
+        
+        return options.map(o => ({
+            ...o,
+            subCategory: o.subCategory.map(s => ({
+                ...s,
+                name: s.name.split('_')[1]
+            }))
+        }));
     }
 
     async getForms() {

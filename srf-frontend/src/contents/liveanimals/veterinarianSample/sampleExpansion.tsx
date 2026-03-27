@@ -122,10 +122,10 @@ export function SampleExpansion({ item, close, refresh }: { item: GetAllVeterina
                                     <label className="ml-1 font-bold">Quantidade</label>
                                     <input type="text" disabled value={ss.quantity} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                                 </div>
-                                {/* Observação */}
+                                {/* Observações */}
                                 {ss.note && (
                                     <div className="flex flex-col w-full col-span-4">
-                                        <label className="ml-1 font-bold">Observação</label>
+                                        <label className="ml-1 font-bold">Observações</label>
                                         <input type="text" disabled value={ss.note} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                                     </div>
                                 )}
