@@ -178,7 +178,7 @@ export function Content({
             {/* Cabeçalho */}
             <h1 className="text-standard-red font-bold text-xl mb-1 uppercase">{title}</h1>
 
-            <div className="max-2-6xl mx-auto bg-white rounded shadow-sm border border-border">
+            <div className="mx-auto bg-white rounded shadow-sm border border-border">
                 {/* Tabs */}
                 <div className="px-6 pt-4 border-b border-border mb-3">
                     <div className="flex gap-2">

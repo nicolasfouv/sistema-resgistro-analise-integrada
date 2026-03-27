@@ -3,7 +3,7 @@ import { NotFound } from "./pages/notfound";
 import { Login } from "./pages/auth/login";
 import { Register } from "./pages/auth/register";
 import { Layout } from "./components/layout";
-import { User } from "./pages/user";
+import { User } from "./pages/myAccount/user";
 import { DynamicContent } from "./pages/dynamicContent";
 
 const router = createBrowserRouter([
