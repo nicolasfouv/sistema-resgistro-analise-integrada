@@ -60,6 +60,7 @@ export class VeterinarianSampleController {
             }
             if (error.message === 'Não é possível criar amostras que compartilhem visita veteriária e tipo.') return res.status(400).json({ error: error.message });
             if (error.message === 'Não é possível enviar a mesma amostra para o mesmo local.') return res.status(400).json({ error: error.message });
+            if (error.message === 'A quantidade de amostras enviadas não pode exceder a quantidade total de amostras.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -89,6 +90,7 @@ export class VeterinarianSampleController {
             if (error.message === 'Amostra veterinária não encontrada.') return res.status(404).json({ error: error.message });
             if (error.message === 'Não foi possível atualizar a amostra veterinária, pois já existe uma amostra que compartilha a mesma visita veterinária e tipo de amostra.') return res.status(400).json({ error: error.message });
             if (error.message === 'Não é possível enviar a mesma amostra para o mesmo local.') return res.status(400).json({ error: error.message });
+            if (error.message === 'A quantidade de amostras enviadas não pode exceder a quantidade total de amostras.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }

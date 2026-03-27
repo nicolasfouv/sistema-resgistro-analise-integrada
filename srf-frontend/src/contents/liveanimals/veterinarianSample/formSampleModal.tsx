@@ -345,9 +345,9 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                                 </select>
                             </div>
 
-                            {/* Quantidade */}
+                            {/* Quantidade Total */}
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Quantidade</label>
+                                <label className="text-sm font-bold mb-1 text-left">Quantidade Total</label>
                                 <input
                                     type="number"
                                     min={1}

@@ -181,6 +181,10 @@ export class VeterinarianSampleService {
                     const countStorageId = data.sendSamples!.filter(sends => sends.storageId === sendSample.storageId).length;
                     if (countStorageId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo local.')
                 });
+
+                // Verifica se a quantidade total de amostras enviadas não excede a quantidade total de amostras
+                const totalQuantity = data.sendSamples.reduce((acc, sendSample) => acc + sendSample.quantity, 0);
+                if (totalQuantity > data.quantity) throw new Error('A quantidade de amostras enviadas não pode exceder a quantidade total de amostras.');
             }
 
             // Cria as amostras enviadas
@@ -261,6 +265,10 @@ export class VeterinarianSampleService {
                     const countStorageId = data.sendSamples!.filter(sends => sends.storageId === sendSample.storageId).length;
                     if (countStorageId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo local.')
                 });
+
+                // Verifica se a quantidade total de amostras enviadas não excede a quantidade total de amostras
+                const totalQuantity = data.sendSamples.reduce((acc, sendSample) => acc + sendSample.quantity, 0);
+                if (totalQuantity > data.quantity) throw new Error('A quantidade de amostras enviadas não pode exceder a quantidade total de amostras.');
             }
 
             // Deleta as amostras enviadas antigas
