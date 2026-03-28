@@ -5,10 +5,23 @@ import { getVeterinarianSampleFormOptions } from "../../../services/veterinarian
 import { SampleToolBar } from "./sampleToolBar";
 import { SampleExpansion } from "./sampleExpansion";
 
-const sampleOptions = await getVeterinarianSampleFormOptions();
-const sampleTypeOptions = sampleOptions.sampleTypes.map(st => ({ value: st.id, label: st.description }));
-const statusOptions = sampleOptions.status.map(s => ({ value: s.id, label: s.name }));
-const storageOptions = sampleOptions.storages.map(s => ({ value: s.id, label: s.name }));
+let sampleTypeOptions: { value: string | number; label: string }[] = [];
+let statusOptions: { value: string | number; label: string }[] = [];
+let storageOptions: { value: string | number; label: string }[] = [];
+let optionsLoaded = false;
+
+async function loadFilterOptions() {
+    if (optionsLoaded) return;
+    try {
+        const sampleOptions = await getVeterinarianSampleFormOptions();
+        sampleTypeOptions = sampleOptions.sampleTypes.map(st => ({ value: st.id, label: st.description }));
+        statusOptions = sampleOptions.status.map(s => ({ value: s.id, label: s.name }));
+        storageOptions = sampleOptions.storages.map(s => ({ value: s.id, label: s.name }));
+        optionsLoaded = true;
+    } catch (e) {
+        console.error('Failed to load sample filter options:', e);
+    }
+}
 
 export const VeterinarianSampleContentDefinition = {
     id: 'amostras-av',
@@ -21,15 +34,17 @@ export const VeterinarianSampleContentDefinition = {
         { key: 'statusName', label: 'Status', width: 'w-3/12' },
         // deixar w-1/12 sobrando para ações
     ],
-    filterFields: [
-        { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
-        { key: 'veterinarianVisitDate', label: 'Data da Visita', type: 'date' },
-        { key: 'liveAnimalName', label: 'Animal', type: 'text' },
-        { key: 'veterinarianName', label: 'Veterinário', type: 'text' },
-        { key: 'sampleTypeId', label: 'Tipo da Amostra', type: 'enum', options: sampleTypeOptions },
-        { key: 'statusId', label: 'Status', type: 'enum', options: statusOptions },
-        { key: 'storageId', label: 'Armazenamento', type: 'enum', options: storageOptions },
-    ],
+    get filterFields() {
+        return [
+            { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
+            { key: 'veterinarianVisitDate', label: 'Data da Visita', type: 'date' },
+            { key: 'liveAnimalName', label: 'Animal', type: 'text' },
+            { key: 'veterinarianName', label: 'Veterinário', type: 'text' },
+            { key: 'sampleTypeId', label: 'Tipo da Amostra', type: 'enum', options: sampleTypeOptions },
+            { key: 'statusId', label: 'Status', type: 'enum', options: statusOptions },
+            { key: 'storageId', label: 'Armazenamento', type: 'enum', options: storageOptions },
+        ];
+    },
     rowIdField: 'id',
     renderActions: (item: GetAllVeterinarianSampleOutput, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (
         <button
@@ -48,6 +63,7 @@ export const VeterinarianSampleContentDefinition = {
 };
 
 export async function fetchVeterinarianSampleData() {
+    await loadFilterOptions();
     const samples = await getVeterinarianSamples();
     return samples.map(s => ({
         ...s,
