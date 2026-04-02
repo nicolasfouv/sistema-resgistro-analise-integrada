@@ -30,7 +30,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
             {showSamplesDrawer && (
                 <SamplesSideDrawer
                     veterinarianVisitId={item.id}
-                    veterinarianVisitDate={item.dateFormatted as string}
+                    veterinarianVisitDate={item.date.split('T')[0]}
                     liveAnimalName={item.liveAnimalName}
                     veterinarianName={item.veterinarianName}
                     onClose={() => setShowSamplesDrawer(false)}
@@ -39,7 +39,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
             {showPhysicalExamDrawer && (
                 <PhysicalExamSideDrawer
                     veterinarianVisitId={item.id}
-                    veterinarianVisitDate={item.dateFormatted as string}
+                    veterinarianVisitDate={item.date.split('T')[0]}
                     liveAnimalName={item.liveAnimalName}
                     veterinarianName={item.veterinarianName}
                     onClose={() => setShowPhysicalExamDrawer(false)}

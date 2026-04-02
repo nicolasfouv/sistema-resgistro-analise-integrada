@@ -66,7 +66,7 @@ export async function fetchPhysicalExamData() {
     const exams = await getPhysicalExams();
     return exams.map(e => ({
         ...e,
-        veterinarianVisitDateFormatted: e.veterinarianVisitDate ? new Date(e.veterinarianVisitDate).toLocaleDateString('pt-BR') : '',
+        veterinarianVisitDateFormatted: e.veterinarianVisitDate ? new Date(e.veterinarianVisitDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '',
     }));
 };
 

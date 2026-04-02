@@ -67,10 +67,10 @@ export async function fetchVeterinarianSampleData() {
     const samples = await getVeterinarianSamples();
     return samples.map(s => ({
         ...s,
-        veterinarianVisitDateFormatted: s.veterinarianVisitDate ? new Date(s.veterinarianVisitDate).toLocaleDateString('pt-BR') : '',
+        veterinarianVisitDateFormatted: s.veterinarianVisitDate ? new Date(s.veterinarianVisitDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '',
         sendSamples: s.sendSamples?.map(ss => ({
             ...ss,
-            sendDateFormatted: ss.sendDate ? new Date(ss.sendDate).toLocaleDateString('pt-BR') : '',
+            sendDateFormatted: ss.sendDate ? new Date(ss.sendDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '',
         })),
     }));
 };

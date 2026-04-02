@@ -43,7 +43,7 @@ export async function fetchVeterinarianVisitData() {
     const visits = await getVeterinarianVisits();
     return visits.map(v => ({
         ...v,
-        dateFormatted: new Date(v.date).toLocaleDateString('pt-BR'),
+        dateFormatted: new Date(v.date).toLocaleDateString('pt-BR', { timeZone: 'UTC' }),
     }));
 }
 

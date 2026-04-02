@@ -26,12 +26,12 @@ export function SamplesSideDrawer({ veterinarianVisitId, veterinarianVisitDate, 
                     .map(s => ({
                         ...s,
                         veterinarianVisitDateFormatted: s.veterinarianVisitDate
-                            ? new Date(s.veterinarianVisitDate).toLocaleDateString('pt-BR')
+                            ? new Date(s.veterinarianVisitDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' })
                             : '',
                         sendSamples: s.sendSamples?.map(ss => ({
                             ...ss,
                             sendDateFormatted: ss.sendDate
-                                ? new Date(ss.sendDate).toLocaleDateString('pt-BR')
+                                ? new Date(ss.sendDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' })
                                 : '',
                         })),
                     }))
@@ -101,11 +101,11 @@ export function SamplesSideDrawer({ veterinarianVisitId, veterinarianVisitDate, 
 
                                 {/* Detalhes Expandidos */}
                                 {isExpanded && (
-                                    
+
                                     <div className="px-4 pb-4 border-t border-border bg-form-bg">
-                                                <h4 className="font-bold text-text-main text-xs uppercase my-2 border-b border-gray-600 pb-1">
-                                                    Detalhes da Amostras
-                                                </h4>
+                                        <h4 className="font-bold text-text-main text-xs uppercase my-2 border-b border-gray-600 pb-1">
+                                            Detalhes da Amostras
+                                        </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                             <Field label="Data da Visita" value={sample.veterinarianVisitDateFormatted || ''} />
                                             <Field label="Animal" value={sample.liveAnimalName} />

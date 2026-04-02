@@ -148,7 +148,7 @@ export class VeterinarianVisitService {
                 where: {
                     liveAnimalId: data.liveAnimalId,
                     veterinarianId: data.veterinarianId,
-                    date: new Date(data.date + 'T12:00:00'),
+                    date: new Date(data.date + 'T12:00:00Z'),
                 }
             });
 
@@ -161,7 +161,7 @@ export class VeterinarianVisitService {
                 data: {
                     liveAnimalId: data.liveAnimalId,
                     veterinarianId: data.veterinarianId,
-                    date: new Date(data.date + 'T12:00:00'),
+                    date: new Date(data.date + 'T12:00:00Z'),
                     cardLink: data.cardLink || null,
                 }
             });
@@ -234,7 +234,7 @@ export class VeterinarianVisitService {
                     },
                     liveAnimalId: data.liveAnimalId,
                     veterinarianId: data.veterinarianId,
-                    date: new Date(data.date + 'T12:00:00'),
+                    date: new Date(data.date + 'T12:00:00Z'),
                 }
             });
 
@@ -258,7 +258,7 @@ export class VeterinarianVisitService {
                 data: {
                     liveAnimalId: data.liveAnimalId,
                     veterinarianId: data.veterinarianId,
-                    date: new Date(data.date + 'T12:00:00'),
+                    date: new Date(data.date + 'T12:00:00Z'),
                     cardLink: data.cardLink || null,
                 }
             });
