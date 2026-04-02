@@ -3,11 +3,13 @@ import { type VeterinarianVisitData } from "../../../services/veterinarianVisitS
 import { VeterinarianVisitFormModal } from "./formVisitModal";
 import { DeleteVisitModal } from "./deleteVisitModal";
 import { SamplesSideDrawer } from "./samplesSideDrawer";
+import { PhysicalExamSideDrawer } from "./physicalExamSideDrawer";
 
 export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showSamplesDrawer, setShowSamplesDrawer] = useState(false);
+    const [showPhysicalExamDrawer, setShowPhysicalExamDrawer] = useState(false);
 
     return (
         <>
@@ -32,6 +34,15 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     liveAnimalName={item.liveAnimalName}
                     veterinarianName={item.veterinarianName}
                     onClose={() => setShowSamplesDrawer(false)}
+                />
+            )}
+            {showPhysicalExamDrawer && (
+                <PhysicalExamSideDrawer
+                    veterinarianVisitId={item.id}
+                    veterinarianVisitDate={item.dateFormatted as string}
+                    liveAnimalName={item.liveAnimalName}
+                    veterinarianName={item.veterinarianName}
+                    onClose={() => setShowPhysicalExamDrawer(false)}
                 />
             )}
             {/* ==== Cabeçalho de Expansão ==== */}
@@ -92,18 +103,28 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     </div>
                 </>
             )}
-            {item.hasSample && (
+            {(item.hasSample || item.hasPhysicalExam) && (
                 <>
                     <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
-                        <h3 className="font-bold text-text-main uppercase">Amostras Coletadas na Visita</h3>
+                        <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
                     </div>
-                    <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
-                        <button
-                            onClick={() => setShowSamplesDrawer(true)}
-                            className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                        >
-                            Visualizar
-                        </button>
+                    <div className="gap-2 w-full text-sm flex flex-wrap mb-1">
+                        {item.hasSample && (
+                            <button
+                                onClick={() => setShowSamplesDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            >
+                                Amostras
+                            </button>
+                        )}
+                        {item.hasPhysicalExam && (
+                            <button
+                                onClick={() => setShowPhysicalExamDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            >
+                                Exame Físico
+                            </button>
+                        )}
                     </div>
                 </>
             )}

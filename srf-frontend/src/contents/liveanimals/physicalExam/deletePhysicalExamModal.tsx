@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { ModalPortal } from "../../../components/modalPortal";
-import { type GetAllVeterinarianSampleOutput } from "srf-shared-types";
-import { deleteVeterinarianSample } from "../../../services/veterinarianSampleService";
+import { type GetAllPhysicalExamOutput } from "srf-shared-types";
+import { deletePhysicalExam } from "../../../services/physicalExamService";
 
-interface DeleteSampleModalProps {
-    sample: GetAllVeterinarianSampleOutput;
+interface DeletePhysicalExamModalProps {
+    exam: GetAllPhysicalExamOutput;
     close: () => void;
     refresh: () => void;
 }
-export function DeleteSampleModal({ sample, close, refresh }: DeleteSampleModalProps) {
+
+export function DeletePhysicalExamModal({ exam, close, refresh }: DeletePhysicalExamModalProps) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -16,7 +17,7 @@ export function DeleteSampleModal({ sample, close, refresh }: DeleteSampleModalP
         e.preventDefault();
         setLoading(true);
         try {
-            await deleteVeterinarianSample(sample.id);
+            await deletePhysicalExam(exam.id);
             refresh();
             close();
         } catch (error: any) {
@@ -26,10 +27,8 @@ export function DeleteSampleModal({ sample, close, refresh }: DeleteSampleModalP
             setLoading(false);
         }
     }
-
     return (
         <ModalPortal>
-
             <div
                 onClick={close}
                 className="modal-overlay flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 p-4">
@@ -48,7 +47,7 @@ export function DeleteSampleModal({ sample, close, refresh }: DeleteSampleModalP
 
                     <form onSubmit={handleDelete} className="w-full h-full flex flex-col items-center justify-center">
                         <p className="text-xl text-center">
-                            Deseja realmente excluir a amostra do tipo <span className="font-bold">{sample.sampleTypeDescription}</span> coletada na visita <span className="font-bold">{sample.veterinarianVisitDateFormatted}</span> do animal <span className="font-bold">{sample.liveAnimalName}</span> feita pelo veterinário <span className="font-bold">{sample.veterinarianName}</span>?
+                            Deseja realmente excluir o exame físico realizado na visita <span className="font-bold">{exam.veterinarianVisitDateFormatted}</span> do animal <span className="font-bold">{exam.liveAnimalName}</span> feita pelo veterinário <span className="font-bold">{exam.veterinarianName}</span>?
                         </p>
 
                         {error && <p className="text-standard-red text-center mt-4">{error}</p>}

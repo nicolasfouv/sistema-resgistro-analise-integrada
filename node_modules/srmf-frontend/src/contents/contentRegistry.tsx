@@ -47,9 +47,10 @@ export function getPageConfig(categoryId: string, subCategoryId: string): PageCo
 }
 
 import { fetchUsersData, UsersPermissionsContent } from "./admin/users";
-import { ApplicantPermissionsContent, fetchApplicantsData } from "./admin/applicants";
+import { fetchApplicantsData, ApplicantPermissionsContent } from "./admin/applicants";
 import { fetchVeterinarianVisitData, VeterinarianVisitContent } from "./liveanimals/veterinarianVisit/index";
 import { fetchVeterinarianSampleData, VeterinarianSampleContent } from "./liveanimals/veterinarianSample/index";
+import { fetchPhysicalExamData, PhysicalExamContent } from "./liveanimals/physicalExam/index";
 
 export function initRegistry() {
     registerContent('admin', 'permissoes', 'Permissões', {
@@ -78,6 +79,13 @@ export function initRegistry() {
         label: VeterinarianSampleContent.label,
         loader: fetchVeterinarianSampleData,
         component: VeterinarianSampleContent
+    });
+
+    registerContent('animaisvivos', 'veterinario', 'Exame Físico', {
+        id: PhysicalExamContent.id,
+        label: PhysicalExamContent.label,
+        loader: fetchPhysicalExamData,
+        component: PhysicalExamContent
     });
 }
 

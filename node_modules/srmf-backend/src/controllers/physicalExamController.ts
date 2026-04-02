@@ -1,22 +1,22 @@
 import { Request, Response } from "express";
 import { ZodError } from "zod";
-import { VeterinarianSampleService } from "../services/veterinarianSampleService";
+import { PhysicalExamService } from "./../services/physicalExamService";
 import { AuditService } from "../services/auditService";
 import {
-    type CreateVeterinarianSampleInput,
-    type UpdateVeterinarianSampleInput
+    type CreatePhysicalExamInput,
+    type UpdatePhysicalExamInput
 } from "srf-shared-types";
 
-export class VeterinarianSampleController {
+export class PhysicalExamController {
     private auditService = new AuditService();
-    private veterinarianSampleService = new VeterinarianSampleService();
-    private formId = 'amostras-av' as const;
+    private physicalExamService = new PhysicalExamService();
+    private formId = 'examefisico' as const;
 
     getAll = async (req: Request, res: Response) => {
         try {
             const requesterId = req.userId as string;
-            const samples = await this.veterinarianSampleService.getAll(requesterId);
-            return res.status(200).json(samples);
+            const exams = await this.physicalExamService.getAll(requesterId);
+            return res.status(200).json(exams);
         } catch (error: any) {
             console.error(error);
             if (error instanceof ZodError) {
@@ -28,7 +28,7 @@ export class VeterinarianSampleController {
 
     getFormOptions = async (req: Request, res: Response) => {
         try {
-            const options = await this.veterinarianSampleService.getFormOptions();
+            const options = await this.physicalExamService.getFormOptions();
             return res.status(200).json(options);
         } catch (error: any) {
             console.error(error);
@@ -47,18 +47,16 @@ export class VeterinarianSampleController {
                 return res.status(403).json({ error: permissionCheck.reason });
             }
 
-            const data = req.body as CreateVeterinarianSampleInput;
+            const data = req.body as CreatePhysicalExamInput;
 
-            const result = await this.veterinarianSampleService.create(data, requesterId);
-            return res.status(201).json(result);
+            const exam = await this.physicalExamService.create(data, requesterId);
+            return res.status(201).json(exam);
         } catch (error: any) {
             console.error(error);
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            if (error.message === 'Não é possível criar amostras que compartilhem visita veteriária e tipo.') return res.status(400).json({ error: error.message });
-            if (error.message === 'Não é possível enviar a mesma amostra para o mesmo local.') return res.status(400).json({ error: error.message });
-            if (error.message === 'A quantidade de amostras enviadas não pode exceder a quantidade total de amostras.') return res.status(400).json({ error: error.message });
+            if (error.message === 'Não é possível criar um exame físico para uma visita veterinária que já possui um exame físico.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -67,24 +65,22 @@ export class VeterinarianSampleController {
         try {
             const recordId = req.params.recordId as string;
             const requesterId = req.userId as string;
-            const permissionCheck = await this.auditService.canUserEditRecord(requesterId, "sampleAllocationVeterinarian", recordId, this.formId);
+            const permissionCheck = await this.auditService.canUserEditRecord(requesterId, "physicalExam", recordId, this.formId);
             if (!permissionCheck.canEdit) {
                 return res.status(403).json({ error: permissionCheck.reason });
             }
 
-            const data = req.body as UpdateVeterinarianSampleInput;
+            const data = req.body as UpdatePhysicalExamInput;
 
-            const result = await this.veterinarianSampleService.update(Number(recordId), data, requesterId);
-            return res.status(200).json(result);
+            const exam = await this.physicalExamService.update(Number(recordId), data, requesterId);
+            return res.status(200).json(exam);
         } catch (error: any) {
             console.error(error);
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            if (error.message === 'Amostra veterinária não encontrada.') return res.status(404).json({ error: error.message });
-            if (error.message === 'Não foi possível atualizar a amostra veterinária, pois já existe uma amostra que compartilha a mesma visita veterinária e tipo de amostra.') return res.status(400).json({ error: error.message });
-            if (error.message === 'Não é possível enviar a mesma amostra para o mesmo local.') return res.status(400).json({ error: error.message });
-            if (error.message === 'A quantidade de amostras enviadas não pode exceder a quantidade total de amostras.') return res.status(400).json({ error: error.message });
+            if (error.message === 'Exame físico não encontrado.') return res.status(404).json({ error: error.message });
+            if (error.message === 'Não é possível atualizar um exame físico para uma visita veterinária que já possui um exame físico.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -93,19 +89,19 @@ export class VeterinarianSampleController {
         try {
             const recordId = req.params.recordId as string;
             const requesterId = req.userId as string;
-            const permissionCheck = await this.auditService.canUserEditRecord(requesterId, "sampleAllocationVeterinarian", recordId, this.formId);
+            const permissionCheck = await this.auditService.canUserEditRecord(requesterId, "physicalExam", recordId, this.formId);
             if (!permissionCheck.canEdit) {
                 return res.status(403).json({ error: permissionCheck.reason });
             }
 
-            const result = await this.veterinarianSampleService.delete(Number(recordId), requesterId);
+            const result = await this.physicalExamService.delete(Number(recordId), requesterId);
             return res.status(200).json(result);
         } catch (error: any) {
             console.error(error);
             if (error instanceof ZodError) {
                 return res.status(400).json({ message: error.flatten().fieldErrors });
             }
-            if (error.message === 'Amostra veterinária não encontrada.') return res.status(404).json({ error: error.message });
+            if (error.message === 'Exame físico não encontrado.') return res.status(404).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }

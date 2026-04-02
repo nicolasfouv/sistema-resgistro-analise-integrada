@@ -6,6 +6,7 @@ import { formRoutes } from "./formRoutes";
 import { auditRoutes } from "./auditRoutes";
 import { veterinarianVisitRoutes } from "./veterinarianVisitRoutes";
 import { veterinarianSampleRoutes } from "./veterinarianSampleRoutes";
+import { physicalExamRoutes } from "./physicalExamRoutes";
 
 export const router = Router();
 
@@ -16,3 +17,4 @@ router.use(formRoutes);
 router.use(auditRoutes);
 router.use(veterinarianVisitRoutes);
 router.use(veterinarianSampleRoutes);
+router.use(physicalExamRoutes);

@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
+import { ModalPortal } from "../../../components/modalPortal";
 import {
     type GetAllVeterinarianSampleOutput,
     type GetFormOptionsVeterinarianSampleOutput,
     type SendVeterinarianSample,
 } from "srf-shared-types";
-import { ModalPortal } from "../../../components/modalPortal";
 import {
     getVeterinarianSampleFormOptions,
     createVeterinarianSample,
@@ -197,18 +197,16 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                     note: s.note || undefined,
                 })) : undefined,
             };
-
             if (isEditing) {
                 await updateVeterinarianSample(sample!.id, data);
             } else {
                 await createVeterinarianSample(data);
             }
-
             refresh();
             close();
         } catch (error: any) {
             console.error(error);
-            setError(error.response?.data?.error || 'Erro ao salvar');
+            setError(error.response?.data?.error || 'Erro ao salvar.');
         } finally {
             setLoading(false);
         }
@@ -229,7 +227,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
             <div
                 onClick={close}
                 className="modal-overlay flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 overflow-y-auto p-4">
-                <div className="modal relative flex flex-col overflow-y-auto bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-6 gap-5 w-220 max-h-[90vh]">
+                <div onClick={(e) => e.stopPropagation()} className="modal relative flex flex-col overflow-y-auto bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-6 gap-5 w-220 max-h-[90vh]">
                     <button
                         onClick={() => close()}
                         className="absolute text-text-main hover:text-standard-red font-bold text-xl cursor-pointer leading-none top-3 right-3"

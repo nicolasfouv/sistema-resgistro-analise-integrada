@@ -18,8 +18,8 @@ async function loadFilterOptions() {
         statusOptions = sampleOptions.status.map(s => ({ value: s.id, label: s.name }));
         storageOptions = sampleOptions.storages.map(s => ({ value: s.id, label: s.name }));
         optionsLoaded = true;
-    } catch (e) {
-        console.error('Failed to load sample filter options:', e);
+    } catch (error) {
+        console.error('Falha ao carregar opções de filtro:', error);
     }
 }
 

@@ -25,27 +25,17 @@ export class VeterinarianSampleService {
                         veterinarian: { select: { id: true, name: true } }
                     }
                 },
-                sampleType: {
-                    select: { id: true, description: true }
-                },
-                status: {
-                    select: { id: true, name: true }
-                },
-                storage: {
-                    select: { id: true, name: true }
-                },
+                sampleType: { select: { id: true, description: true } },
+                status: { select: { id: true, name: true } },
+                storage: { select: { id: true, name: true } },
                 quantity: true,
                 imageLink: true,
                 note: true,
                 sendSampleVeterinarian: {
                     select: {
                         id: true,
-                        storage: {
-                            select: { id: true, name: true }
-                        },
-                        status: {
-                            select: { id: true, name: true }
-                        },
+                        storage: { select: { id: true, name: true } },
+                        status: { select: { id: true, name: true } },
                         quantity: true,
                         sendDate: true,
                         note: true
@@ -236,7 +226,7 @@ export class VeterinarianSampleService {
             });
             if (!existingSample) throw new Error('Amostra veterinária não encontrada.');
 
-            // Verifica se a amostra veterinária já existe
+            // Verifica se a nova amostra veterinária já existe
             const existingSampleWithSameData = await tx.sampleAllocationVeterinarian.findFirst({
                 where: {
                     veterinarianVisitId: data.veterinarianVisitId,

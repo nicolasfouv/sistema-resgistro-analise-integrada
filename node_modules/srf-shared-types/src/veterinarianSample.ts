@@ -59,7 +59,7 @@ export const getAllVeterinarianSampleOutputSchema = veterinarianSampleSchema.omi
 export const getFormOptionsVeterinarianSampleOutputSchema = z.object({
     veterinarianVisits: z.array(z.object({
         id: z.number().int(),
-        date: z.date().transform((date) => date.toISOString()),
+        date: z.string().nonempty(),
         liveAnimal: z.object({
             id: z.number().int(),
             name: z.string().nonempty()
@@ -84,10 +84,11 @@ export const getFormOptionsVeterinarianSampleOutputSchema = z.object({
 });
 
 export type VeterinarianSample = z.infer<typeof veterinarianSampleSchema>;
+export type SendVeterinarianSample = z.infer<typeof sendVeterinarianSampleSchema>;
+
 // Inputs
 export type CreateVeterinarianSampleInput = z.infer<typeof createVeterinarianSampleInputSchema>;
 export type UpdateVeterinarianSampleInput = z.infer<typeof updateVeterinarianSampleInputSchema>;
-export type SendVeterinarianSample = z.infer<typeof sendVeterinarianSampleSchema>;
 
 //Outputs
 export type GetAllVeterinarianSampleOutput = z.infer<typeof getAllVeterinarianSampleOutputSchema>;
