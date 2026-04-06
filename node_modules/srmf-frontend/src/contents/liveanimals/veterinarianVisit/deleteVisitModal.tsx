@@ -35,7 +35,7 @@ export function DeleteVisitModal({ visit, close, refresh }: DeleteVisitModalProp
             <div
                 onClick={close}
                 className="modal-overlay flex justify-center items-center fixed top-0 left-0 w-full h-full bg-black/50 z-100 p-4">
-                <div className="modal relative flex flex-col bg-white w-full max-w-lg justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-3">
+                <div onClick={(e) => e.stopPropagation()} className="modal relative flex flex-col bg-white w-full max-w-lg justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-3">
                     <button
                         onClick={() => close()}
                         className="absolute text-text-main hover:text-standard-red font-bold text-xl cursor-pointer leading-none top-3 right-3"

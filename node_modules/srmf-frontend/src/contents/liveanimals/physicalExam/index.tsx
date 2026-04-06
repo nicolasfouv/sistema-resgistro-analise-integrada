@@ -42,6 +42,7 @@ export const PhysicalExamContentDefinition = {
             { key: 'generalConditionId', label: 'Condição Geral', type: 'enum', options: generalConditionOptions },
             { key: 'mucousId', label: 'Mucosa', type: 'enum', options: mucousOptions },
             { key: 'hydrationId', label: 'Hidratação', type: 'enum', options: hydrationOptions },
+            { key: 'score', label: 'Score', type: 'text' }
         ];
     },
     rowIdField: 'id',
