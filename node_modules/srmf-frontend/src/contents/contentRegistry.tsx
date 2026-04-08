@@ -51,6 +51,7 @@ import { fetchApplicantsData, ApplicantPermissionsContent } from "./admin/applic
 import { fetchVeterinarianVisitData, VeterinarianVisitContent } from "./liveanimals/veterinarianVisit/index";
 import { fetchVeterinarianSampleData, VeterinarianSampleContent } from "./liveanimals/veterinarianSample/index";
 import { fetchPhysicalExamData, PhysicalExamContent } from "./liveanimals/physicalExam/index";
+import { fetchVaccineData, VaccineContent } from "./liveanimals/vaccine/index";
 
 export function initRegistry() {
     registerContent('admin', 'permissoes', 'Permissões', {
@@ -86,6 +87,13 @@ export function initRegistry() {
         label: PhysicalExamContent.label,
         loader: fetchPhysicalExamData,
         component: PhysicalExamContent
+    });
+
+    registerContent('animaisvivos', 'veterinario', 'Vacina', {
+        id: VaccineContent.id,
+        label: VaccineContent.label,
+        loader: fetchVaccineData,
+        component: VaccineContent
     });
 }
 

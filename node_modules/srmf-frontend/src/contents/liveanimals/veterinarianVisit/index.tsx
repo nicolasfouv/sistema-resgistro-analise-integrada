@@ -21,6 +21,8 @@ export const VeterinarianVisitContentDefinition = {
         { key: 'veterinarianName', label: 'Veterinário', type: 'text' },
         { key: 'date', label: 'Data da Realização', type: 'date' },
         { key: 'hasSample', label: 'Possui Amostra', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
+        { key: 'hasPhysicalExam', label: 'Possui Exame Físico', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
+        { key: 'hasVaccine', label: 'Possui Vacina', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
     ],
     rowIdField: 'id',
     renderActions: (item: VeterinarianVisitData, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (

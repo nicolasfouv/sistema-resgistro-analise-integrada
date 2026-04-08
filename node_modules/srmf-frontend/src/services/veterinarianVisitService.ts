@@ -6,6 +6,7 @@ export interface VeterinarianVisitData {
     createdByMe: boolean;
     hasSample: boolean;
     hasPhysicalExam: boolean;
+    hasVaccine: boolean;
     liveAnimalId: number;
     liveAnimalName: string;
     veterinarianId: number;

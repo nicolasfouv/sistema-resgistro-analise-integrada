@@ -2,10 +2,7 @@ import { prisma } from "..";
 import { AuditService } from "./auditService";
 import {
     type GetAllVeterinarianSampleOutput,
-    type GetFormOptionsVeterinarianSampleOutput
-} from "srf-shared-types";
-
-import {
+    type GetFormOptionsVeterinarianSampleOutput,
     type CreateVeterinarianSampleInput,
     type UpdateVeterinarianSampleInput
 } from "srf-shared-types";
@@ -144,6 +141,38 @@ export class VeterinarianSampleService {
 
     async create(data: CreateVeterinarianSampleInput, requesterId: string) {
         return prisma.$transaction(async (tx) => {
+            // Verifica se a visita veterinária existe
+            const existingVisit = await tx.veterinarianVisit.findUnique({
+                where: {
+                    id: data.veterinarianVisitId
+                }
+            });
+            if (!existingVisit) throw new Error('Visita veterinária não encontrada.');
+
+            // Verifica se o tipo de amostra existe
+            const existingSampleType = await tx.veterinarianSampleType.findUnique({
+                where: {
+                    id: data.sampleTypeId
+                }
+            });
+            if (!existingSampleType) throw new Error('Tipo de amostra não encontrado.');
+
+            // Verifica se o status existe
+            const existingStatus = await tx.enumVeterinarianSampleAllocationStatus.findUnique({
+                where: {
+                    id: data.statusId
+                }
+            });
+            if (!existingStatus) throw new Error('Status não encontrado.');
+
+            // Verifica se o storage existe
+            const existingStorage = await tx.storage.findUnique({
+                where: {
+                    id: data.storageId
+                }
+            });
+            if (!existingStorage) throw new Error('Storage não encontrado.');
+
             // Verifica se a amostra já existe
             const existingSample = await tx.sampleAllocationVeterinarian.findFirst({
                 where: {
@@ -225,6 +254,38 @@ export class VeterinarianSampleService {
                 include: { sendSampleVeterinarian: true }
             });
             if (!existingSample) throw new Error('Amostra veterinária não encontrada.');
+
+            // Verifica se a visita veterinária existe
+            const existingVisit = await tx.veterinarianVisit.findUnique({
+                where: {
+                    id: data.veterinarianVisitId
+                }
+            });
+            if (!existingVisit) throw new Error('Visita veterinária não encontrada.');
+
+            // Verifica se o tipo de amostra existe
+            const existingSampleType = await tx.veterinarianSampleType.findUnique({
+                where: {
+                    id: data.sampleTypeId
+                }
+            });
+            if (!existingSampleType) throw new Error('Tipo de amostra não encontrado.');
+
+            // Verifica se o status existe
+            const existingStatus = await tx.enumVeterinarianSampleAllocationStatus.findUnique({
+                where: {
+                    id: data.statusId
+                }
+            });
+            if (!existingStatus) throw new Error('Status não encontrado.');
+
+            // Verifica se o storage existe
+            const existingStorage = await tx.storage.findUnique({
+                where: {
+                    id: data.storageId
+                }
+            });
+            if (!existingStorage) throw new Error('Storage não encontrado.');
 
             // Verifica se a nova amostra veterinária já existe
             const existingSampleWithSameData = await tx.sampleAllocationVeterinarian.findFirst({

@@ -181,7 +181,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
 
         try {
             const data = {
-                veterinarianVisitId,
+                veterinarianVisitId: Number(veterinarianVisitId),
                 sampleTypeId: Number(sampleTypeId),
                 storageId: Number(storageId),
                 statusId: Number(statusId),

@@ -4,12 +4,14 @@ import { VeterinarianVisitFormModal } from "./formVisitModal";
 import { DeleteVisitModal } from "./deleteVisitModal";
 import { SamplesSideDrawer } from "./samplesSideDrawer";
 import { PhysicalExamSideDrawer } from "./physicalExamSideDrawer";
+import { VaccineSideDrawer } from "./vaccineSideDrawer";
 
 export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showSamplesDrawer, setShowSamplesDrawer] = useState(false);
     const [showPhysicalExamDrawer, setShowPhysicalExamDrawer] = useState(false);
+    const [showVaccineDrawer, setShowVaccineDrawer] = useState(false);
 
     return (
         <>
@@ -43,6 +45,14 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     liveAnimalName={item.liveAnimalName}
                     veterinarianName={item.veterinarianName}
                     onClose={() => setShowPhysicalExamDrawer(false)}
+                />
+            )}
+            {showVaccineDrawer && (
+                <VaccineSideDrawer
+                    veterinarianVisitId={item.id}
+                    veterinarianVisitDate={item.date.split('T')[0]}
+                    liveAnimalName={item.liveAnimalName}
+                    onClose={() => setShowVaccineDrawer(false)}
                 />
             )}
             {/* ==== Cabeçalho de Expansão ==== */}
@@ -103,7 +113,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     </div>
                 </>
             )}
-            {(item.hasSample || item.hasPhysicalExam) && (
+            {(item.hasSample || item.hasPhysicalExam || item.hasVaccine) && (
                 <>
                     <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                         <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
@@ -123,6 +133,14 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                                 className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                             >
                                 Exame Físico
+                            </button>
+                        )}
+                        {item.hasVaccine && (
+                            <button
+                                onClick={() => setShowVaccineDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            >
+                                Vacinas
                             </button>
                         )}
                     </div>
