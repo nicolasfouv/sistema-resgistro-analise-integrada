@@ -75,7 +75,7 @@ export async function fetchVeterinarianSampleData() {
     }));
 };
 
-export const VeterinarianSampleContent: ContentProps<GetAllVeterinarianSampleOutput> = {
-    ...VeterinarianSampleContentDefinition,
-    data: [],
-} as unknown as ContentProps<GetAllVeterinarianSampleOutput>;
+export const VeterinarianSampleContent: ContentProps<GetAllVeterinarianSampleOutput> = Object.assign(
+    Object.create(VeterinarianSampleContentDefinition),
+    { data: [] }
+) as unknown as ContentProps<GetAllVeterinarianSampleOutput>;

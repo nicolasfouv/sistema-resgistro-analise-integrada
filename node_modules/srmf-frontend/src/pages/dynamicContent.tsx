@@ -91,7 +91,7 @@ export function DynamicContent() {
     const loadData = async () => {
         if (!config || loadingAuth) return;
         const loadedContents = await Promise.all(config.contents.map(async (contentConf) => {
-            const contentProps = { ...contentConf.component };
+            const contentProps = Object.assign(Object.create(Object.getPrototypeOf(contentConf.component)), contentConf.component);
 
             const hasAccessToTab = checkAccess(contentConf.id);
 

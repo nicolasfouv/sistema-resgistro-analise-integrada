@@ -70,12 +70,12 @@ export function VaccineExpansion({ item, close, refresh }: { item: GetAllVaccine
             {item.veterinarianVisitId && (
                 <>
                     <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
-                        <h3 className="font-bold text-text-main uppercase">Visita Veterinária</h3>
+                        <h3 className="font-bold text-text-main uppercase">Visita Veterinária Associada</h3>
                     </div>
                     <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
                         {/* Data da Visita */}
                         <div className="flex flex-col w-full">
-                            <label className="ml-1 font-bold">Data da Visita</label>
+                            <label className="ml-1 font-bold">Data da Visita (Data da Aplicação)</label>
                             <input type="text" disabled value={item.veterinarianVisitDateFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                         </div>
                         {/* Veterinário */}

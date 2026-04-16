@@ -105,13 +105,19 @@ export function VaccineSideDrawer({ veterinarianVisitId, veterinarianVisitDate, 
                                             <Field label="Vacina" value={vaccine.vaccineName} />
                                             <Field label="Tipo de Aplicação" value={vaccine.vaccineTypeName} />
                                             <Field label="Data da Aplicação" value={vaccine.applicationDateFormatted || ''} />
-                                            {vaccine.veterinarianVisitDateFormatted && (
-                                                <Field label="Data da Visita" value={vaccine.veterinarianVisitDateFormatted} />
-                                            )}
-                                            {vaccine.veterinarianName && (
-                                                <Field label="Veterinário" value={vaccine.veterinarianName} />
-                                            )}
                                         </div>
+                                            
+                                            {vaccine.veterinarianVisitId && (
+                                                <div className="mt-3">
+                                                    <h4 className="font-bold text-text-main text-xs uppercase mb-2 border-b border-gray-600 pb-1">
+                                                        Visita Veterinária Associada
+                                                    </h4>
+                                                        <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
+                                                            <Field label="Data da Visita (Data da Aplicação)" value={vaccine.veterinarianVisitDateFormatted!} />
+                                                            <Field label="Veterinário" value={vaccine.veterinarianName!} />
+                                                        </div>
+                                                </div>
+                                            )}
                                     </div>
                                 )}
                             </div>

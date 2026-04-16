@@ -201,6 +201,14 @@ export class VeterinarianSampleService {
                     if (countStorageId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo local.')
                 });
 
+                // Verifica se a data de envio não é anterior à data da visita
+                const visitDate = new Date(existingVisit.date);
+                visitDate.setUTCHours(0, 0, 0, 0);
+                data.sendSamples.forEach(sendSample => {
+                    const sendDate = new Date(sendSample.sendDate + 'T00:00:00Z');
+                    if (sendDate < visitDate) throw new Error('A data de envio da amostra não pode ser anterior à data da visita veterinária.');
+                });
+
                 // Verifica se a quantidade total de amostras enviadas não excede a quantidade total de amostras
                 const totalQuantity = data.sendSamples.reduce((acc, sendSample) => acc + sendSample.quantity, 0);
                 if (totalQuantity > data.quantity) throw new Error('A quantidade de amostras enviadas não pode exceder a quantidade total de amostras.');
@@ -315,6 +323,14 @@ export class VeterinarianSampleService {
                 data.sendSamples.forEach(sendSample => {
                     const countStorageId = data.sendSamples!.filter(sends => sends.storageId === sendSample.storageId).length;
                     if (countStorageId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo local.')
+                });
+
+                // Verifica se a data de envio não é anterior à data da visita
+                const visitDate = new Date(existingVisit.date);
+                visitDate.setUTCHours(0, 0, 0, 0);
+                data.sendSamples.forEach(sendSample => {
+                    const sendDate = new Date(sendSample.sendDate + 'T00:00:00Z');
+                    if (sendDate < visitDate) throw new Error('A data de envio da amostra não pode ser anterior à data da visita veterinária.');
                 });
 
                 // Verifica se a quantidade total de amostras enviadas não excede a quantidade total de amostras

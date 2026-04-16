@@ -71,7 +71,7 @@ export async function fetchPhysicalExamData() {
     }));
 };
 
-export const PhysicalExamContent: ContentProps<GetAllPhysicalExamOutput> = {
-    ...PhysicalExamContentDefinition,
-    data: [],
-} as unknown as ContentProps<GetAllPhysicalExamOutput>;
+export const PhysicalExamContent: ContentProps<GetAllPhysicalExamOutput> = Object.assign(
+    Object.create(PhysicalExamContentDefinition),
+    { data: [] }
+) as unknown as ContentProps<GetAllPhysicalExamOutput>;

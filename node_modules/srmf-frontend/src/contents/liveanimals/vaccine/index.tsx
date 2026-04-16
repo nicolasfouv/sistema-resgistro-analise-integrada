@@ -13,7 +13,6 @@ let optionsLoaded = false;
 
 async function loadFilterOptions() {
     if (optionsLoaded) return;
-
     try {
         const vaccineOptions = await getVaccineFormOptions();
         vaccineNameOptions = vaccineOptions.vaccines.map(v => ({ value: v.id, label: v.name }));
@@ -39,7 +38,7 @@ export const VaccineContentDefinition = {
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'applicationDate', label: 'Data da Aplicação', type: 'date' },
             { key: 'liveAnimalName', label: 'Animal', type: 'text' },
-            { key: 'vaccineName', label: 'Vacina', type: 'enum', options: vaccineNameOptions },
+            { key: 'vaccineId', label: 'Vacina', type: 'enum', options: vaccineNameOptions },
             { key: 'vaccineTypeId', label: 'Tipo de Aplicação', type: 'enum', options: vaccineTypeOptions },
         ];
     },
@@ -70,7 +69,7 @@ export async function fetchVaccineData() {
     }));
 };
 
-export const VaccineContent: ContentProps<GetAllVaccineOutput> = {
-    ...VaccineContentDefinition,
-    data: [],
-} as unknown as ContentProps<GetAllVaccineOutput>;
+export const VaccineContent: ContentProps<GetAllVaccineOutput> = Object.assign(
+    Object.create(VaccineContentDefinition),
+    { data: [] }
+) as unknown as ContentProps<GetAllVaccineOutput>;
