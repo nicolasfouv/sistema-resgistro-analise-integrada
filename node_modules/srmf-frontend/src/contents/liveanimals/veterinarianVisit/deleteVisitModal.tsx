@@ -50,7 +50,7 @@ export function DeleteVisitModal({ visit, close, refresh }: DeleteVisitModalProp
 
                     <form onSubmit={handleDelete} className="w-full h-full flex flex-col items-center justify-center">
                         <p className="text-xl text-center">
-                            Deseja realmente excluir a visita <span className="font-bold">{visit.id}</span>?
+                            Deseja realmente excluir a visita do animal <span className="font-bold">{visit.liveAnimalName}</span> do dia <span className="font-bold">{visit.dateFormatted}</span> realizada pelo veterinário <span className="font-bold">{visit.veterinarianName}</span>?
                         </p>
 
                         {error && <p className="text-red-500 text-center mt-4">{error}</p>}

@@ -157,14 +157,16 @@ model changeLog {
 // ===== FORMS =====
 // ==x== Live Animal ==x==
 model liveAnimal {
-  id        Int              @id @default(autoincrement())
-  specieId  Int              @map("id_especie")
-  specie    specie           @relation(fields: [specieId], references: [id])
-  name      String           @map("nome")
-  genderId  Int              @map("id_genero")
-  gender    enumAnimalGender @relation(fields: [genderId], references: [id])
-  birthDate DateTime         @map("data_nascimento")
-  active    Boolean          @map("ativo")
+  id            Int              @id @default(autoincrement())
+  specieId      Int              @map("id_especie")
+  specie        specie           @relation(fields: [specieId], references: [id])
+  name          String           @map("nome")
+  genderId      Int              @map("id_genero")
+  gender        enumAnimalGender @relation(fields: [genderId], references: [id])
+  birthDate     DateTime         @map("data_nascimento")
+  active        Boolean          @map("ativo")
+  animalPicture String?          @map("foto_animal")
+  cardLink      String?          @map("link_carteirinha")
 
   gpsTracking        gpsTracking?
   castration         castration?
@@ -370,7 +372,8 @@ model veterinarianVisit {
   veterinarianId Int          @map("id_veterinario")
   veterinarian   veterinarian @relation(fields: [veterinarianId], references: [id])
   date           DateTime     @map("data")
-  cardLink       String?      @map("link_carteirinha")
+  animalPicture  String?      @map("foto_animal")
+  note           String?      @map("observacao")
 
   castration           castration?
   vaccineApplication   vaccineApplication[]

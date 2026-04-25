@@ -26,7 +26,8 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
     const [liveAnimalId, setLiveAnimalId] = useState<number | ''>(visit?.liveAnimalId || '');
     const [veterinarianId, setVeterinarianId] = useState<number | ''>(visit?.veterinarianId || '');
     const [date, setDate] = useState(visit?.date ? new Date(visit.date).toISOString().slice(0, 10) : '');
-    const [cardLink, setCardLink] = useState(visit?.cardLink || '');
+    const [animalPicture, setAnimalPicture] = useState(visit?.animalPicture || '');
+    const [note, setNote] = useState(visit?.note || '');
     const [bodyMeasurements, setBodyMeasurements] = useState<BodyMeasurementData[]>(
         visit?.bodyMeasurements || []
     );
@@ -68,7 +69,8 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                     liveAnimalId: Number(liveAnimalId),
                     veterinarianId: Number(veterinarianId),
                     date: date,
-                    cardLink: cardLink,
+                    animalPicture: animalPicture,
+                    note: note,
                     bodyMeasurements: bodyMeasurements.map(bm => ({
                         bodyMeasurementTypeId: bm.bodyMeasurementTypeId,
                         value: bm.value,
@@ -80,7 +82,8 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                     liveAnimalId: Number(liveAnimalId),
                     veterinarianId: Number(veterinarianId),
                     date: date,
-                    cardLink: cardLink,
+                    animalPicture: animalPicture,
+                    note: note,
                     bodyMeasurements: bodyMeasurements.map(bm => ({
                         bodyMeasurementTypeId: bm.bodyMeasurementTypeId,
                         value: bm.value,
@@ -173,15 +176,27 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                                 />
                             </div>
 
-                            {/* Card Link */}
-                            <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Link da Carteirinha (Opcional)</label>
+                            {/* Animal Picture */}
+                            <div className="flex flex-col col-span-2">
+                                <label className="text-sm font-bold mb-1 text-left">Foto do Animal (Opcional)</label>
                                 <input
                                     type="text"
-                                    value={cardLink}
-                                    onChange={(e) => setCardLink(e.target.value)}
+                                    value={animalPicture}
+                                    onChange={(e) => setAnimalPicture(e.target.value)}
                                     className="border border-border rounded p-2"
-                                    placeholder="Digite o link da carteirinha..."
+                                    placeholder="Digite o link da foto do animal..."
+                                />
+                            </div>
+
+                            {/* Note */}
+                            <div className="flex flex-col col-span-2">
+                                <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
+                                <input
+                                    type="text"
+                                    value={note}
+                                    onChange={(e) => setNote(e.target.value)}
+                                    className="border border-border rounded p-2"
+                                    placeholder="Digite as observações..."
                                 />
                             </div>
                         </div>

@@ -93,8 +93,12 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
             {/* ==== Corpo da Expansão ==== */}
             <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
                 <div className="flex flex-col w-full col-span-3">
-                    <label htmlFor="email" className="ml-1 font-bold">Link da Carteirinha</label>
-                    <input type="text" disabled value={item.cardLink || 'Nenhum link informado'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <label htmlFor="email" className="ml-1 font-bold">Foto do Animal</label>
+                    <input type="text" disabled value={item.animalPicture || 'Nenhum link de foto informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div className="flex flex-col w-full col-span-3">
+                    <label htmlFor="email" className="ml-1 font-bold">Observações</label>
+                    <input type="text" disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
             </div>
 

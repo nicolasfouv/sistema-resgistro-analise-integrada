@@ -13,7 +13,8 @@ export interface VeterinarianVisitData {
     veterinarianName: string;
     date: string;
     dateFormatted?: string;
-    cardLink: string;
+    animalPicture: string;
+    note: string;
     bodyMeasurements: BodyMeasurementData[];
 }
 
@@ -45,7 +46,8 @@ export async function createVeterinarianVisit(data: {
     liveAnimalId: number,
     veterinarianId: number,
     date: string,
-    cardLink: string,
+    animalPicture: string,
+    note: string,
     bodyMeasurements: { bodyMeasurementTypeId: number; value: number }[];
 }) {
     const response = await api.post('/veterinarian-visit/create', data);
@@ -56,7 +58,8 @@ export async function updateVeterinarianVisit(visitId: number, data: {
     liveAnimalId: number,
     veterinarianId: number,
     date: string,
-    cardLink: string,
+    animalPicture: string,
+    note: string,
     bodyMeasurements: { bodyMeasurementTypeId: number; value: number }[],
 }) {
     const response = await api.put(`/veterinarian-visit/update/${visitId}`, data);

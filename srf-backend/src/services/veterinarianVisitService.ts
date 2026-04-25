@@ -14,7 +14,8 @@ export class VeterinarianVisitService {
                 liveAnimal: { select: { id: true, name: true } },
                 veterinarian: { select: { id: true, name: true } },
                 date: true,
-                cardLink: true,
+                animalPicture: true,
+                note: true,
                 bodyMeasurement: {
                     select: {
                         id: true,
@@ -118,7 +119,8 @@ export class VeterinarianVisitService {
                 veterinarianId: v.veterinarian.id,
                 veterinarianName: v.veterinarian.name,
                 date: v.date,
-                cardLink: v.cardLink,
+                note: v.note,
+                animalPicture: v.animalPicture,
                 bodyMeasurements: v.bodyMeasurement.map(bm => ({
                     id: bm.id,
                     bodyMeasurementTypeId: bm.bodyMeasurementType.id,
@@ -171,7 +173,8 @@ export class VeterinarianVisitService {
                     liveAnimalId: data.liveAnimalId,
                     veterinarianId: data.veterinarianId,
                     date: new Date(data.date + 'T12:00:00Z'),
-                    cardLink: data.cardLink || null,
+                    animalPicture: data.animalPicture || null,
+                    note: data.note || null,
                 }
             });
 
@@ -268,7 +271,8 @@ export class VeterinarianVisitService {
                     liveAnimalId: data.liveAnimalId,
                     veterinarianId: data.veterinarianId,
                     date: new Date(data.date + 'T12:00:00Z'),
-                    cardLink: data.cardLink || null,
+                    animalPicture: data.animalPicture || null,
+                    note: data.note || null,
                 }
             });
 
