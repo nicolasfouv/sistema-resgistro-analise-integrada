@@ -152,7 +152,7 @@ export class PhysicalExamService {
 
     async create(data: CreatePhysicalExamInput, requesterId: string) {
         return prisma.$transaction(async (tx) => {
-            // Verifica se o exame já eciste
+            // Verifica se o exame já existe
             const existingExam = await tx.physicalExam.findFirst({
                 where: {
                     veterinarianVisitId: data.veterinarianVisitId

@@ -52,6 +52,7 @@ import { fetchVeterinarianVisitData, VeterinarianVisitContent } from "./liveanim
 import { fetchVeterinarianSampleData, VeterinarianSampleContent } from "./liveanimals/veterinarianSample/index";
 import { fetchPhysicalExamData, PhysicalExamContent } from "./liveanimals/physicalExam/index";
 import { fetchVaccineData, VaccineContent } from "./liveanimals/vaccine/index";
+import { fetchExamResultData, ExamResultContent } from "./liveanimals/examResult/index";
 
 export function initRegistry() {
     registerContent('admin', 'permissoes', 'Permissões', {
@@ -75,25 +76,33 @@ export function initRegistry() {
         component: VeterinarianVisitContent
     });
 
-    registerContent('animaisvivos', 'veterinario', 'Amostra', {
+    registerContent('animaisvivos', 'veterinario', 'Veterinário', {
         id: VeterinarianSampleContent.id,
         label: VeterinarianSampleContent.label,
         loader: fetchVeterinarianSampleData,
         component: VeterinarianSampleContent
     });
 
-    registerContent('animaisvivos', 'veterinario', 'Exame Físico', {
+
+    registerContent('animaisvivos', 'veterinario', 'Veterinário', {
+        id: VaccineContent.id,
+        label: VaccineContent.label,
+        loader: fetchVaccineData,
+        component: VaccineContent
+    });
+
+    registerContent('animaisvivos', 'exameseanalises', 'Exames e Análises', {
         id: PhysicalExamContent.id,
         label: PhysicalExamContent.label,
         loader: fetchPhysicalExamData,
         component: PhysicalExamContent
     });
 
-    registerContent('animaisvivos', 'veterinario', 'Vacina', {
-        id: VaccineContent.id,
-        label: VaccineContent.label,
-        loader: fetchVaccineData,
-        component: VaccineContent
+    registerContent('animaisvivos', 'exameseanalises', 'Exames e Análises', {
+        id: ExamResultContent.id,
+        label: ExamResultContent.label,
+        loader: fetchExamResultData,
+        component: ExamResultContent
     });
 }
 

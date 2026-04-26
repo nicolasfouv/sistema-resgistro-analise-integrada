@@ -384,6 +384,7 @@ model veterinarianVisit {
   ectoparasiteAnalysis ectoparasiteAnalysisVeterinarian[]
   sorologyAnalysis     sorologyAnalysis[]
   sampleAllocation     sampleAllocationVeterinarian[]
+  examResult           examResult?
 
   @@unique([liveAnimalId, veterinarianId, date])
   @@map("visita_veterinaria")
@@ -674,6 +675,38 @@ model ectoparasiteSpecie {
   ectoparasiteAnalysisNecropsySubSpecie     ectoparasiteAnalysisNecropsy[]     @relation("subspecie")
 
   @@map("especie_ectoparasito")
+}
+
+model examResult {
+  id                       Int               @id @default(autoincrement())
+  veterinarianVisitId      Int               @unique @map("id_visita_veterinaria")
+  veterinarianVisit        veterinarianVisit @relation(fields: [veterinarianVisitId], references: [id])
+  erythrocytes             Float             @map("eritrocitos")
+  hemoglobin               Float             @map("hemoglobina")
+  hematocrit               Float             @map("hematocrito")
+  vcm                      Float             @map("vcm")
+  hcm                      Float             @map("hcm")
+  chcm                     Float             @map("chcm")
+  platelets                Float             @map("plaquetas")
+  whiteBloodCells          Float             @map("leucocitos")
+  bandCells                Float             @map("bastonetes")
+  segmentedCells           Float             @map("segmentados")
+  segmentedCellsPercentage Float             @map("segmentados_percentual")
+  lymphocytes              Float             @map("linfocitos")
+  lymphocytesPercentage    Float             @map("linfocitos_percentual")
+  monocytes                Float             @map("monocitos")
+  monocytesPercentage      Float             @map("monocitos_percentual")
+  eosinophils              Float             @map("eosinofilos")
+  eosinophilsPercentage    Float             @map("eosinofilos_percentual")
+  basophils                Float             @map("basofilos")
+  basophilsPercentage      Float             @map("basofilos_percentual")
+  alt                      Float             @map("alt")
+  creatinine               Float             @map("creatinina")
+  alkalinePhosphatase      Float             @map("fosfatase_alcalina")
+  totalProtein             Float             @map("proteina_total")
+  urea                     Float             @map("ureia")
+
+  @@map("resultado_exame")
 }
 
 model sorologyAnalysis {
