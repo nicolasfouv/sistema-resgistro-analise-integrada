@@ -60,7 +60,7 @@ export class VaccineController {
             if (error.message === 'Vacina não encontrada.') return res.status(404).json({ error: error.message });
             if (error.message === 'Tipo de aplicação da vacina não encontrado.') return res.status(404).json({ error: error.message });
             if (error.message === 'A data de aplicação da vacina deve ser a mesma da data da visita veterinária associada.') return res.status(400).json({ error: error.message });
-            // if (error.message === 'Aplicação da vacina já existe.') return res.status(400).json({ error: error.message });
+            if (error.message === 'Esta vacina já foi aplicada neste animal nesta data.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -89,6 +89,7 @@ export class VaccineController {
             if (error.message === 'Tipo de aplicação da vacina não encontrado.') return res.status(404).json({ error: error.message });
             if (error.message === 'A data de aplicação da vacina deve ser a mesma da data da visita veterinária associada.') return res.status(400).json({ error: error.message });
             if (error.message === 'Aplicação da vacina já existe.') return res.status(400).json({ error: error.message });
+            if (error.message === 'Esta vacina já foi aplicada neste animal nesta data.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }

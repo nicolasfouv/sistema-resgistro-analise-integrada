@@ -177,17 +177,15 @@ export class VaccineService {
             });
             if (!existingVaccineType) throw new Error('Tipo de aplicação da vacina não encontrado.');
 
-            // Verifica se a aplicação da vacina já existe
-            // if (data.veterinarianVisitId) {
-            //     const existingVaccineApplication = await tx.vaccineApplication.findFirst({
-            //         where: {
-            //             veterinarianVisitId: data.veterinarianVisitId,
-            //             vaccineId: data.vaccineId,
-            //             vaccineTypeId: data.vaccineTypeId
-            //         }
-            //     });
-            //     if (existingVaccineApplication) throw new Error('Aplicação da vacina já existe.');
-            // }
+            // Verifica se a mesma vacina já foi aplicada no mesmo animal na mesma data
+            const existingVaccineApplication = await tx.vaccineApplication.findFirst({
+                where: {
+                    liveAnimalId: data.liveAnimalId,
+                    vaccineId: data.vaccineId,
+                    date: new Date(data.applicationDate + 'T12:00:00')
+                }
+            });
+            if (existingVaccineApplication) throw new Error('Esta vacina já foi aplicada neste animal nesta data.');
 
             // Cria a aplicação da vacina
             const vaccineApplication = await tx.vaccineApplication.create({
@@ -263,6 +261,16 @@ export class VaccineService {
                     }
                 });
                 if (existingVaccineApplication) throw new Error('Aplicação da vacina já existe.');
+            } else {
+                const existingVaccineApplication = await tx.vaccineApplication.findFirst({
+                    where: {
+                        date: new Date(data.applicationDate + 'T12:00:00'),
+                        liveAnimalId: data.liveAnimalId,
+                        vaccineId: data.vaccineId,
+                        id: { not: recordId }
+                    }
+                });
+                if (existingVaccineApplication) throw new Error('Esta vacina já foi aplicada neste animal nesta data.');
             }
 
             // Atualiza a aplicação da vacina

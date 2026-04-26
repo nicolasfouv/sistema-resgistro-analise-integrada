@@ -174,7 +174,7 @@ export function VaccineFormModal({ vaccine, close, refresh }: VaccineFormModalPr
             refresh();
             close();
         } catch (error: any) {
-            setError(error.message || "Erro ao salvar vacina.");
+            setError(error.response?.data?.error || "Erro ao salvar vacina.");
         } finally {
             setLoading(false);
         }
