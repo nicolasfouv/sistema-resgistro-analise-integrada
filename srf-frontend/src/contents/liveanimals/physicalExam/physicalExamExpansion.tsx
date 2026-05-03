@@ -70,7 +70,7 @@ export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPh
             <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
                 {/* FR */}
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Frequência Respiratória (mpm)
+                    <label className="ml-1 font-bold flex items-center">Frequência Respiratória (mpm)
                         <img src={grayQuestionMark}
                             title="Frequência respiratória do animal em movimentos por minuto"
                             alt="Sobre o campo Frequência Respiratória"
@@ -81,7 +81,7 @@ export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPh
                 </div>
                 {/* FC */}
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Frequência Cardíaca (bpm)
+                    <label className="ml-1 font-bold flex items-center">Frequência Cardíaca (bpm)
                         <img src={grayQuestionMark}
                             title="Frequência cardíaca do animal em batimentos por minuto"
                             alt="Sobre o campo Frequência Cardíaca"
@@ -92,7 +92,7 @@ export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPh
                 </div>
                 {/* Temperatura Retal */}
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Temperatura Retal (°C)
+                    <label className="ml-1 font-bold flex items-center">Temperatura Retal (°C)
                         <img src={grayQuestionMark}
                             title="Temperatura retal do animal em graus Celsius"
                             alt="Sobre o campo Temperatura Retal"
@@ -103,7 +103,7 @@ export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPh
                 </div>
                 {/* Mucosa */}
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Mucosa
+                    <label className="ml-1 font-bold flex items-center">Mucosa
                         <img src={grayQuestionMark}
                             title="Coloração das mucosas do animal"
                             alt="Sobre o campo Mucosa"
@@ -114,7 +114,7 @@ export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPh
                 </div>
                 {/* TPC */}
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Tempo de Preenchimento Capilar
+                    <label className="ml-1 font-bold flex items-center">Tempo de Preenchimento Capilar
                         <img src={grayQuestionMark}
                             title="Tempo de preenchimento capilar do animal em segundos"
                             alt="Sobre o campo Tempo de Preenchimento Capilar"
@@ -125,7 +125,7 @@ export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPh
                 </div>
                 {/* Hidratação */}
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Hidratação
+                    <label className="ml-1 font-bold flex items-center">Hidratação
                         <img src={grayQuestionMark}
                             title="Estado de hidratação do animal"
                             alt="Sobre o campo Hidratação"
@@ -136,7 +136,7 @@ export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPh
                 </div>
                 {/* Peso */}
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Peso (kg)
+                    <label className="ml-1 font-bold flex items-center">Peso (kg)
                         <img src={grayQuestionMark}
                             title="Peso do animal em quilogramas"
                             alt="Sobre o campo Peso"
@@ -147,7 +147,7 @@ export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPh
                 </div>
                 {/* Score */}
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Score
+                    <label className="ml-1 font-bold flex items-center">Score
                         <img src={grayQuestionMark}
                             title="Escala de 1 a 9 para avaliação da condição corporal do animal"
                             alt="Sobre o campo Score"

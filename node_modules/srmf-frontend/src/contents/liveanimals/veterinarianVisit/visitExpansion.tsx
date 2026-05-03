@@ -5,6 +5,7 @@ import { DeleteVisitModal } from "./deleteVisitModal";
 import { SamplesSideDrawer } from "./samplesSideDrawer";
 import { PhysicalExamSideDrawer } from "./physicalExamSideDrawer";
 import { VaccineSideDrawer } from "./vaccineSideDrawer";
+import { ExamResultSideDrawer } from "./examResultSideDrawer";
 
 export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
@@ -12,6 +13,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
     const [showSamplesDrawer, setShowSamplesDrawer] = useState(false);
     const [showPhysicalExamDrawer, setShowPhysicalExamDrawer] = useState(false);
     const [showVaccineDrawer, setShowVaccineDrawer] = useState(false);
+    const [showExamResultDrawer, setShowExamResultDrawer] = useState(false);
 
     return (
         <>
@@ -55,6 +57,15 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     onClose={() => setShowVaccineDrawer(false)}
                 />
             )}
+            {showExamResultDrawer && (
+                <ExamResultSideDrawer
+                    veterinarianVisitId={item.id}
+                    veterinarianVisitDate={item.date.split('T')[0]}
+                    liveAnimalName={item.liveAnimalName}
+                    veterinarianName={item.veterinarianName}
+                    onClose={() => setShowExamResultDrawer(false)}
+                />
+            )}
             {/* ==== Cabeçalho de Expansão ==== */}
             <div className="sticky top-0 z-10 bg-form-bg pb-2">
                 <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
@@ -94,7 +105,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
             <div className="gap-2 w-full text-sm grid grid-cols-3 mb-1">
                 <div className="flex flex-col w-full col-span-3">
                     <label htmlFor="email" className="ml-1 font-bold">Foto do Animal</label>
-                    <input type="text" disabled value={item.animalPicture || 'Nenhum link de foto informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <input type="text" disabled value={item.animalPicture || 'Nenhum link de foto informado'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div className="flex flex-col w-full col-span-3">
                     <label htmlFor="email" className="ml-1 font-bold">Observações</label>
@@ -117,7 +128,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     </div>
                 </>
             )}
-            {(item.hasSample || item.hasPhysicalExam || item.hasVaccine) && (
+            {(item.hasSample || item.hasPhysicalExam || item.hasVaccine || item.hasExamResult) && (
                 <>
                     <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                         <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
@@ -145,6 +156,14 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                                 className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                             >
                                 Vacinas
+                            </button>
+                        )}
+                        {item.hasExamResult && (
+                            <button
+                                onClick={() => setShowExamResultDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            >
+                                Resultado de Exames
                             </button>
                         )}
                     </div>

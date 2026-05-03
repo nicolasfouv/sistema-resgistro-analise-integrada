@@ -9,6 +9,7 @@ import {
     createExamResult,
     updateExamResult
 } from "../../../services/examResultService";
+import grayQuestionMark from '../../../assets/grayQuestionMark.svg';
 
 interface ExamResultFormModalProps {
     examResult?: GetAllExamResultOutput;
@@ -183,10 +184,18 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
         }
     }
 
-    function numInput(label: string, value: number | '', setter: (v: number | '') => void) {
+    function numInput(label: string, value: number | '', setter: (v: number | '') => void, labelTip?: string) {
         return (
             <div className="flex flex-col">
-                <label className="text-sm font-bold mb-1 text-left">{label}</label>
+                <label className="text-sm font-bold mb-1 text-left flex items-center">{label}
+                    {labelTip && (
+                        <img src={grayQuestionMark}
+                            title={labelTip}
+                            alt={`Sobre o campo ${label}`}
+                            className="inline-block size-4 ml-1"
+                        />
+                    )}
+                </label>
                 <input type="number" step="any" value={value} onChange={(e) => setter(e.target.value ? Number(e.target.value) : '')}
                     className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
             </div>
@@ -244,13 +253,13 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
                         {/* Hemograma */}
                         <fieldset className="border border-border rounded p-4">
                             <legend className="text-sm font-bold text-standard-blue px-2">Hemograma</legend>
-                            <div className="grid grid-cols-4 gap-4">
+                            <div className="grid grid-cols-4 gap-4 mb-4">
                                 {numInput('Eritrócitos', erythrocytes, setErythrocytes)}
                                 {numInput('Hemoglobina', hemoglobin, setHemoglobin)}
                                 {numInput('Hematócrito', hematocrit, setHematocrit)}
-                                {numInput('VCM', vcm, setVcm)}
-                                {numInput('HCM', hcm, setHcm)}
-                                {numInput('CHCM', chcm, setChcm)}
+                                {numInput('VCM', vcm, setVcm, "VCM...")}
+                                {numInput('HCM', hcm, setHcm, "HCM...")}
+                                {numInput('CHCM', chcm, setChcm, "CHCM...")}
                                 {numInput('Plaquetas', platelets, setPlatelets)}
                             </div>
 

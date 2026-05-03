@@ -6,7 +6,7 @@ import { ExamResultExpansion } from "./examResultExpansion";
 
 export const ExamResultContentDefinition = {
     id: 'resultadoexame-av',
-    label: 'Resultado de Exames',
+    label: 'Hemograma/Bioquímico',
     columns: [
         { key: 'veterinarianVisitDateFormatted', label: 'Data da Visita', width: 'w-3/12' },
         { key: 'liveAnimalName', label: 'Animal', width: 'w-4/12' },

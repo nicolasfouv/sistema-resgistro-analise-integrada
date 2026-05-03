@@ -54,6 +54,14 @@ export class VeterinarianVisitService {
         });
         const visitIdsWithVaccine = new Set(vaccineCounts.map(v => v.veterinarianVisitId));
 
+        // Verifica se a visita possui um resultado de exame associado
+        const examResultCounts = await prisma.examResult.groupBy({
+            by: ['veterinarianVisitId'],
+            where: { veterinarianVisitId: { in: visitIds } },
+            _count: true
+        });
+        const visitIdsWithExamResult = new Set(examResultCounts.map(er => er.veterinarianVisitId));
+
         const [user, userAccess, levels] = await Promise.all([
             prisma.user.findUnique({
                 where: { id: userId },
@@ -114,6 +122,7 @@ export class VeterinarianVisitService {
                 hasSample: visitIdsWithSamples.has(v.id),
                 hasPhysicalExam: visitIdsWithPhysicalExam.has(v.id),
                 hasVaccine: visitIdsWithVaccine.has(v.id),
+                hasExamResult: visitIdsWithExamResult.has(v.id),
                 liveAnimalId: v.liveAnimal.id,
                 liveAnimalName: v.liveAnimal.name,
                 veterinarianId: v.veterinarian.id,

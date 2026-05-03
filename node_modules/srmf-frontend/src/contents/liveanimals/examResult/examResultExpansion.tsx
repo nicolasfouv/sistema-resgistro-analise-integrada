@@ -2,6 +2,7 @@ import { useState } from "react";
 import { type GetAllExamResultOutput } from "srf-shared-types";
 import { ExamResultFormModal } from "./formExamResultModal";
 import { DeleteExamResultModal } from "./deleteExamResultModal";
+import grayQuestionMark from '../../../assets/grayQuestionMark.svg';
 
 export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExamResultOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
@@ -25,7 +26,7 @@ export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExam
                     </div>
                 </div>
                 <div className="flex gap-2 w-full text-sm">
-                    <div className="flex flex-col w-4/12">
+                    <div className="flex flex-col w-3/12">
                         <label className="ml-1 font-bold">Data da Visita</label>
                         <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
@@ -46,17 +47,53 @@ export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExam
             <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                 <h3 className="font-bold text-text-main uppercase">Hemograma</h3>
             </div>
-            <div className="gap-2 w-full text-sm grid grid-cols-4">
-                {[
-                    ['Eritrócitos', item.erythrocytes], ['Hemoglobina', item.hemoglobin],
-                    ['Hematócrito', item.hematocrit], ['VCM', item.vcm],
-                    ['HCM', item.hcm], ['CHCM', item.chcm], ['Plaquetas', item.platelets]
-                ].map(([label, value]) => (
-                    <div key={String(label)} className="flex flex-col w-full">
-                        <label className="ml-1 font-bold">{label}</label>
-                        <input type="text" disabled value={String(value)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                    </div>
-                ))}
+            <div className="gap-2 w-full text-sm grid grid-cols-4 mb-2">
+                <div key={"Eritrócitos"} className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Eritrócitos</label>
+                    <input type="text" disabled value={item.erythrocytes} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div key="Hemoglobina" className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Hemoglobina</label>
+                    <input type="text" disabled value={item.hemoglobin} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div key="Hematócrito" className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Hematócrito</label>
+                    <input type="text" disabled value={item.hematocrit} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div key="VCM" className="flex flex-col w-full">
+                    <label className="ml-1 font-bold flex items-center">VCM
+                        <img src={grayQuestionMark}
+                            title="VCM..."
+                            alt="Sobre o campo VCM"
+                            className="inline-block size-4 ml-1"
+                        />
+                    </label>
+                    <input type="text" disabled value={item.vcm} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div key="HCM" className="flex flex-col w-full">
+                    <label className="ml-1 font-bold flex items-center">HCM
+                        <img src={grayQuestionMark}
+                            title="HCM..."
+                            alt="Sobre o campo HCM"
+                            className="inline-block size-4 ml-1"
+                        />
+                    </label>
+                    <input type="text" disabled value={item.hcm} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div key="CHCM" className="flex flex-col w-full">
+                    <label className="ml-1 font-bold flex items-center">CHCM
+                        <img src={grayQuestionMark}
+                            title="CHCM..."
+                            alt="Sobre o campo CHCM"
+                            className="inline-block size-4 ml-1"
+                        />
+                    </label>
+                    <input type="text" disabled value={item.chcm} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div key="Plaquetas" className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Plaquetas</label>
+                    <input type="text" disabled value={item.platelets} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
             </div>
             <div className="gap-2 w-full text-sm grid grid-cols-4">
                 {[
@@ -79,16 +116,32 @@ export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExam
                 <h3 className="font-bold text-text-main uppercase">Bioquímico</h3>
             </div>
             <div className="gap-2 w-full text-sm grid grid-cols-4">
-                {[
-                    ['ALT', item.alt], ['Creatinina', item.creatinine],
-                    ['Fosfatase Alcalina', item.alkalinePhosphatase],
-                    ['Proteína Total', item.totalProtein], ['Ureia', item.urea]
-                ].map(([label, value]) => (
-                    <div key={String(label)} className="flex flex-col w-full">
-                        <label className="ml-1 font-bold">{label}</label>
-                        <input type="text" disabled value={String(value)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                    </div>
-                ))}
+                <div key="ALT" className="flex flex-col w-full">
+                    <label className="ml-1 font-bold flex items-center">ALT
+                        <img src={grayQuestionMark}
+                            title="ALT..."
+                            alt="Sobre o campo ALT"
+                            className="inline-block size-4 ml-1"
+                        />
+                    </label>
+                    <input type="text" disabled value={item.alt} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div key="Creatinina" className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Creatinina</label>
+                    <input type="text" disabled value={item.creatinine} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div key="Fosfatase Alcalina" className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Fosfatase Alcalina</label>
+                    <input type="text" disabled value={item.alkalinePhosphatase} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div key="Proteína Total" className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Proteína Total</label>
+                    <input type="text" disabled value={item.totalProtein} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div key="Ureia" className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Ureia</label>
+                    <input type="text" disabled value={item.urea} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
             </div>
         </>
     )

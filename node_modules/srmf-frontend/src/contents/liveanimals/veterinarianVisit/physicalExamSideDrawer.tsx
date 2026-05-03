@@ -40,7 +40,7 @@ export function PhysicalExamSideDrawer({ veterinarianVisitId, veterinarianVisitD
         { field: 'liveAnimalName', value: { type: 'text' as const, term: liveAnimalName } },
         { field: 'veterinarianName', value: { type: 'text' as const, term: veterinarianName } },
     ];
-    const pageUrl = `/animaisvivos/veterinario/examefisico?filters=${encodeURIComponent(JSON.stringify(filters))}`;
+    const pageUrl = `/animaisvivos/exameseanalises/examefisico?filters=${encodeURIComponent(JSON.stringify(filters))}`;
 
     return (
         <SideDrawer
@@ -140,7 +140,7 @@ export function PhysicalExamSideDrawer({ veterinarianVisitId, veterinarianVisitD
 function Field({ label, value, fullWidth, tooltip }: { label: string; value: string; fullWidth?: boolean; tooltip?: string }) {
     return (
         <div className={`flex flex-col ${fullWidth ? 'col-span-2' : ''}`}>
-            <label className="ml-1 font-bold text-xs text-text-main">
+            <label className="ml-1 font-bold text-xs text-text-main flex items-center">
                 {label}
                 {tooltip && (
                     <img src={grayQuestionMark}

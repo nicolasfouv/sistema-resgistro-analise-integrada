@@ -91,6 +91,13 @@ export function initRegistry() {
         component: VaccineContent
     });
 
+    registerContent('animaisvivos', 'veterinario', 'Veterinário', {
+        id: PhysicalExamContent.id,
+        label: PhysicalExamContent.label,
+        loader: fetchPhysicalExamData,
+        component: PhysicalExamContent
+    });
+
     registerContent('animaisvivos', 'exameseanalises', 'Exames e Análises', {
         id: PhysicalExamContent.id,
         label: PhysicalExamContent.label,

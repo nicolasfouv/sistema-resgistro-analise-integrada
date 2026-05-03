@@ -295,7 +295,7 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
 
                             {/* FR */}
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Frequência Respiratória (mpm)
+                                <label className="text-sm font-bold mb-1 text-left flex items-center">Frequência Respiratória (mpm)
                                     <img src={grayQuestionMark}
                                         title="Frequência respiratória medida em movimentos respiratórios por minuto"
                                         alt="Sobre o campo Frequência Respiratória"
@@ -329,7 +329,7 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
 
                             {/* FC */}
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Frequência Cardíaca (bpm)
+                                <label className="text-sm font-bold mb-1 text-left flex items-center">Frequência Cardíaca (bpm)
                                     <img src={grayQuestionMark}
                                         title="Frequência cardíaca medida em batimentos por minuto"
                                         alt="Sobre o campo Frequência Cardíaca"
@@ -349,7 +349,7 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
 
                             {/* Temperatura Retal */}
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Temperatura Retal (°C)
+                                <label className="text-sm font-bold mb-1 text-left flex items-center">Temperatura Retal (°C)
                                     <img src={grayQuestionMark}
                                         title="Temperatura retal medida em graus Celsius"
                                         alt="Sobre o campo Temperatura Retal"
@@ -369,7 +369,7 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
 
                             {/* Mucosa */}
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Mucosa
+                                <label className="text-sm font-bold mb-1 text-left flex items-center">Mucosa
                                     <img src={grayQuestionMark}
                                         title="Descrição das mucosas do animal"
                                         alt="Sobre o campo Mucosa"
@@ -391,7 +391,7 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
 
                             {/* TPC */}
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Tempo de Preenchimento Capilar
+                                <label className="text-sm font-bold mb-1 text-left flex items-center">Tempo de Preenchimento Capilar
                                     <img src={grayQuestionMark}
                                         title="Tempo de preenchimento capilar do animal"
                                         alt="Sobre o campo Tempo de Preenchimento Capilar"
@@ -411,7 +411,7 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
 
                             {/* Hidratação */}
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Hidratação
+                                <label className="text-sm font-bold mb-1 text-left flex items-center">Hidratação
                                     <img src={grayQuestionMark}
                                         title="Estado de hidratação do animal"
                                         alt="Sobre o campo Hidratação"
@@ -434,7 +434,7 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
                             <div className="grid grid-cols-2 gap-2">
                                 {/* Peso */}
                                 <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Peso (kg)
+                                    <label className="text-sm font-bold mb-1 text-left flex items-center">Peso (kg)
                                         <img src={grayQuestionMark}
                                             title="Peso do animal em quilogramas"
                                             alt="Sobre o campo Peso"
@@ -454,7 +454,7 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
 
                                 {/* Score */}
                                 <div className="flex flex-col w-full">
-                                    <label className="text-sm font-bold mb-1 text-left">Score
+                                    <label className="text-sm font-bold mb-1 text-left flex items-center">Score
                                         <img src={grayQuestionMark}
                                             title="Escala de 1 a 9 para avaliação da condição corporal do animal"
                                             alt="Sobre o campo Score"
