@@ -9,6 +9,7 @@ import { veterinarianSampleRoutes } from "./veterinarianSampleRoutes";
 import { physicalExamRoutes } from "./physicalExamRoutes";
 import { vaccineRoutes } from "./vaccineRoutes";
 import { examResultRoutes } from "./examResultRoutes";
+import { sorologyResultRoutes } from "./sorologyResultRoutes";
 
 export const router = Router();
 
@@ -22,3 +23,4 @@ router.use(veterinarianSampleRoutes);
 router.use(physicalExamRoutes);
 router.use(vaccineRoutes);
 router.use(examResultRoutes);
+router.use(sorologyResultRoutes);

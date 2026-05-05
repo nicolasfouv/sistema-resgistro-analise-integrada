@@ -53,6 +53,7 @@ import { fetchVeterinarianSampleData, VeterinarianSampleContent } from "./livean
 import { fetchPhysicalExamData, PhysicalExamContent } from "./liveanimals/physicalExam/index";
 import { fetchVaccineData, VaccineContent } from "./liveanimals/vaccine/index";
 import { fetchExamResultData, ExamResultContent } from "./liveanimals/examResult/index";
+import { fetchSorologyResultData, SorologyResultContent } from "./liveanimals/sorologyResult/index";
 
 export function initRegistry() {
     registerContent('admin', 'permissoes', 'Permissões', {
@@ -110,6 +111,13 @@ export function initRegistry() {
         label: ExamResultContent.label,
         loader: fetchExamResultData,
         component: ExamResultContent
+    });
+
+    registerContent('animaisvivos', 'exameseanalises', 'Exames e Análises', {
+        id: SorologyResultContent.id,
+        label: SorologyResultContent.label,
+        loader: fetchSorologyResultData,
+        component: SorologyResultContent
     });
 }
 

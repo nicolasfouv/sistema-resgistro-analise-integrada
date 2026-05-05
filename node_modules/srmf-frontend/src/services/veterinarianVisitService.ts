@@ -8,6 +8,7 @@ export interface VeterinarianVisitData {
     hasPhysicalExam: boolean;
     hasVaccine: boolean;
     hasExamResult: boolean;
+    hasSorologyAnalysis: boolean;
     liveAnimalId: number;
     liveAnimalName: string;
     veterinarianId: number;

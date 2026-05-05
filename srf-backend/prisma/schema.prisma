@@ -382,7 +382,7 @@ model veterinarianVisit {
   physicalExam         physicalExam?
   bodyMeasurement      bodyMeasurementVeterinarian[]
   ectoparasiteAnalysis ectoparasiteAnalysisVeterinarian[]
-  sorologyAnalysis     sorologyAnalysis[]
+  sorologyAnalysis     sorologyAnalysis?
   sampleAllocation     sampleAllocationVeterinarian[]
   examResult           examResult?
 
@@ -710,21 +710,31 @@ model examResult {
 }
 
 model sorologyAnalysis {
-  id                  Int                          @id @default(autoincrement())
-  veterinarianVisitId Int                          @map("id_visita_veterinaria")
-  veterinarianVisit   veterinarianVisit            @relation(fields: [veterinarianVisitId], references: [id])
-  sampleId            Int                          @map("id_amostra")
-  sample              sampleAllocationVeterinarian @relation(fields: [sampleId], references: [id])
-  sorologyTestId      Int                          @map("id_teste_sorologico")
-  sorologyTest        sorologyTest                 @relation(fields: [sorologyTestId], references: [id])
-  sorologyAgentId     Int                          @map("id_agente_sorologico")
-  sorologyAgent       sorologyAgent                @relation(fields: [sorologyAgentId], references: [id])
-  cuttingPoint        String                       @map("ponto_corte")
-  result              Float                        @map("resultado")
-  interpretationId    Int                          @map("id_interpretacao")
-  interpretation      enumSorologyInterpretation   @relation(fields: [interpretationId], references: [id])
+  id                  Int                        @id @default(autoincrement())
+  veterinarianVisitId Int                        @unique @map("id_visita_veterinaria")
+  veterinarianVisit   veterinarianVisit          @relation(fields: [veterinarianVisitId], references: [id])
+  sorologyTestId      Int                        @map("id_teste_sorologico")
+  sorologyTest        sorologyTest               @relation(fields: [sorologyTestId], references: [id])
+  sorologyAgentId     Int                        @map("id_agente_sorologico")
+  sorologyAgent       sorologyAgent              @relation(fields: [sorologyAgentId], references: [id])
+  cuttingPointSymbol String                     @map("simbolo_ponto_corte")
+  cuttingPointValue  String                     @map("valor_ponto_corte")
+  resultTypeId        Int                        @map("id_tipo_resultado")
+  resultType          enumSorologyResultType     @relation(fields: [resultTypeId], references: [id])
+  result              Float                      @map("resultado")
+  interpretationId    Int                        @map("id_interpretacao")
+  interpretation      enumSorologyInterpretation @relation(fields: [interpretationId], references: [id])
 
   @@map("analise_sorologica")
+}
+
+model enumSorologyResultType {
+  id   Int    @id @default(autoincrement())
+  name String @map("nome")
+
+  sorologyAnalysis sorologyAnalysis[]
+
+  @@map("enum_tipo_resultado_analise_sorologica")
 }
 
 model enumSorologyInterpretation {
@@ -768,7 +778,6 @@ model sampleAllocationVeterinarian {
   imageLink           String?                                @map("link_imagem")
   note                String?                                @map("observacao")
 
-  sorologyAnalysis       sorologyAnalysis[]
   sendSampleVeterinarian sendSampleVeterinarian[]
 
   @@unique([veterinarianVisitId, sampleTypeId])

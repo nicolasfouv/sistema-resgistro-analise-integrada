@@ -6,6 +6,7 @@ import { SamplesSideDrawer } from "./samplesSideDrawer";
 import { PhysicalExamSideDrawer } from "./physicalExamSideDrawer";
 import { VaccineSideDrawer } from "./vaccineSideDrawer";
 import { ExamResultSideDrawer } from "./examResultSideDrawer";
+import { SorologyResultSideDrawer } from "./sorologyResultSideDrawer";
 
 export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
@@ -14,6 +15,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
     const [showPhysicalExamDrawer, setShowPhysicalExamDrawer] = useState(false);
     const [showVaccineDrawer, setShowVaccineDrawer] = useState(false);
     const [showExamResultDrawer, setShowExamResultDrawer] = useState(false);
+    const [showSorologyResultDrawer, setShowSorologyResultDrawer] = useState(false);
 
     return (
         <>
@@ -64,6 +66,15 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     liveAnimalName={item.liveAnimalName}
                     veterinarianName={item.veterinarianName}
                     onClose={() => setShowExamResultDrawer(false)}
+                />
+            )}
+            {showSorologyResultDrawer && (
+                <SorologyResultSideDrawer
+                    veterinarianVisitId={item.id}
+                    veterinarianVisitDate={item.date.split('T')[0]}
+                    liveAnimalName={item.liveAnimalName}
+                    veterinarianName={item.veterinarianName}
+                    onClose={() => setShowSorologyResultDrawer(false)}
                 />
             )}
             {/* ==== Cabeçalho de Expansão ==== */}
@@ -128,7 +139,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     </div>
                 </>
             )}
-            {(item.hasSample || item.hasPhysicalExam || item.hasVaccine || item.hasExamResult) && (
+            {(item.hasSample || item.hasPhysicalExam || item.hasVaccine || item.hasExamResult || item.hasSorologyAnalysis) && (
                 <>
                     <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                         <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
@@ -164,6 +175,14 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                                 className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                             >
                                 Resultado de Exames
+                            </button>
+                        )}
+                        {item.hasSorologyAnalysis && (
+                            <button
+                                onClick={() => setShowSorologyResultDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            >
+                                Sorologia
                             </button>
                         )}
                     </div>

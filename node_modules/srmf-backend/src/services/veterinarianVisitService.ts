@@ -62,6 +62,14 @@ export class VeterinarianVisitService {
         });
         const visitIdsWithExamResult = new Set(examResultCounts.map(er => er.veterinarianVisitId));
 
+        // Verifica se a visita possui uma sorologia associada
+        const sorologyAnalysisCounts = await prisma.sorologyAnalysis.groupBy({
+            by: ['veterinarianVisitId'],
+            where: { veterinarianVisitId: { in: visitIds } },
+            _count: true
+        });
+        const visitIdsWithSorologyAnalysis = new Set(sorologyAnalysisCounts.map(sa => sa.veterinarianVisitId));
+
         const [user, userAccess, levels] = await Promise.all([
             prisma.user.findUnique({
                 where: { id: userId },
@@ -123,6 +131,7 @@ export class VeterinarianVisitService {
                 hasPhysicalExam: visitIdsWithPhysicalExam.has(v.id),
                 hasVaccine: visitIdsWithVaccine.has(v.id),
                 hasExamResult: visitIdsWithExamResult.has(v.id),
+                hasSorologyAnalysis: visitIdsWithSorologyAnalysis.has(v.id),
                 liveAnimalId: v.liveAnimal.id,
                 liveAnimalName: v.liveAnimal.name,
                 veterinarianId: v.veterinarian.id,
