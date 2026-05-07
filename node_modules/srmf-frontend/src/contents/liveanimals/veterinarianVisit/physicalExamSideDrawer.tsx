@@ -40,7 +40,7 @@ export function PhysicalExamSideDrawer({ veterinarianVisitId, veterinarianVisitD
         { field: 'liveAnimalName', value: { type: 'text' as const, term: liveAnimalName } },
         { field: 'veterinarianName', value: { type: 'text' as const, term: veterinarianName } },
     ];
-    const pageUrl = `/animaisvivos/exameseanalises/examefisico?filters=${encodeURIComponent(JSON.stringify(filters))}`;
+    const pageUrl = `/animaisvivos/veterinario/examefisico?filters=${encodeURIComponent(JSON.stringify(filters))}`;
 
     return (
         <SideDrawer
@@ -124,8 +124,8 @@ export function PhysicalExamSideDrawer({ veterinarianVisitId, veterinarianVisitD
                                         value={String(exam.score)}
                                         tooltip="Escala de 1 a 9 para avaliação da condição corporal do animal"
                                     />
-                                    <Field label="Coleta de Sangue" value={exam.bloodCollectionNote || 'Nenhuma observação informada'} fullWidth />
-                                    <Field label="Exame Físico" value={exam.physicalExamNote || 'Nenhuma observação informada'} fullWidth />
+                                    <Field label="Observações da Coleta de Sangue" value={exam.bloodCollectionNote || 'Nenhuma observação informada'} fullWidth />
+                                    <Field label="Observações do Exame Físico" value={exam.physicalExamNote || 'Nenhuma observação informada'} fullWidth />
                                     <Field label="Observações Gerais" value={exam.generalNote || 'Nenhuma observação informada'} fullWidth />
                                 </div>
                             </div>

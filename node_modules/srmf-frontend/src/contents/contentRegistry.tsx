@@ -54,6 +54,7 @@ import { fetchPhysicalExamData, PhysicalExamContent } from "./liveanimals/physic
 import { fetchVaccineData, VaccineContent } from "./liveanimals/vaccine/index";
 import { fetchExamResultData, ExamResultContent } from "./liveanimals/examResult/index";
 import { fetchSorologyResultData, SorologyResultContent } from "./liveanimals/sorologyResult/index";
+import { fetchEctoparasiteAnalysisData, EctoparasiteAnalysisContent } from "./liveanimals/ectoparasiteAnalysis/index";
 
 export function initRegistry() {
     registerContent('admin', 'permissoes', 'Permissões', {
@@ -118,6 +119,13 @@ export function initRegistry() {
         label: SorologyResultContent.label,
         loader: fetchSorologyResultData,
         component: SorologyResultContent
+    });
+
+    registerContent('animaisvivos', 'exameseanalises', 'Exames e Análises', {
+        id: EctoparasiteAnalysisContent.id,
+        label: EctoparasiteAnalysisContent.label,
+        loader: fetchEctoparasiteAnalysisData,
+        component: EctoparasiteAnalysisContent
     });
 }
 

@@ -652,6 +652,7 @@ model ectoparasiteAnalysisVeterinarian {
   eggQuantity             Int                @map("quantidade_ovos")
   note                    String?            @map("observacao")
 
+  @@unique([veterinarianVisitId, ectoparasiteGenusId, ectoparasiteSpecieId, ectoparasiteSubSpecieId])
   @@map("analise_ectoparasito_veterinario")
 }
 
@@ -717,8 +718,8 @@ model sorologyAnalysis {
   sorologyTest        sorologyTest               @relation(fields: [sorologyTestId], references: [id])
   sorologyAgentId     Int                        @map("id_agente_sorologico")
   sorologyAgent       sorologyAgent              @relation(fields: [sorologyAgentId], references: [id])
-  cuttingPointSymbol String                     @map("simbolo_ponto_corte")
-  cuttingPointValue  String                     @map("valor_ponto_corte")
+  cuttingPointSymbol  String                     @map("simbolo_ponto_corte")
+  cuttingPointValue   String                     @map("valor_ponto_corte")
   resultTypeId        Int                        @map("id_tipo_resultado")
   resultType          enumSorologyResultType     @relation(fields: [resultTypeId], references: [id])
   result              Float                      @map("resultado")
@@ -1027,6 +1028,7 @@ model ectoparasiteAnalysisNecropsy {
   eggQuantity             Int                @map("quantidade_ovos")
   note                    String?            @map("observacao")
 
+  @@unique([necropsyId, ectoparasiteGenusId, ectoparasiteSpecieId, ectoparasiteSubSpecieId])
   @@map("analise_ectoparasito_necropsia")
 }
 

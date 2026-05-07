@@ -7,6 +7,7 @@ import { PhysicalExamSideDrawer } from "./physicalExamSideDrawer";
 import { VaccineSideDrawer } from "./vaccineSideDrawer";
 import { ExamResultSideDrawer } from "./examResultSideDrawer";
 import { SorologyResultSideDrawer } from "./sorologyResultSideDrawer";
+import { EctoparasiteAnalysisSideDrawer } from "./ectoparasiteAnalysisSideDrawer";
 
 export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVisitData; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
@@ -16,6 +17,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
     const [showVaccineDrawer, setShowVaccineDrawer] = useState(false);
     const [showExamResultDrawer, setShowExamResultDrawer] = useState(false);
     const [showSorologyResultDrawer, setShowSorologyResultDrawer] = useState(false);
+    const [showEctoparasiteAnalysisDrawer, setShowEctoparasiteAnalysisDrawer] = useState(false);
 
     return (
         <>
@@ -75,6 +77,15 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     liveAnimalName={item.liveAnimalName}
                     veterinarianName={item.veterinarianName}
                     onClose={() => setShowSorologyResultDrawer(false)}
+                />
+            )}
+            {showEctoparasiteAnalysisDrawer && (
+                <EctoparasiteAnalysisSideDrawer
+                    veterinarianVisitId={item.id}
+                    veterinarianVisitDate={item.date.split('T')[0]}
+                    liveAnimalName={item.liveAnimalName}
+                    veterinarianName={item.veterinarianName}
+                    onClose={() => setShowEctoparasiteAnalysisDrawer(false)}
                 />
             )}
             {/* ==== Cabeçalho de Expansão ==== */}
@@ -139,7 +150,7 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                     </div>
                 </>
             )}
-            {(item.hasSample || item.hasPhysicalExam || item.hasVaccine || item.hasExamResult || item.hasSorologyAnalysis) && (
+            {(item.hasSample || item.hasPhysicalExam || item.hasVaccine || item.hasExamResult || item.hasSorologyAnalysis || item.hasEctoparasiteAnalysis) && (
                 <>
                     <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                         <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
@@ -183,6 +194,14 @@ export function VisitExpansion({ item, close, refresh }: { item: VeterinarianVis
                                 className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                             >
                                 Sorologia
+                            </button>
+                        )}
+                        {item.hasEctoparasiteAnalysis && (
+                            <button
+                                onClick={() => setShowEctoparasiteAnalysisDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            >
+                                Ectoparasitos
                             </button>
                         )}
                     </div>

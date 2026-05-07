@@ -70,6 +70,14 @@ export class VeterinarianVisitService {
         });
         const visitIdsWithSorologyAnalysis = new Set(sorologyAnalysisCounts.map(sa => sa.veterinarianVisitId));
 
+        // Verifica se a visita possui uma análise de ectoparasito associada
+        const ectoparasiteAnalysisCounts = await prisma.ectoparasiteAnalysisVeterinarian.groupBy({
+            by: ['veterinarianVisitId'],
+            where: { veterinarianVisitId: { in: visitIds } },
+            _count: true
+        });
+        const visitIdsWithEctoparasiteAnalysis = new Set(ectoparasiteAnalysisCounts.map(ea => ea.veterinarianVisitId));
+
         const [user, userAccess, levels] = await Promise.all([
             prisma.user.findUnique({
                 where: { id: userId },
@@ -132,6 +140,7 @@ export class VeterinarianVisitService {
                 hasVaccine: visitIdsWithVaccine.has(v.id),
                 hasExamResult: visitIdsWithExamResult.has(v.id),
                 hasSorologyAnalysis: visitIdsWithSorologyAnalysis.has(v.id),
+                hasEctoparasiteAnalysis: visitIdsWithEctoparasiteAnalysis.has(v.id),
                 liveAnimalId: v.liveAnimal.id,
                 liveAnimalName: v.liveAnimal.name,
                 veterinarianId: v.veterinarian.id,

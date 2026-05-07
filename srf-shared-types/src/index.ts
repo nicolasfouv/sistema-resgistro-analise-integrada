@@ -4,3 +4,4 @@ export * from "./physicalExam";
 export * from "./vaccine";
 export * from "./examResult";
 export * from "./sorologyResult";
+export * from "./ectoparasiteAnalysis";

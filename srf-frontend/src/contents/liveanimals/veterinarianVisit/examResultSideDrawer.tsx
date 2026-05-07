@@ -77,7 +77,7 @@ export function ExamResultSideDrawer({ veterinarianVisitId, veterinarianVisitDat
                         >
                             <div className="px-4 pb-4 bg-form-bg">
                                 <h4 className="font-bold text-text-main text-xs uppercase my-2 border-b border-gray-600 pb-1">
-                                    Detalhes do Resultado
+                                    Detalhes do Resultado dos Exames
                                 </h4>
                                 <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                     <Field label="Data da Visita" value={result.veterinarianVisitDateFormatted || ''} />
