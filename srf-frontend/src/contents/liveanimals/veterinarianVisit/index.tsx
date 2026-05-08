@@ -23,6 +23,10 @@ export const VeterinarianVisitContentDefinition = {
         { key: 'hasSample', label: 'Possui Amostra', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
         { key: 'hasPhysicalExam', label: 'Possui Exame Físico', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
         { key: 'hasVaccine', label: 'Possui Vacina', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
+        { key: 'hasExamResult', label: 'Possui Hemograma/Bioquímico', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
+        { key: 'hasSorologyAnalysis', label: 'Possui Sorologia', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
+        { key: 'hasEctoparasiteAnalysis', label: 'Possui Análise de Ectoparasitos', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
+        { key: 'hasStoolAnalysis', label: 'Possui Análise de Fezes', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
     ],
     rowIdField: 'id',
     renderActions: (item: VeterinarianVisitData, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (

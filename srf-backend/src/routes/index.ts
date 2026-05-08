@@ -11,6 +11,9 @@ import { vaccineRoutes } from "./vaccineRoutes";
 import { examResultRoutes } from "./examResultRoutes";
 import { sorologyResultRoutes } from "./sorologyResultRoutes";
 import { ectoparasiteAnalysisRoutes } from "./ectoparasiteAnalysisRoutes";
+import { stoolAnalysisRoutes } from "./stoolAnalysisRoutes";
+import { eggCystAnalysisRoutes } from "./eggCystAnalysisRoutes";
+import { molecularAnalysisRoutes } from "./molecularAnalysisRoutes";
 
 export const router = Router();
 
@@ -26,4 +29,6 @@ router.use(vaccineRoutes);
 router.use(examResultRoutes);
 router.use(sorologyResultRoutes);
 router.use(ectoparasiteAnalysisRoutes);
-
+router.use(stoolAnalysisRoutes);
+router.use(eggCystAnalysisRoutes);
+router.use(molecularAnalysisRoutes);

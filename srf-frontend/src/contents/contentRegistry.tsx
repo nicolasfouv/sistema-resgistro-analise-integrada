@@ -55,6 +55,9 @@ import { fetchVaccineData, VaccineContent } from "./liveanimals/vaccine/index";
 import { fetchExamResultData, ExamResultContent } from "./liveanimals/examResult/index";
 import { fetchSorologyResultData, SorologyResultContent } from "./liveanimals/sorologyResult/index";
 import { fetchEctoparasiteAnalysisData, EctoparasiteAnalysisContent } from "./liveanimals/ectoparasiteAnalysis/index";
+import { fetchStoolAnalysisData, StoolAnalysisContent } from "./liveanimals/stoolAnalysis/index";
+import { fetchEggCystAnalysisData, EggCystAnalysisContent } from "./liveanimals/eggCystAnalysis/index";
+import { fetchMolecularAnalysisData, MolecularAnalysisContent } from "./liveanimals/molecularAnalysis/index";
 
 export function initRegistry() {
     registerContent('admin', 'permissoes', 'Permissões', {
@@ -126,6 +129,27 @@ export function initRegistry() {
         label: EctoparasiteAnalysisContent.label,
         loader: fetchEctoparasiteAnalysisData,
         component: EctoparasiteAnalysisContent
+    });
+
+    registerContent('animaisvivos', 'exameseanalises', 'Exames e Análises', {
+        id: StoolAnalysisContent.id,
+        label: StoolAnalysisContent.label,
+        loader: fetchStoolAnalysisData,
+        component: StoolAnalysisContent
+    });
+
+    registerContent('animaisvivos', 'exameseanalises', 'Exames e Análises', {
+        id: EggCystAnalysisContent.id,
+        label: EggCystAnalysisContent.label,
+        loader: fetchEggCystAnalysisData,
+        component: EggCystAnalysisContent
+    });
+
+    registerContent('animaisvivos', 'exameseanalises', 'Exames e Análises', {
+        id: MolecularAnalysisContent.id,
+        label: MolecularAnalysisContent.label,
+        loader: fetchMolecularAnalysisData,
+        component: MolecularAnalysisContent
     });
 }
 

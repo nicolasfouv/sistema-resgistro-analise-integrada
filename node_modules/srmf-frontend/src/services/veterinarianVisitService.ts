@@ -10,6 +10,7 @@ export interface VeterinarianVisitData {
     hasExamResult: boolean;
     hasSorologyAnalysis: boolean;
     hasEctoparasiteAnalysis: boolean;
+    hasStoolAnalysis: boolean;
     liveAnimalId: number;
     liveAnimalName: string;
     veterinarianId: number;
