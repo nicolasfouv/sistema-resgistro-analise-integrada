@@ -218,7 +218,7 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
                 <div onClick={(e) => e.stopPropagation()} className="modal relative flex flex-col overflow-y-auto bg-white justify-center items-center rounded-2xl shadow-xl px-10 pt-12 pb-6 gap-5 w-260 max-h-[90vh]">
                     <button onClick={() => close()} className="absolute text-text-main hover:text-standard-red font-bold text-xl cursor-pointer leading-none top-3 right-3" title="Fechar">✕</button>
                     <h2 className="absolute top-2 text-2xl text-standard-blue font-bold">
-                        {isEditing ? 'Editando Resultado de Exame' : 'Novo Resultado de Exame'}
+                        {isEditing ? 'Editando Hemograma/Bioquímico' : 'Novo Hemograma/Bioquímico'}
                     </h2>
 
                     <form onSubmit={handleSubmit} className="w-full flex flex-col overflow-y-auto gap-4 mt-2 flex-1 min-h-0">
