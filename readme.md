@@ -60,12 +60,14 @@ MAILTRAP_INBOX_ID=xxxxx
 <h5>Front-end</h5>
 <pre>
 npm i
-npm run dev
 </pre>
 <h5>Back-end</h5>
 <pre>
 npm i
-npm start
+</pre>
+<h5>Raiz do Projeto</h5>
+<pre>
+npm run dev
 </pre>
 <h5>Banco de Dados</h5>
 <p>Importe os dados básicos para seu banco de dados local utilizando o arquivo <a href='https://github.com/nicolasfouv/sistema-de-registro-de-fauna/blob/main/tables-and-data.sql'>tables-and-data.sql</a>. Em seguida, rode na pasta de <strong>back-end</strong>:</p>
@@ -77,7 +79,7 @@ npx prisma db push
 </p>
 <h3>Utilizando o Sistema</h3>
 <p>
-  Há usuários pre-cadastrados para que você possa experimentar diferentes visões do sistema rapidamente:
+  Há usuários pré-cadastrados para que você possa experimentar diferentes visões do sistema rapidamente:
   <ul>
     <li>
       Visão como um administrador do sistema:<br/>

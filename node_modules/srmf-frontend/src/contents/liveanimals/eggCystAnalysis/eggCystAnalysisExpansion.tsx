@@ -46,9 +46,6 @@ export function EggCystAnalysisExpansion({ item, close, refresh }: { item: GetAl
             <hr className="border-gray-200" />
 
             {/* CORPO DA EXPANSÃO */}
-            <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
-                <h3 className="font-bold text-text-main uppercase">Detalhes da Análise</h3>
-            </div>
             <div className="gap-2 w-full text-sm grid grid-cols-3 mb-2">
                 <div className="flex flex-col w-full">
                     <label className="ml-1 font-bold">Qtde de ovos/cistos</label>
