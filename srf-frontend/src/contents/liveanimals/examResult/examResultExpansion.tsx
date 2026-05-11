@@ -18,7 +18,7 @@ export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExam
             {/* CABEÇALHO */}
             <div className="sticky top-0 z-10 bg-form-bg pb-2">
                 <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
-                    <h3 className="font-bold text-text-main uppercase">Detalhes do Resultado de Exame</h3>
+                    <h3 className="font-bold text-text-main uppercase">Detalhes do Hemograma/Bioquímico</h3>
                     <div className="flex gap-2 text-xs font-bold uppercase">
                         {item.canEdit && (<button onClick={() => setShowFormModal(true)} className="text-button-green uppercase cursor-pointer">Editar</button>)}
                         {item.canEdit && (<button onClick={() => setShowDeleteModal(true)} className="text-button-red uppercase cursor-pointer">Excluir</button>)}
