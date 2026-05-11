@@ -57,16 +57,14 @@ MAILTRAP_INBOX_ID=xxxxx
 </pre>
 
 <h3>Instalação</h3>
-<h5>Front-end</h5>
+<h5>Dependências</h5>
 <pre>
 npm i
-</pre>
-<h5>Back-end</h5>
-<pre>
-npm i
-</pre>
-<h5>Raiz do Projeto</h5>
-<pre>
+<br/>
+cd srf-backend
+npx prisma generate
+cd ..
+<br/>
 npm run dev
 </pre>
 <h5>Banco de Dados</h5>
