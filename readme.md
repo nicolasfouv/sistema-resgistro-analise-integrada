@@ -57,20 +57,27 @@ MAILTRAP_INBOX_ID=xxxxx
 </pre>
 
 <h3>Instalação</h3>
-<h5>Dependências</h5>
+<h5>1. Instalar Dependências</h5>
+<p>Na pasta raiz do projeto, execute:</p>
 <pre>
 npm i
-<br/>
+</pre>
+<p>O projeto utiliza <strong>npm workspaces</strong>, então esse único comando instala as dependências do front-end, back-end e shared-types.</p>
+
+<h5>2. Banco de Dados</h5>
+<p>Crie um banco de dados MySQL/MariaDB e importe os dados básicos utilizando o arquivo <a href='https://github.com/nicolasfouv/sistema-resgistro-analise-integrada/blob/main/tables-and-data.sql'>tables-and-data.sql</a>.</p>
+
+<h5>3. Gerar o Prisma Client</h5>
+<p>Na pasta de <strong>back-end</strong>, execute:</p>
+<pre>
 cd srf-backend
 npx prisma generate
 cd ..
-<br/>
-npm run dev
 </pre>
-<h5>Banco de Dados</h5>
-<p>Importe os dados básicos para seu banco de dados local utilizando o arquivo <a href='https://github.com/nicolasfouv/sistema-de-registro-de-fauna/blob/main/tables-and-data.sql'>tables-and-data.sql</a>. Em seguida, rode na pasta de <strong>back-end</strong>:</p>
+
+<h5>4. Rodar o Projeto</h5>
 <pre>
-npx prisma db push
+npm run dev
 </pre>
 <p>
   Desta forma, o sistema estará pronto para ser utilizado localmente.
