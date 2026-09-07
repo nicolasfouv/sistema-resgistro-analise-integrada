@@ -221,9 +221,9 @@ const registrationSeeds: RegistrationSeed[] = [
         ],
         secondaryField: 'serialNumber',
         secondaryValues: [
-            ' ',
-            ' ',
-            ' '
+            '',
+            '',
+            ''
         ]
     },
     {

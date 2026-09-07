@@ -62,3 +62,9 @@ router.use(necropsyExamResultRoutes);
 //     await seedQuestions();
 //     res.json({ message: 'Questions seeded successfully' });
 // });
+
+import { seedBasicRegistrations } from "../scripts/seed-basic-registrations";
+router.post('/temp/seed-basic-registrations', async (req, res) => {
+    await seedBasicRegistrations();
+    res.json({ message: 'Basic registrations seeded successfully' });
+});
