@@ -323,7 +323,7 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                                     ⭯ Limpar
                                 </button>
                             </div>
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 {options.tutorQuestions.map(question => {
                                     const answer = answers.find(a => a.questionId === question.id);
                                     const hasOptions = question.options.length > 0;
@@ -383,7 +383,7 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                                                 ✕ Remover
                                             </button>
                                         </div>
-                                        <div className="grid grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-1 gap-4">
                                             {options.animalQuestions.map(question => {
                                                 const answer = ai.answers.find(a => a.questionId === question.id);
                                                 const hasOptions = question.options.length > 0;
