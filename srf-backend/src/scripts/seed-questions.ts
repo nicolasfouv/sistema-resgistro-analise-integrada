@@ -579,12 +579,12 @@ async function seedAnimalQuestions() {
 }
 
 // Execução principal
-async function main() {
+export async function seedQuestions() {
     await seedTutorQuestions();
     await seedAnimalQuestions();
 }
 
-main()
+seedQuestions()
     .catch((e) => {
         console.error('Erro:', e);
         process.exit(1);

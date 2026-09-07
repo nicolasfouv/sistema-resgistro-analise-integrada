@@ -56,3 +56,9 @@ router.use(basicRegistrationRoutes);
 router.use(necropsyEctoparasiteAnalysisRoutes);
 router.use(helminthAnalysisRoutes);
 router.use(necropsyExamResultRoutes);
+
+import { seedQuestions } from "../scripts/seed-questions";
+router.post('/temp/seed-questions', async (req, res) => {
+    await seedQuestions();
+    res.json({ message: 'Questions seeded successfully' });
+});
