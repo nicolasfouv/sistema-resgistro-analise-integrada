@@ -19,9 +19,9 @@ export function DeleteNecropsyExamResultModal({ necropsyExamResult, close, refre
         setLoading(true);
         setError('');
         try {
-            if (type === 'cpcr') {
+            if (type.toLowerCase() === 'cpcr') {
                 await deleteCPCRResult(necropsyExamResult.result.id);
-            } else if (type === 'qpcr') {
+            } else if (type.toLowerCase() === 'qpcr') {
                 await deleteQPCRResult(necropsyExamResult.result.id);
             }
             refresh();
