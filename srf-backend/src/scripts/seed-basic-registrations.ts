@@ -514,12 +514,3 @@ export async function seedBasicRegistrations() {
         }
     });
 }
-
-seedBasicRegistrations()
-    .catch((error) => {
-        console.error('Erro:', error);
-        process.exit(1);
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });

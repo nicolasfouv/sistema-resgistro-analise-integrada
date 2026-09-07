@@ -583,12 +583,3 @@ export async function seedQuestions() {
     await seedTutorQuestions();
     await seedAnimalQuestions();
 }
-
-seedQuestions()
-    .catch((e) => {
-        console.error('Erro:', e);
-        process.exit(1);
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
