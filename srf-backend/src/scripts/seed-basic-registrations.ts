@@ -510,5 +510,8 @@ export async function seedBasicRegistrations() {
         for (const registration of registrationSeeds) {
             await seedRegistration(tx as unknown as PrismaClient, registration);
         }
+    }, {
+        maxWait: 10000,
+        timeout: 60000,
     });
 }
