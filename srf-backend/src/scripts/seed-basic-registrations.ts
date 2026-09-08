@@ -490,9 +490,7 @@ const registrationSeeds: RegistrationSeed[] = [
 
 async function seedRegistration(tx: PrismaClient, registration: RegistrationSeed) {
     const model = (tx as any)[registration.prismaModel];
-
-    await model.deleteMany();
-
+    
     for (const [index, value] of registration.values.entries()) {
         const where = {
             [registration.field]: value,
