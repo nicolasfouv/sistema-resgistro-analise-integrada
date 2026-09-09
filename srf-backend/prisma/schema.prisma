@@ -393,7 +393,7 @@ model veterinarianVisit {
   note                 String?                            @map("observacao")
   sampleAllocation     sampleAllocationVeterinarian[]
   ectoparasiteAnalysis ectoparasiteAnalysisVeterinarian[]
-  stoolAnalysis        stoolAnalysis?
+  stoolAnalysis        stoolAnalysis[]
   sorologyAnalysis     sorologyAnalysis?
   vaccineApplication   vaccineApplication[]
   castration           castration?
@@ -518,7 +518,7 @@ model enumExamInterpretation {
 
 model stoolAnalysis {
   id                     Int                  @id @default(autoincrement())
-  veterinarianVisitId    Int                  @unique @map("id_visita_veterinaria")
+  veterinarianVisitId    Int                  @map("id_visita_veterinaria")
   weight                 Float                @map("peso")
   processingTechnologyId Int                  @map("id_tecnologia_processamento")
   note                   String?              @map("observacao")

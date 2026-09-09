@@ -61,11 +61,11 @@ export function StoolAnalysisExpansion({ item, close, refresh }: { item: GetAllS
             {/* CORPO DA EXPANSÃO */}
             <div className="gap-2 w-full text-sm grid grid-cols-3 mb-2">
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Peso (Kg)</label>
+                    <label className="ml-1 font-bold">Peso das Fezes (g)</label>
                     <input type="text" disabled value={String(item.weight)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Tecnologia de Processamento</label>
+                    <label className="ml-1 font-bold">Método de Processamento</label>
                     <input type="text" disabled value={item.processingTechnologyName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div className="flex flex-col w-full col-span-3">

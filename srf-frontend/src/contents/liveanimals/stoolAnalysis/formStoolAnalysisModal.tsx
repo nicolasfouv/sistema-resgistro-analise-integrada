@@ -200,12 +200,12 @@ export function StoolAnalysisFormModal({ stoolAnalysis, close, refresh }: StoolA
                         {/* Campos da análise */}
                         <div className="grid grid-cols-3 gap-4">
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Peso (Kg)</label>
+                                <label className="text-sm font-bold mb-1 text-left">Peso das Fezes (g)</label>
                                 <input type="number" step="0.01" min="0" value={weight} onChange={(e) => setWeight(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="0.00" required />
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Tecnologia de Processamento</label>
+                                <label className="text-sm font-bold mb-1 text-left">Método de Processamento</label>
                                 <select value={processingTechnologyId} onChange={(e) => setProcessingTechnologyId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
                                     <option value="">Selecione...</option>
                                     {options.processingTechnologies.map(pt => (<option key={pt.id} value={pt.id}>{pt.name}</option>))}

@@ -14,7 +14,7 @@ export declare const physicalExamSchema: z.ZodObject<{
     bloodCollectionNote: z.ZodOptional<z.ZodString>;
     physicalExamNote: z.ZodOptional<z.ZodString>;
     generalNote: z.ZodOptional<z.ZodString>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const createPhysicalExamInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
     generalConditionId: z.ZodNumber;
@@ -29,7 +29,7 @@ export declare const createPhysicalExamInputSchema: z.ZodObject<{
     bloodCollectionNote: z.ZodOptional<z.ZodString>;
     physicalExamNote: z.ZodOptional<z.ZodString>;
     generalNote: z.ZodOptional<z.ZodString>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const updatePhysicalExamInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
     generalConditionId: z.ZodNumber;
@@ -44,7 +44,7 @@ export declare const updatePhysicalExamInputSchema: z.ZodObject<{
     bloodCollectionNote: z.ZodOptional<z.ZodString>;
     physicalExamNote: z.ZodOptional<z.ZodString>;
     generalNote: z.ZodOptional<z.ZodString>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const getAllPhysicalExamOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     veterinarianVisitId: z.ZodNumber;
@@ -71,7 +71,7 @@ export declare const getAllPhysicalExamOutputSchema: z.ZodObject<{
     liveAnimalCode: z.ZodString;
     veterinarianId: z.ZodNumber;
     veterinarianName: z.ZodString;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const getFormOptionsPhysicalExamOutputSchema: z.ZodObject<{
     veterinarianVisits: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
@@ -79,25 +79,25 @@ export declare const getFormOptionsPhysicalExamOutputSchema: z.ZodObject<{
         liveAnimal: z.ZodObject<{
             id: z.ZodNumber;
             code: z.ZodString;
-        }, z.core.$strip>;
+        }, z.z.core.$strip>;
         veterinarian: z.ZodObject<{
             id: z.ZodNumber;
             name: z.ZodString;
-        }, z.core.$strip>;
-    }, z.core.$strip>>;
+        }, z.z.core.$strip>;
+    }, z.z.core.$strip>>;
     generalConditions: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
+    }, z.z.core.$strip>>;
     mucous: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
+    }, z.z.core.$strip>>;
     hydrations: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
-}, z.core.$strip>;
+    }, z.z.core.$strip>>;
+}, z.z.core.$strip>;
 export type PhysicalExam = z.infer<typeof physicalExamSchema>;
 export type CreatePhysicalExamInput = z.infer<typeof createPhysicalExamInputSchema>;
 export type UpdatePhysicalExamInput = z.infer<typeof updatePhysicalExamInputSchema>;

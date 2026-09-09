@@ -113,14 +113,6 @@ export class StoolAnalysisService {
 
     async create(data: CreateStoolAnalysisInput, requesterId: string) {
         return prisma.$transaction(async (tx) => {
-            // Verifica se a análise de fezes já existe para esta visita
-            const existingResult = await tx.stoolAnalysis.findFirst({
-                where: {
-                    veterinarianVisitId: data.veterinarianVisitId
-                }
-            });
-            if (existingResult) throw new Error('Não é possível criar uma análise de fezes para uma visita veterinária que já possui uma análise de fezes.');
-
             // Cria a análise de fezes
             const result = await tx.stoolAnalysis.create({
                 data: {
@@ -153,15 +145,6 @@ export class StoolAnalysisService {
                 where: { id: recordId }
             });
             if (!existingResult) throw new Error('Análise de fezes não encontrada.');
-
-            // Verifica se não está repetido
-            const existingResult2 = await tx.stoolAnalysis.findFirst({
-                where: {
-                    veterinarianVisitId: data.veterinarianVisitId,
-                    id: { not: recordId }
-                }
-            });
-            if (existingResult2) throw new Error('Não é possível atualizar uma análise de fezes para uma visita veterinária que já possui uma análise de fezes.');
 
             // Atualiza
             const result = await tx.stoolAnalysis.update({
