@@ -32,20 +32,23 @@ set descricao = 'Medula'
 where descricao = 'Mêdulo';
 SET SQL_SAFE_UPDATES = 1;
 
-3) verificar com Anderson como proceder
+-- 3) verificar com Anderson como proceder
 
-4[parcialmente])
+-- 4[parcialmente])
 alter table srf.analise_fezes
 add index analise_fezes_id_visita_veterinaria_idx (id_visita_veterinaria);
 
 alter table srf.analise_fezes
 drop index analise_fezes_id_visita_veterinaria_key;
 
-5) concluído
+-- 5) concluído
 
-6) concluído
+-- 6) concluído
 
-7) a fazer
+-- 7) a fazer
 
-8)
+-- 8) concluído
+alter table srf.entrevista_tutor
+add observacao varchar(191) null;
 */
+
