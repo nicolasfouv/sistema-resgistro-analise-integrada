@@ -39,7 +39,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
     const [sendSamples, setSendSamples] = useState<SendVeterinarianSample[]>(
         sample?.sendSamples?.map(s => ({
             id: s.id,
-            storageId: s.storageId,
+            destinationId: s.destinationId,
             statusId: s.statusId,
             sendDate: s.sendDate ? new Date(s.sendDate).toISOString().slice(0, 10) : '',
             quantity: s.quantity,
@@ -156,9 +156,9 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
         }
     }
 
-    function addSendSample(storageId: number) {
-        if (sendSamples.some(ss => ss.storageId === storageId)) return;
-        setSendSamples([...sendSamples, { id: 0, storageId: storageId, statusId: 0, sendDate: '', quantity: 0, note: '' }]);
+    function addSendSample(destinationId: number) {
+        if (sendSamples.some(ss => ss.destinationId === destinationId)) return;
+        setSendSamples([...sendSamples, { id: 0, destinationId: destinationId, statusId: 0, sendDate: '', quantity: 0, note: '' }]);
     }
 
     function removeSendSample(index: number) {
@@ -167,7 +167,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
 
     function updateSendSample(index: number, field: string, value: any) {
         const updated = [...sendSamples];
-        (updated[index] as any)[field] = ['storageId', 'statusId', 'quantity'].includes(field) ? Number(value) : value;
+        (updated[index] as any)[field] = ['destinationId', 'statusId', 'quantity'].includes(field) ? Number(value) : value;
         setSendSamples(updated);
     }
 
@@ -191,7 +191,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                 note: note || undefined,
                 sendSamples: sendSamples.length > 0 ? sendSamples.map(s => ({
                     id: s.id,
-                    storageId: s.storageId,
+                    destinationId: s.destinationId,
                     statusId: s.statusId,
                     sendDate: s.sendDate,
                     quantity: s.quantity,
@@ -388,11 +388,11 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                         {/* Amostras Enviadas */}
                         <div className="flex flex-col gap-2 mt-2">
                             <div className="flex justify-between items-center">
-                                <label className="text-sm font-bold text-left">Envio de Amostras (Opcional)</label>
+                                <label className="text-sm font-bold text-left">Destinado para... (Opcional)</label>
                             </div>
 
                             {sendSamples.map((ss, index) => {
-                                const selectedStorage = options.storages.find(s => s.id === ss.storageId);
+                                const selectedDestination = options.destinations.find(d => d.id === ss.destinationId);
                                 return (
                                     <div key={index} className="relative flex gap-2 items-end bg-white p-3 border border-border rounded mb-2">
                                         <div className="grid grid-cols-4 gap-2">
@@ -400,7 +400,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                                                 <label className="text-xs font-bold mb-1 text-left">Local de Armazenamento</label>
                                                 <input
                                                     className="border border-border rounded p-2 bg-gray-100"
-                                                    value={selectedStorage?.name}
+                                                    value={selectedDestination?.name}
                                                     disabled
                                                     required
                                                 />
@@ -471,7 +471,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                                 );
                             })}
                             {/* Adicionar envio */}
-                            {options.storages.filter(s => !sendSamples.some(ss => ss.storageId === s.id)).length > 0 && (
+                            {options.destinations.filter(d => !sendSamples.some(ss => ss.destinationId === d.id)).length > 0 && (
                                 <div className="flex items-center gap-3 border border-dashed border-border rounded p-3">
                                     <label className="text-sm font-bold text-text-main whitespace-nowrap">Adicionar Envio:</label>
                                     <select
@@ -481,9 +481,9 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                                         }}
                                         className="border border-border rounded p-2 bg-white h-10 flex-1"
                                     >
-                                        <option value="">Selecione um armazenamento para adicionar...</option>
-                                        {options.storages.filter(s => !sendSamples.some(ss => ss.storageId === s.id)).map(s => (
-                                            <option key={s.id} value={s.id}>{s.name}</option>
+                                        <option value="">Selecione um destino para adicionar...</option>
+                                        {options.destinations.filter(d => !sendSamples.some(ss => ss.destinationId === d.id)).map(d => (
+                                            <option key={d.id} value={d.id}>{d.name}</option>
                                         ))}
                                     </select>
                                 </div>

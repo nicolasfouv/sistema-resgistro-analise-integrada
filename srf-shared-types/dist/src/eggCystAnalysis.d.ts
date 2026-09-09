@@ -5,19 +5,19 @@ export declare const eggCystAnalysisSchema: z.ZodObject<{
     eggCystSpecieId: z.ZodNumber;
     quantity: z.ZodNumber;
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-}, z.z.core.$strip>;
+}, z.core.$strip>;
 export declare const createEggCystAnalysisInputSchema: z.ZodObject<{
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     stoolAnalysisId: z.ZodNumber;
     eggCystSpecieId: z.ZodNumber;
     quantity: z.ZodNumber;
-}, z.z.core.$strip>;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+}, z.core.$strip>;
 export declare const updateEggCystAnalysisInputSchema: z.ZodObject<{
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     stoolAnalysisId: z.ZodNumber;
     eggCystSpecieId: z.ZodNumber;
     quantity: z.ZodNumber;
-}, z.z.core.$strip>;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+}, z.core.$strip>;
 export declare const getAllEggCystAnalysisOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     stoolAnalysisId: z.ZodNumber;
@@ -34,7 +34,7 @@ export declare const getAllEggCystAnalysisOutputSchema: z.ZodObject<{
     veterinarianId: z.ZodNumber;
     veterinarianName: z.ZodString;
     eggCystSpecieName: z.ZodString;
-}, z.z.core.$strip>;
+}, z.core.$strip>;
 export declare const getFormOptionsEggCystAnalysisOutputSchema: z.ZodObject<{
     stoolAnalyses: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
@@ -44,18 +44,18 @@ export declare const getFormOptionsEggCystAnalysisOutputSchema: z.ZodObject<{
             liveAnimal: z.ZodObject<{
                 id: z.ZodNumber;
                 code: z.ZodString;
-            }, z.z.core.$strip>;
+            }, z.core.$strip>;
             veterinarian: z.ZodObject<{
                 id: z.ZodNumber;
                 name: z.ZodString;
-            }, z.z.core.$strip>;
-        }, z.z.core.$strip>;
-    }, z.z.core.$strip>>;
+            }, z.core.$strip>;
+        }, z.core.$strip>;
+    }, z.core.$strip>>;
     eggCystSpecies: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.z.core.$strip>>;
-}, z.z.core.$strip>;
+    }, z.core.$strip>>;
+}, z.core.$strip>;
 export type EggCystAnalysis = z.infer<typeof eggCystAnalysisSchema>;
 export type CreateEggCystAnalysisInput = z.infer<typeof createEggCystAnalysisInputSchema>;
 export type UpdateEggCystAnalysisInput = z.infer<typeof updateEggCystAnalysisInputSchema>;

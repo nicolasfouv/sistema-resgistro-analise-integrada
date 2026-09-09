@@ -815,19 +815,27 @@ model sampleAllocationVeterinarian {
 model sendSampleVeterinarian {
   id                             Int                                    @id @default(autoincrement())
   sampleAllocationVeterinarianId Int                                    @map("id_alocacao_amostra_veterinario")
-  storageId                      Int                                    @map("id_armazenamento")
+  destinationId                  Int                                    @map("id_destino_amostra")
+  destination                    destinationSample                      @relation(fields: [destinationId], references: [id])
   statusId                       Int                                    @map("id_status")
   quantity                       Int                                    @map("quantidade")
   sendDate                       DateTime                               @map("data_envio") @db.DateTime(0)
   note                           String?                                @map("observacao")
   sampleAllocationVeterinarian   sampleAllocationVeterinarian           @relation(fields: [sampleAllocationVeterinarianId], references: [id])
-  storage                        storage                                @relation(fields: [storageId], references: [id])
   status                         enumVeterinarianSampleAllocationStatus @relation(fields: [statusId], references: [id])
 
-  @@unique([sampleAllocationVeterinarianId, storageId])
-  @@index([storageId], map: "envio_amostra_veterinario_id_armazenamento_fkey")
+  @@unique([sampleAllocationVeterinarianId, destinationId])
+  @@index([destinationId], map: "envio_amostra_veterinario_id_destino_fkey")
   @@index([statusId], map: "envio_amostra_veterinario_id_status_fkey")
   @@map("envio_amostra_veterinario")
+}
+
+model destinationSample {
+  id                   Int                   @id @default(autoincrement())
+  name                 String                @map("nome")
+  sendSampleVeterinarian sendSampleVeterinarian[]
+
+  @@map("destino_amostra")
 }
 
 model enumVeterinarianSampleAllocationStatus {
@@ -870,14 +878,13 @@ model storage {
   sampleAllocationNecropsy     sampleAllocationNecropsy[]
   sampleAllocationVeterinarian sampleAllocationVeterinarian[]
   sendSampleNecropsy           sendSampleNecropsy[]
-  sendSampleVeterinarian       sendSampleVeterinarian[]
 
   @@map("armazem")
 }
 
 model deadAnimal {
   id                      Int                   @id @default(autoincrement())
-  code              String                   @map("codigo") @unique
+  code                    String                @map("codigo") @unique
   deadAnimalGroupId       Int                   @map("id_grupo_animal_morto")
   specieId                Int                   @map("id_especie")
   deadAnimalOriginId      Int                   @map("id_origem_animal_morto")

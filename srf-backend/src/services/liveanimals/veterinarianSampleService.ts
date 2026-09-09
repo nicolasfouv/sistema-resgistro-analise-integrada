@@ -32,7 +32,7 @@ export class VeterinarianSampleService {
                 sendSampleVeterinarian: {
                     select: {
                         id: true,
-                        storage: { select: { id: true, name: true } },
+                        destination: { select: { id: true, name: true } },
                         status: { select: { id: true, name: true } },
                         quantity: true,
                         sendDate: true,
@@ -89,16 +89,14 @@ export class VeterinarianSampleService {
                     note: s.note || undefined,
                     sendSamples: s.sendSampleVeterinarian.map(sends => ({
                         id: sends.id,
-                        storageId: sends.storage.id,
-                        storageName: sends.storage.name,
+                        destinationId: sends.destination.id,
+                        destinationName: sends.destination.name,
                         statusId: sends.status.id,
                         statusName: sends.status.name,
                         sendDate: sends.sendDate.toISOString(),
                         quantity: sends.quantity,
                         note: sends.note || undefined
-                    })),
-                    allStorageNames: s.storage.name + "," + s.sendSampleVeterinarian.map(sends => sends.storage.name).join(","),
-                    allStatusNames: s.status.name + "," + s.sendSampleVeterinarian.map(sends => sends.status.name).join(",")
+                    }))
                 };
             })
         );
@@ -107,7 +105,7 @@ export class VeterinarianSampleService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsVeterinarianSampleOutput> {
-        const [veterinarianVisits, sampleTypes, status, storages] = await Promise.all([
+        const [veterinarianVisits, sampleTypes, status, storages, destinations] = await Promise.all([
             prisma.veterinarianVisit.findMany({
                 select: {
                     id: true,
@@ -128,6 +126,10 @@ export class VeterinarianSampleService {
             prisma.storage.findMany({
                 select: { id: true, name: true },
                 orderBy: { name: 'asc' }
+            }),
+            prisma.destinationSample.findMany({
+                select: { id: true, name: true },
+                orderBy: { name: 'asc' }
             })
         ]);
 
@@ -138,7 +140,7 @@ export class VeterinarianSampleService {
                 liveAnimal: { id: v.liveAnimal.id, code: v.liveAnimal.code },
                 veterinarian: v.veterinarian
             })),
-            sampleTypes, status, storages
+            sampleTypes, status, storages, destinations
         };
     }
 
@@ -201,7 +203,7 @@ export class VeterinarianSampleService {
             if (data.sendSamples) {
                 // Verifica duplicidade de amostras enviadas
                 data.sendSamples.forEach(sendSample => {
-                    const countStorageId = data.sendSamples!.filter(sends => sends.storageId === sendSample.storageId).length;
+                    const countStorageId = data.sendSamples!.filter(sends => sends.destinationId === sendSample.destinationId).length;
                     if (countStorageId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo local.')
                 });
 
@@ -225,7 +227,7 @@ export class VeterinarianSampleService {
                     const sendSampleCreated = await tx.sendSampleVeterinarian.create({
                         data: {
                             sampleAllocationVeterinarianId: sample.id,
-                            storageId: sendSample.storageId,
+                            destinationId: sendSample.destinationId,
                             statusId: sendSample.statusId,
                             quantity: sendSample.quantity,
                             sendDate: new Date(sendSample.sendDate + 'T12:00:00'),
@@ -320,8 +322,8 @@ export class VeterinarianSampleService {
             if (data.sendSamples) {
                 // Verifica duplicidade de amostras enviadas
                 data.sendSamples.forEach(sendSample => {
-                    const countStorageId = data.sendSamples!.filter(sends => sends.storageId === sendSample.storageId).length;
-                    if (countStorageId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo local.')
+                    const countDestinationId = data.sendSamples!.filter(sends => sends.destinationId === sendSample.destinationId).length;
+                    if (countDestinationId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo local.')
                 });
 
                 // Verifica se a data de envio não é anterior à data da visita
@@ -349,7 +351,7 @@ export class VeterinarianSampleService {
                     const sendSampleCreated = await tx.sendSampleVeterinarian.create({
                         data: {
                             sampleAllocationVeterinarianId: sample.id,
-                            storageId: sendSample.storageId,
+                            destinationId: sendSample.destinationId,
                             statusId: sendSample.statusId,
                             quantity: sendSample.quantity,
                             sendDate: new Date(sendSample.sendDate + 'T12:00:00'),
