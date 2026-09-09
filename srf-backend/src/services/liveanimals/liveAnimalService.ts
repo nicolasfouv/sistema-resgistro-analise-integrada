@@ -24,6 +24,7 @@ export class LiveAnimalService {
                 genderId: true,
                 gender: { select: { id: true, name: true } },
                 birthDate: true,
+                age: true,
                 active: true,
                 animalPicture: true,
                 cardLink: true,
@@ -70,7 +71,8 @@ export class LiveAnimalService {
                     name: a.name || undefined,
                     genderId: a.genderId,
                     genderName: a.gender.name,
-                    birthDate: a.birthDate.toISOString(),
+                    birthDate: a.birthDate ? a.birthDate.toISOString() : undefined,
+                    age: a.age || undefined,
                     active: a.active,
                     animalPicture: a.animalPicture || undefined,
                     cardLink: a.cardLink || undefined,
@@ -127,7 +129,8 @@ export class LiveAnimalService {
                     specieId: data.specieId,
                     name: data.name || null,
                     genderId: data.genderId,
-                    birthDate: new Date(data.birthDate + 'T12:00:00Z'),
+                    birthDate: data.birthDate ? new Date(data.birthDate + 'T12:00:00Z') : null,
+                    age: data.age || null,
                     active: data.active,
                     animalPicture: data.animalPicture || null,
                     cardLink: data.cardLink || null,
@@ -154,7 +157,7 @@ export class LiveAnimalService {
         // Verifica se já existe um animal com aquela sigla e número
         const existingCode = await prisma.liveAnimal.findFirst({
             where: {
-                code: data.code
+                code: data.code, NOT: { id: recordId }
             }
         });
         if (existingCode) throw new Error('Já existe um animal cadastrado com esta sigla e número.');
@@ -174,7 +177,8 @@ export class LiveAnimalService {
                     specieId: data.specieId,
                     name: data.name || null,
                     genderId: data.genderId,
-                    birthDate: new Date(data.birthDate + 'T12:00:00Z'),
+                    birthDate: data.birthDate ? new Date(data.birthDate + 'T12:00:00Z') : null,
+                    age: data.age || null,
                     active: data.active,
                     animalPicture: data.animalPicture || null,
                     cardLink: data.cardLink || null,

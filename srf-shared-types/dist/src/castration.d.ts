@@ -5,19 +5,19 @@ export declare const castrationSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
     date: z.ZodString;
     note: z.ZodOptional<z.ZodString>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const createCastrationInputSchema: z.ZodObject<{
+    date: z.ZodString;
     liveAnimalId: z.ZodNumber;
     veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
-    date: z.ZodString;
     note: z.ZodOptional<z.ZodString>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const updateCastrationInputSchema: z.ZodObject<{
+    date: z.ZodString;
     liveAnimalId: z.ZodNumber;
     veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
-    date: z.ZodString;
     note: z.ZodOptional<z.ZodString>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const getAllCastrationOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     liveAnimalId: z.ZodNumber;
@@ -32,25 +32,25 @@ export declare const getAllCastrationOutputSchema: z.ZodObject<{
     veterinarianName: z.ZodOptional<z.ZodString>;
     dateFormatted: z.ZodOptional<z.ZodString>;
     hasVeterinarianVisit: z.ZodBoolean;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const getFormOptionsCastrationOutputSchema: z.ZodObject<{
     liveAnimals: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         code: z.ZodString;
-    }, z.core.$strip>>;
+    }, z.z.core.$strip>>;
     veterinarianVisits: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         date: z.ZodString;
         liveAnimal: z.ZodObject<{
             id: z.ZodNumber;
             code: z.ZodString;
-        }, z.core.$strip>;
+        }, z.z.core.$strip>;
         veterinarian: z.ZodObject<{
             id: z.ZodNumber;
             name: z.ZodString;
-        }, z.core.$strip>;
-    }, z.core.$strip>>;
-}, z.core.$strip>;
+        }, z.z.core.$strip>;
+    }, z.z.core.$strip>>;
+}, z.z.core.$strip>;
 export type Castration = z.infer<typeof castrationSchema>;
 export type CreateCastrationInput = z.infer<typeof createCastrationInputSchema>;
 export type UpdateCastrationInput = z.infer<typeof updateCastrationInputSchema>;

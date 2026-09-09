@@ -11,9 +11,10 @@ export declare const ectoparasiteAnalysisSchema: z.ZodObject<{
     larvaeQuantity: z.ZodNumber;
     eggQuantity: z.ZodNumber;
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const createEctoparasiteAnalysisInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     ectoparasiteGenusId: z.ZodNumber;
     ectoparasiteSpecieId: z.ZodNumber;
     ectoparasiteSubSpecieId: z.ZodNumber;
@@ -22,10 +23,10 @@ export declare const createEctoparasiteAnalysisInputSchema: z.ZodObject<{
     nymphQuantity: z.ZodNumber;
     larvaeQuantity: z.ZodNumber;
     eggQuantity: z.ZodNumber;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const updateEctoparasiteAnalysisInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     ectoparasiteGenusId: z.ZodNumber;
     ectoparasiteSpecieId: z.ZodNumber;
     ectoparasiteSubSpecieId: z.ZodNumber;
@@ -34,8 +35,7 @@ export declare const updateEctoparasiteAnalysisInputSchema: z.ZodObject<{
     nymphQuantity: z.ZodNumber;
     larvaeQuantity: z.ZodNumber;
     eggQuantity: z.ZodNumber;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const getAllEctoparasiteAnalysisOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     veterinarianVisitId: z.ZodNumber;
@@ -59,7 +59,7 @@ export declare const getAllEctoparasiteAnalysisOutputSchema: z.ZodObject<{
     genusName: z.ZodString;
     specieName: z.ZodString;
     subSpecieName: z.ZodString;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const getFormOptionsEctoparasiteAnalysisOutputSchema: z.ZodObject<{
     veterinarianVisits: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
@@ -67,21 +67,21 @@ export declare const getFormOptionsEctoparasiteAnalysisOutputSchema: z.ZodObject
         liveAnimal: z.ZodObject<{
             id: z.ZodNumber;
             code: z.ZodString;
-        }, z.core.$strip>;
+        }, z.z.core.$strip>;
         veterinarian: z.ZodObject<{
             id: z.ZodNumber;
             name: z.ZodString;
-        }, z.core.$strip>;
-    }, z.core.$strip>>;
+        }, z.z.core.$strip>;
+    }, z.z.core.$strip>>;
     genuses: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
+    }, z.z.core.$strip>>;
     species: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
-}, z.core.$strip>;
+    }, z.z.core.$strip>>;
+}, z.z.core.$strip>;
 export type EctoparasiteAnalysis = z.infer<typeof ectoparasiteAnalysisSchema>;
 export type CreateEctoparasiteAnalysisInput = z.infer<typeof createEctoparasiteAnalysisInputSchema>;
 export type UpdateEctoparasiteAnalysisInput = z.infer<typeof updateEctoparasiteAnalysisInputSchema>;

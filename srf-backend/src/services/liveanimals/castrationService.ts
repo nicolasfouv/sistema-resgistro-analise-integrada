@@ -125,9 +125,9 @@ export class CastrationService {
                 where: { id: data.liveAnimalId }
             });
             if (animal) {
-                const animalBirthDate = new Date(animal.birthDate);
+                const animalBirthDate = animal.birthDate ? new Date(animal.birthDate) : null;
                 const castrationDate = new Date(data.date);
-                if (castrationDate < animalBirthDate) throw new Error('A data da castração deve ser maior que a data de nascimento do animal.');
+                if (animalBirthDate && castrationDate < animalBirthDate) throw new Error('A data da castração deve ser maior que a data de nascimento do animal.');
             }
 
             // Verifica se a visita veterinária existe (opcional)
@@ -198,9 +198,9 @@ export class CastrationService {
                 where: { id: data.liveAnimalId }
             });
             if (animal) {
-                const animalBirthDate = new Date(animal.birthDate);
+                const animalBirthDate = animal.birthDate ? new Date(animal.birthDate) : null;
                 const castrationDate = new Date(data.date);
-                if (castrationDate < animalBirthDate) throw new Error('A data da castração deve ser maior que a data de nascimento do animal.');
+                if (animalBirthDate && castrationDate < animalBirthDate) throw new Error('A data da castração deve ser maior que a data de nascimento do animal.');
             }
 
             // Verifica se a visita veterinária existe (opcional)

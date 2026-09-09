@@ -29,6 +29,7 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
     const [specieId, setSpecieId] = useState<number | ''>(liveAnimal?.specieId ?? '');
     const [genderId, setGenderId] = useState<number | ''>(liveAnimal?.genderId ?? '');
     const [birthDate, setBirthDate] = useState(liveAnimal?.birthDate ? liveAnimal.birthDate.split('T')[0] : '');
+    const [age, setAge] = useState<string>(liveAnimal?.age ? 'real' : (liveAnimal?.birthDate ? 'estimated' : ''));
     const [active, setActive] = useState(liveAnimal?.active ?? true);
     const [animalPicture, setAnimalPicture] = useState<string>(liveAnimal?.animalPicture ?? '');
     const [cardLink, setCardLink] = useState<string>(liveAnimal?.cardLink ?? '');
@@ -56,7 +57,8 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
                 tutorId: Number(tutorId) || undefined,
                 specieId: Number(specieId),
                 genderId: Number(genderId),
-                birthDate: birthDate,
+                birthDate: birthDate || undefined,
+                age: age ? (age === 'real' ? true : false) : undefined,
                 active: Boolean(active),
                 animalPicture: animalPicture || undefined,
                 cardLink: cardLink || undefined
@@ -119,9 +121,16 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Data de Nascimento</label>
-                                <input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)}
-                                    className="border border-border rounded p-2 bg-white h-10" required />
+                                <label className="text-sm font-bold mb-1 text-left">Data de Nascimento (Opcional)</label>
+                                <div className="flex gap-4">
+                                    <select value={age} onChange={(e) => setAge(e.target.value)} className="border border-border rounded p-2 bg-white h-10 w-2/5" required={birthDate !== ''}>
+                                        <option value="">Selecione...</option>
+                                        <option value="real">Real</option>
+                                        <option value="estimated">Estimada</option>
+                                    </select>
+                                    <input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)}
+                                        className="border border-border rounded p-2 bg-white h-10 w-3/5" required={age !== ''} />
+                                </div>
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Gênero</label>

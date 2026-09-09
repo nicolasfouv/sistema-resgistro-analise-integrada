@@ -91,7 +91,15 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
             <div className="gap-2 w-full text-sm grid grid-cols-4 mb-2">
                 <div className="flex flex-col w-full">
                     <label className="ml-1 font-bold">Data de Nascimento</label>
-                    <input type="text" disabled value={item.birthDateFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    {item.birthDateFormatted && (
+                        <div className="flex gap-2">
+                            <input type="text" disabled value={item.ageFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input w-2/5" />
+                            <input type="text" disabled value={item.birthDateFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input w-3/5" />
+                        </div>
+                    )}
+                    {!item.birthDateFormatted && (
+                        <input type="text" disabled value="Nenhuma data informada" className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    )}
                 </div>
                 <div className="flex flex-col w-full">
                     <label className="ml-1 font-bold">Gênero</label>

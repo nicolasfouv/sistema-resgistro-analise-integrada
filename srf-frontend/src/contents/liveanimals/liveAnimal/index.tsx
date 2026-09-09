@@ -70,6 +70,7 @@ export async function fetchLiveAnimalsData() {
         ...r,
         activeFormatted: r.active ? 'Sim' : 'Não',
         birthDateFormatted: r.birthDate ? new Date(r.birthDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '',
+        ageFormatted: r.age ? 'Real' : 'Estimada'
     }));
 };
 

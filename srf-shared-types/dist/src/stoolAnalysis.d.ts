@@ -5,19 +5,19 @@ export declare const stoolAnalysisSchema: z.ZodObject<{
     weight: z.ZodNumber;
     processingTechnologyId: z.ZodNumber;
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const createStoolAnalysisInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     weight: z.ZodNumber;
     processingTechnologyId: z.ZodNumber;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const updateStoolAnalysisInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     weight: z.ZodNumber;
     processingTechnologyId: z.ZodNumber;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const getAllStoolAnalysisOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     veterinarianVisitId: z.ZodNumber;
@@ -35,7 +35,7 @@ export declare const getAllStoolAnalysisOutputSchema: z.ZodObject<{
     processingTechnologyName: z.ZodString;
     hasEggCystAnalysis: z.ZodBoolean;
     hasMolecularAnalysis: z.ZodBoolean;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const getFormOptionsStoolAnalysisOutputSchema: z.ZodObject<{
     veterinarianVisits: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
@@ -43,17 +43,17 @@ export declare const getFormOptionsStoolAnalysisOutputSchema: z.ZodObject<{
         liveAnimal: z.ZodObject<{
             id: z.ZodNumber;
             code: z.ZodString;
-        }, z.core.$strip>;
+        }, z.z.core.$strip>;
         veterinarian: z.ZodObject<{
             id: z.ZodNumber;
             name: z.ZodString;
-        }, z.core.$strip>;
-    }, z.core.$strip>>;
+        }, z.z.core.$strip>;
+    }, z.z.core.$strip>>;
     processingTechnologies: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
-}, z.core.$strip>;
+    }, z.z.core.$strip>>;
+}, z.z.core.$strip>;
 export type StoolAnalysis = z.infer<typeof stoolAnalysisSchema>;
 export type CreateStoolAnalysisInput = z.infer<typeof createStoolAnalysisInputSchema>;
 export type UpdateStoolAnalysisInput = z.infer<typeof updateStoolAnalysisInputSchema>;

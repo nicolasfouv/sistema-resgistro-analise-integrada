@@ -27,10 +27,10 @@ export declare const getAllNecropsySampleOutputSchema: z.ZodObject<{
         sendDateFormatted: z.ZodOptional<z.ZodString>;
         quantity: z.ZodNumber;
         note: z.ZodOptional<z.ZodString>;
-    }, z.core.$strip>>>;
+    }, z.z.core.$strip>>>;
     allStorageNames: z.ZodString;
     allStatusNames: z.ZodString;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export declare const getFormOptionsNecropsySampleOutputSchema: z.ZodObject<{
     necropsies: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
@@ -38,21 +38,21 @@ export declare const getFormOptionsNecropsySampleOutputSchema: z.ZodObject<{
         deadAnimal: z.ZodObject<{
             id: z.ZodNumber;
             code: z.ZodString;
-        }, z.core.$strip>;
-    }, z.core.$strip>>;
+        }, z.z.core.$strip>;
+    }, z.z.core.$strip>>;
     sampleTypes: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         description: z.ZodString;
-    }, z.core.$strip>>;
+    }, z.z.core.$strip>>;
     status: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
+    }, z.z.core.$strip>>;
     storages: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.core.$strip>>;
-}, z.core.$strip>;
+    }, z.z.core.$strip>>;
+}, z.z.core.$strip>;
 export declare const createNecropsySampleInputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
     sampleTypeId: z.ZodNumber;
@@ -67,8 +67,8 @@ export declare const createNecropsySampleInputSchema: z.ZodObject<{
         sendDate: z.ZodString;
         quantity: z.ZodNumber;
         note: z.ZodOptional<z.ZodString>;
-    }, z.core.$strip>>>;
-}, z.core.$strip>;
+    }, z.z.core.$strip>>>;
+}, z.z.core.$strip>;
 export declare const updateNecropsySampleInputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
     sampleTypeId: z.ZodNumber;
@@ -83,8 +83,8 @@ export declare const updateNecropsySampleInputSchema: z.ZodObject<{
         sendDate: z.ZodString;
         quantity: z.ZodNumber;
         note: z.ZodOptional<z.ZodString>;
-    }, z.core.$strip>>>;
-}, z.core.$strip>;
+    }, z.z.core.$strip>>>;
+}, z.z.core.$strip>;
 export declare const sendSampleInputSchema: z.ZodObject<{
     id: z.ZodNumber;
     storageId: z.ZodNumber;
@@ -92,7 +92,7 @@ export declare const sendSampleInputSchema: z.ZodObject<{
     sendDate: z.ZodString;
     quantity: z.ZodNumber;
     note: z.ZodOptional<z.ZodString>;
-}, z.core.$strip>;
+}, z.z.core.$strip>;
 export type GetAllNecropsySampleOutput = z.infer<typeof getAllNecropsySampleOutputSchema>;
 export type GetFormOptionsNecropsySampleOutput = z.infer<typeof getFormOptionsNecropsySampleOutputSchema>;
 export type CreateNecropsySampleInput = z.infer<typeof createNecropsySampleInputSchema>;
