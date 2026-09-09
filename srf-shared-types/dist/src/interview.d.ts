@@ -22,6 +22,7 @@ export declare const getAllInterviewOutputSchema: z.ZodObject<{
     tutorName: z.ZodString;
     date: z.ZodString;
     dateFormatted: z.ZodOptional<z.ZodString>;
+    notes: z.ZodOptional<z.ZodString>;
     tutorAnswers: z.ZodArray<z.ZodObject<{
         questionId: z.ZodNumber;
         questionText: z.ZodString;
@@ -94,6 +95,7 @@ export declare const animalInterviewInputSchema: z.ZodObject<{
 export declare const createInterviewInputSchema: z.ZodObject<{
     tutorId: z.ZodNumber;
     date: z.ZodString;
+    notes: z.ZodOptional<z.ZodString>;
     answers: z.ZodArray<z.ZodObject<{
         questionId: z.ZodNumber;
         text: z.ZodNullable<z.ZodOptional<z.ZodString>>;
@@ -111,6 +113,7 @@ export declare const createInterviewInputSchema: z.ZodObject<{
 export declare const updateInterviewInputSchema: z.ZodObject<{
     tutorId: z.ZodNumber;
     date: z.ZodString;
+    notes: z.ZodOptional<z.ZodString>;
     answers: z.ZodArray<z.ZodObject<{
         questionId: z.ZodNumber;
         text: z.ZodNullable<z.ZodOptional<z.ZodString>>;

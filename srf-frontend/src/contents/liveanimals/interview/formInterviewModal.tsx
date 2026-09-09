@@ -38,6 +38,7 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
     const [selectedDate, setSelectedDate] = useState<string>(
         interview?.date ? interview.date.split('T')[0] : ''
     );
+    const [note, setNote] = useState<string>(interview?.notes ?? '');
     const [answers, setAnswers] = useState<AnswerState[]>([]);
     const [animalInterviews, setAnimalInterviews] = useState<AnimalInterviewState[]>([]);
 
@@ -166,6 +167,7 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
             const data = {
                 tutorId: Number(selectedTutorId),
                 date: selectedDate,
+                notes: note || undefined,
                 answers: answers.map(a => ({
                     questionId: a.questionId,
                     text: a.answerOptionId ? null : (a.text || null),
@@ -446,6 +448,16 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                                 )}
                             </>
                         )}
+                        <div className="flex flex-col">
+                            <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
+                            <textarea
+                                value={note}
+                                onChange={(e) => setNote(e.target.value)}
+                                className="border border-border rounded p-2 bg-white resize-none"
+                                rows={3}
+                                placeholder="Digite as observações..."
+                            />
+                        </div>
 
                         {error && <p className="text-red-500 text-sm">{error}</p>}
 

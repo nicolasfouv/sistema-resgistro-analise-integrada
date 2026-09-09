@@ -306,6 +306,7 @@ model tutorInterview {
   id              Int               @id @default(autoincrement())
   tutorId         Int               @unique @map("id_tutor")
   date            DateTime          @map("data") @db.DateTime(0)
+  notes           String?           @map("observacao")
   animalInterview animalInterview[]
   tutor           tutor             @relation(fields: [tutorId], references: [id])
   tutorAnswer     tutorAnswer[]

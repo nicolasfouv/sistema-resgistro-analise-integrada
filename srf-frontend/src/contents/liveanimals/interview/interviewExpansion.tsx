@@ -100,6 +100,15 @@ export function InterviewExpansion({ item, close, refresh }: { item: GetAllInter
                     ))}
                 </>
             )}
+            <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
+                <h3 className="font-bold text-text-main uppercase">Sobre a Entrevista</h3>
+            </div>
+            <div className="gap-2 w-full text-sm grid grid-cols-1">
+                <div className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Observações</label>
+                    <textarea rows={3} disabled value={item.notes || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input resize-none" />
+                </div>
+            </div>
 
             <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                 <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>

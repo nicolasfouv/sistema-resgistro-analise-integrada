@@ -22,6 +22,7 @@ export const getAllInterviewOutputSchema = z.object({
     tutorName: z.string(),
     date: z.string(),
     dateFormatted: z.string().optional(),
+    notes: z.string().optional(),
     tutorAnswers: z.array(answerOutputSchema),
     animalInterviews: z.array(animalInterviewOutputSchema),
     // Campo auxiliar para filtragem por nome do animal
@@ -69,6 +70,7 @@ export const animalInterviewInputSchema = z.object({
 export const createInterviewInputSchema = z.object({
     tutorId: z.number().int({ error: 'ID do tutor inválido' }),
     date: z.string({ error: 'Data inválida' }),
+    notes: z.string().optional(),
     answers: z.array(interviewAnswerInputSchema),
     animalInterviews: z.array(animalInterviewInputSchema)
 });
@@ -76,6 +78,7 @@ export const createInterviewInputSchema = z.object({
 export const updateInterviewInputSchema = z.object({
     tutorId: z.number().int({ error: 'ID do tutor inválido' }),
     date: z.string({ error: 'Data inválida' }),
+    notes: z.string().optional(),
     answers: z.array(interviewAnswerInputSchema),
     animalInterviews: z.array(animalInterviewInputSchema)
 });

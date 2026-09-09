@@ -19,6 +19,7 @@ export class InterviewService {
                 tutorId: true,
                 tutor: { select: { id: true, name: true } },
                 date: true,
+                notes: true,
                 tutorAnswer: {
                     select: {
                         tutorQuestionId: true,
@@ -111,6 +112,7 @@ export class InterviewService {
                     tutorId: i.tutorId,
                     tutorName: i.tutor.name,
                     date: i.date.toISOString(),
+                    notes: i.notes || undefined,
                     tutorAnswers: tutorAnswers,
                     animalInterviews: animalInterviews,
                     liveAnimalCodes: liveAnimalCodes
@@ -203,6 +205,7 @@ export class InterviewService {
                 data: {
                     tutorId: data.tutorId,
                     date: new Date(data.date),
+                    notes: data.notes || null
                 }
             });
 
@@ -280,6 +283,7 @@ export class InterviewService {
                 data: {
                     tutorId: data.tutorId,
                     date: new Date(data.date),
+                    notes: data.notes || null
                 }
             });
 
