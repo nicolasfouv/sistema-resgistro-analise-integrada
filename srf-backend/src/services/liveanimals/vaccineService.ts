@@ -15,7 +15,7 @@ export class VaccineService {
         const vaccines = await prisma.vaccineApplication.findMany({
             select: {
                 id: true,
-                liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
+                liveAnimal: { select: { id: true, code: true } },
                 veterinarianVisit: {
                     select: {
                         id: true,
@@ -58,7 +58,7 @@ export class VaccineService {
                     canEdit: permission.canEdit,
                     createdByMe: creatorMap.get(String(v.id)) === userId,
                     liveAnimalId: v.liveAnimal.id,
-                    liveAnimalCode: `${v.liveAnimal.codeSail.sail}_${v.liveAnimal.codeNumber}`,
+                    liveAnimalCode: v.liveAnimal.code,
                     vaccineId: v.vaccine.id,
                     vaccineName: v.vaccine.name,
                     veterinarianVisitId: v.veterinarianVisit?.id || undefined,
@@ -79,15 +79,15 @@ export class VaccineService {
 
         const [liveAnimals, veterinarianVisits, vaccines, vaccineTypes] = await Promise.all([
             prisma.liveAnimal.findMany({
-                select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true },
+                select: { id: true, code: true },
                 where: { active: true },
-                orderBy: [{ codeSail: { sail: 'asc' } }, { codeNumber: 'asc' }]
+                orderBy: { code: 'asc' }
             }),
             prisma.veterinarianVisit.findMany({
                 select: {
                     id: true,
                     date: true,
-                    liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
+                    liveAnimal: { select: { id: true, code: true } },
                     veterinarian: { select: { id: true, name: true } }
                 },
                 orderBy: {
@@ -117,14 +117,14 @@ export class VaccineService {
         return {
             liveAnimals: liveAnimals.map(a => ({
                 id: a.id,
-                code: `${a.codeSail.sail}_${a.codeNumber}`
+                code: a.code
             })),
             veterinarianVisits: veterinarianVisits.map(v => ({
                 id: v.id,
                 date: v.date.toISOString(),
                 liveAnimal: {
                     id: v.liveAnimal.id,
-                    code: `${v.liveAnimal.codeSail.sail}_${v.liveAnimal.codeNumber}`
+                    code: v.liveAnimal.code
                 },
                 veterinarian: {
                     id: v.veterinarian.id,

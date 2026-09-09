@@ -2,8 +2,7 @@ import z from 'zod';
 
 // model deadAnimal {
 //   id                      Int                   @id @default(autoincrement())
-//   codeSailId              Int                   @map("id_codigo_sigla")
-//   codeNumber              Int                   @map("codigo_numero")
+//   code                    String                @map("codigo")
 //   deadAnimalGroupId       Int                   @map("id_grupo_animal_morto")
 //   deadAnimalGroup         deadAnimalGroup       @relation(fields: [deadAnimalGroupId], references: [id])
 //   specieId                Int                   @map("id_especie")
@@ -30,10 +29,7 @@ export const getAllDeadAnimalOutputSchema = z.object({
     id: z.number().int(),
     createdByMe: z.boolean(),
     canEdit: z.boolean(),
-    sailId: z.number().int(),
-    sailCode: z.string().nonempty(),
-    codeNumber: z.number().int(),
-    code: z.string().optional(),
+    code: z.string().nonempty(),
     deadAnimalGroupId: z.number().int(),
     deadAnimalGroupName: z.string().nonempty(),
     specieId: z.number().int(),
@@ -54,10 +50,6 @@ export const getAllDeadAnimalOutputSchema = z.object({
 });
 
 export const getFormOptionsDeadAnimalOutputSchema = z.object({
-    codeSails: z.array(z.object({
-        id: z.number().int(),
-        sail: z.string().nonempty()
-    })),
     deadAnimalGroups: z.array(z.object({
         id: z.number().int(),
         name: z.string().nonempty()
@@ -82,8 +74,7 @@ export const getFormOptionsDeadAnimalOutputSchema = z.object({
 
 // Inputs
 export const createDeadAnimalInputSchema = z.object({
-    sailId: z.number().int({ error: 'ID da sigla inválido' }),
-    codeNumber: z.number().int({ error: 'Número do código inválido' }),
+    code: z.string().nonempty(),
     deadAnimalGroupId: z.number().int(),
     specieId: z.number().int(),
     deadAnimalOriginId: z.number().int(),

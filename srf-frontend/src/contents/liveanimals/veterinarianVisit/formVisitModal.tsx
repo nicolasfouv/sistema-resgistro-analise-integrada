@@ -137,7 +137,7 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
 
                     <form onSubmit={handleSubmit} className="w-full flex flex-col overflow-y-auto gap-4 mt-2 flex-1 min-h-0">
                         {/* Detalhes da Visita */}
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-3 gap-4">
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Código do Animal</label>
                                 <select
@@ -179,7 +179,7 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                                 />
                             </div>
 
-                            <div className="flex flex-col col-span-2">
+                            <div className="flex flex-col col-span-3">
                                 <label className="text-sm font-bold mb-1 text-left">Foto do Animal (Opcional)</label>
                                 <input
                                     type="text"
@@ -190,7 +190,7 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                                 />
                             </div>
 
-                            <div className="flex flex-col col-span-2">
+                            <div className="flex flex-col col-span-3">
                                 <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
                                 <input
                                     type="text"

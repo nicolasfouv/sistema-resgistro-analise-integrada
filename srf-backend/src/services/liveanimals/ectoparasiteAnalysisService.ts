@@ -18,7 +18,7 @@ export class EctoparasiteAnalysisService {
                 veterinarianVisit: {
                     select: {
                         id: true, date: true,
-                        liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
+                        liveAnimal: { select: { id: true, code: true } },
                         veterinarian: { select: { id: true, name: true } }
                     }
                 },
@@ -71,7 +71,7 @@ export class EctoparasiteAnalysisService {
                     veterinarianVisitId: r.veterinarianVisit.id,
                     veterinarianVisitDate: r.veterinarianVisit.date.toISOString(),
                     liveAnimalId: r.veterinarianVisit.liveAnimal.id,
-                    liveAnimalCode: `${r.veterinarianVisit.liveAnimal.codeSail.sail}_${r.veterinarianVisit.liveAnimal.codeNumber}`,
+                    liveAnimalCode: r.veterinarianVisit.liveAnimal.code,
                     veterinarianId: r.veterinarianVisit.veterinarian.id,
                     veterinarianName: r.veterinarianVisit.veterinarian.name,
                     ectoparasiteGenusId: r.ectoparasiteGenusId,
@@ -99,7 +99,7 @@ export class EctoparasiteAnalysisService {
                 select: {
                     id: true,
                     date: true,
-                    liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
+                    liveAnimal: { select: { id: true, code: true } },
                     veterinarian: { select: { id: true, name: true } }
                 },
                 orderBy: {
@@ -120,7 +120,7 @@ export class EctoparasiteAnalysisService {
             veterinarianVisits: veterinarianVisits.map(v => ({
                 id: v.id,
                 date: v.date.toISOString(),
-                liveAnimal: { id: v.liveAnimal.id, code: `${v.liveAnimal.codeSail.sail}_${v.liveAnimal.codeNumber}` },
+                liveAnimal: { id: v.liveAnimal.id, code: v.liveAnimal.code },
                 veterinarian: v.veterinarian
             })),
             genuses,

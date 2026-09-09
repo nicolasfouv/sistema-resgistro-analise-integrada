@@ -17,8 +17,7 @@ export class DeadAnimalService {
             select: {
                 // Dados principais
                 id: true,
-                codeSail: { select: { id: true, sail: true } },
-                codeNumber: true,
+                code: true,
                 deadAnimalGroupId: true,
                 deadAnimalGroup: { select: { id: true, name: true } },
                 specieId: true,
@@ -37,7 +36,7 @@ export class DeadAnimalService {
                 // Registros associados
                 necropsy: { select: { id: true } }
             },
-            orderBy: [{ codeSail: { sail: 'asc' } }, { codeNumber: 'asc' }]
+            orderBy: [{ code: 'asc' }]
         });
 
         // Permissões
@@ -68,10 +67,7 @@ export class DeadAnimalService {
                     id: a.id,
                     createdByMe: creatorMap.get(String(a.id)) === requesterId,
                     canEdit: permission.canEdit,
-                    sailId: a.codeSail.id,
-                    sailCode: a.codeSail.sail,
-                    codeNumber: a.codeNumber,
-                    code: `${a.codeSail.sail}_${a.codeNumber}`,
+                    code: a.code,
                     deadAnimalGroupId: a.deadAnimalGroupId,
                     deadAnimalGroupName: a.deadAnimalGroup.name,
                     specieId: a.specieId,
@@ -96,11 +92,7 @@ export class DeadAnimalService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsDeadAnimalOutput> {
-        const [codeSails, deadAnimalGroups, species, deadAnimalOrigins, deadAnimalStatuses, collectionResponsibles] = await Promise.all([
-            prisma.deadAnimalCodeSail.findMany({
-                select: { id: true, sail: true },
-                orderBy: { sail: 'asc' }
-            }),
+        const [deadAnimalGroups, species, deadAnimalOrigins, deadAnimalStatuses, collectionResponsibles] = await Promise.all([
             prisma.deadAnimalGroup.findMany({
                 select: { id: true, name: true },
                 orderBy: { name: 'asc' }
@@ -123,15 +115,14 @@ export class DeadAnimalService {
             })
         ]);
 
-        return { codeSails, deadAnimalGroups, species, deadAnimalOrigins, deadAnimalStatuses, collectionResponsibles };
+        return { deadAnimalGroups, species, deadAnimalOrigins, deadAnimalStatuses, collectionResponsibles };
     }
 
     async create(data: CreateDeadAnimalInput, requesterId: string) {
         // Verifica se já existe um animal morto com essa sigla e número
         const existingCode = await prisma.deadAnimal.findFirst({
             where: {
-                codeSailId: data.sailId,
-                codeNumber: data.codeNumber
+                code: data.code
             }
         });
         if (existingCode) throw new Error('Já existe um animal morto cadastrado com esta sigla e número.');
@@ -139,8 +130,7 @@ export class DeadAnimalService {
         return prisma.$transaction(async (tx) => {
             const animal = await tx.deadAnimal.create({
                 data: {
-                    codeSailId: data.sailId,
-                    codeNumber: data.codeNumber,
+                    code: data.code,
                     deadAnimalGroupId: data.deadAnimalGroupId,
                     specieId: data.specieId,
                     deadAnimalOriginId: data.deadAnimalOriginId,
@@ -173,8 +163,7 @@ export class DeadAnimalService {
         // Verifica se já existe outro animal morto com essa sigla e número
         const existingCode = await prisma.deadAnimal.findFirst({
             where: {
-                codeSailId: data.sailId,
-                codeNumber: data.codeNumber,
+                code: data.code,
                 id: { not: recordId }
             }
         });
@@ -189,8 +178,7 @@ export class DeadAnimalService {
             const updatedAnimal = await tx.deadAnimal.update({
                 where: { id: recordId },
                 data: {
-                    codeSailId: data.sailId,
-                    codeNumber: data.codeNumber,
+                    code: data.code,
                     deadAnimalGroupId: data.deadAnimalGroupId,
                     specieId: data.specieId,
                     deadAnimalOriginId: data.deadAnimalOriginId,

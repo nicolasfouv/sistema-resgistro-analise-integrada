@@ -4,7 +4,6 @@ import { getLiveAnimals, getLiveAnimalFormOptions } from "../../../services/live
 import { LiveAnimalToolBar } from "./liveAnimalToolBar";
 import { LiveAnimalExpansion } from "./liveAnimalExpansion";
 
-let codeSailsOptions: { value: string | number; label: string }[] = [];
 let speciesOptions: { value: string | number; label: string }[] = [];
 let gendersOptions: { value: string | number; label: string }[] = [];
 let optionsLoaded = false;
@@ -13,7 +12,6 @@ async function loadFilterOptions() {
     if (optionsLoaded) return;
     try {
         const opts = await getLiveAnimalFormOptions();
-        codeSailsOptions = opts.codeSails.map(s => ({ value: s.sail, label: s.sail }));
         speciesOptions = opts.species.map(s => ({ value: s.name, label: s.name }));
         gendersOptions = opts.genders.map(g => ({ value: g.name, label: g.name }));
         optionsLoaded = true;
@@ -35,8 +33,6 @@ export const LiveAnimalContentDefinition = {
         return [
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'code', label: 'Código', type: 'text' },
-            { key: 'sailCode', label: 'Sigla (Código)', type: 'enum', options: codeSailsOptions },
-            { key: 'codeNumber', label: 'Número (Código)', type: 'text' },
             { key: 'liveAnimalName', label: 'Nome', type: 'text' },
             { key: 'tutorName', label: 'Tutor', type: 'text' },
             { key: 'specieName', label: 'Espécie', type: 'enum', options: speciesOptions },

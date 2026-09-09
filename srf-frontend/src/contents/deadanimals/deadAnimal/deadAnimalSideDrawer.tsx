@@ -43,7 +43,7 @@ export function DeadAnimalSideDrawer({ filters, onClose }: DeadAnimalSideDrawerP
     if (filters.deadAnimalId) {
         const firstAnimal = animals[0];
         if (firstAnimal) {
-            pageFilters.push({ field: 'code', value: { type: 'text' as const, term: firstAnimal.code || `${firstAnimal.sailCode}_${firstAnimal.codeNumber}` } });
+            pageFilters.push({ field: 'code', value: { type: 'text' as const, term: firstAnimal.code } });
         }
     }
     const pageUrl = `/animaismortos/animaisatropelados/animal-am?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
@@ -89,7 +89,7 @@ export function DeadAnimalSideDrawer({ filters, onClose }: DeadAnimalSideDrawerP
                                     className="w-full flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-hover-bg transition-colors"
                                 >
                                     <div className="flex flex-col items-start gap-0.5">
-                                        <span className="text-sm font-bold text-text-main">{animal.code || `${animal.sailCode}_${animal.codeNumber}`}</span>
+                                        <span className="text-sm font-bold text-text-main">{animal.code}</span>
                                         <span className="text-xs text-text-light-gray">
                                             {animal.deadAnimalOriginName} · {animal.deadAnimalStatusName}
                                         </span>
@@ -106,7 +106,7 @@ export function DeadAnimalSideDrawer({ filters, onClose }: DeadAnimalSideDrawerP
                                             Detalhes do Animal Morto
                                         </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
-                                            <Field label="Código" value={animal.code || `${animal.sailCode}_${animal.codeNumber}`} />
+                                            <Field label="Código" value={animal.code} />
                                             <Field label="Origem" value={animal.deadAnimalOriginName} />
                                             <Field label="Status" value={animal.deadAnimalStatusName} />
                                             <Field label="Data da Coleta" value={animal.collectionDateFormatted || ''} />

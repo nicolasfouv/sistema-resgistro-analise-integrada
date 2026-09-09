@@ -23,8 +23,7 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
     const [error, setError] = useState<string>('');
     const [options, setOptions] = useState<GetFormOptionsAnimalOutput | null>(null);
 
-    const [codeSailId, setCodeSailId] = useState<number | ''>(liveAnimal?.sailId ?? '');
-    const [codeNumber, setCodeNumber] = useState<number | ''>(liveAnimal?.codeNumber ?? '');
+    const [code, setCode] = useState<string>(liveAnimal?.code ?? '');
     const [name, setName] = useState<string>(liveAnimal?.name ?? '');
     const [tutorId, setTutorId] = useState<number | ''>(liveAnimal?.tutorId ?? '');
     const [specieId, setSpecieId] = useState<number | ''>(liveAnimal?.specieId ?? '');
@@ -52,8 +51,7 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
         setError('');
         try {
             const data = {
-                sailId: Number(codeSailId),
-                codeNumber: Number(codeNumber),
+                code: code,
                 name: name || undefined,
                 tutorId: Number(tutorId) || undefined,
                 specieId: Number(specieId),
@@ -101,14 +99,8 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
                         <div className="grid grid-cols-3 gap-4">
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Código</label>
-                                <div className="flex w-full gap-2">
-                                    <select value={codeSailId} onChange={(e) => setCodeSailId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10 w-2/5" required>
-                                        <option value="">Selecione...</option>
-                                        {options.codeSails.map(s => (<option key={s.id} value={s.id}>{s.sail}</option>))}
-                                    </select>
-                                    <input type="number" value={codeNumber} onChange={(e) => setCodeNumber(e.target.value ? Number(e.target.value) : '')}
-                                        className="border border-border rounded p-2 bg-white h-10 w-3/5" placeholder="Digite o número..." min={0} required />
-                                </div>
+                                <input type="text" value={code} onChange={(e) => setCode(e.target.value)}
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o código..." required />
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Espécie</label>

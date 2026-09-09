@@ -20,7 +20,7 @@ export class NecropsyEctoparasiteAnalysisService {
                     select: {
                         id: true,
                         performedDate: true,
-                        deadAnimal: { select: { id: true, codeSail: { select: { sail: true } }, codeNumber: true } }
+                        deadAnimal: { select: { id: true, code: true } }
                     }
                 },
                 ectoparasiteGenusId: true,
@@ -72,7 +72,7 @@ export class NecropsyEctoparasiteAnalysisService {
                     necropsyId: r.necropsy.id,
                     necropsyDate: r.necropsy.performedDate.toISOString(),
                     deadAnimalId: r.necropsy.deadAnimal.id,
-                    deadAnimalCode: `${r.necropsy.deadAnimal.codeSail.sail}_${r.necropsy.deadAnimal.codeNumber}`,
+                    deadAnimalCode: r.necropsy.deadAnimal.code,
                     ectoparasiteGenusId: r.ectoparasiteGenusId,
                     genusName: r.ectoparasiteGenus.name,
                     ectoparasiteSpecieId: r.ectoparasiteSpecieId,
@@ -98,7 +98,7 @@ export class NecropsyEctoparasiteAnalysisService {
                 select: {
                     id: true,
                     performedDate: true,
-                    deadAnimal: { select: { id: true, codeSail: { select: { sail: true } }, codeNumber: true } }
+                    deadAnimal: { select: { id: true, code: true } }
                 },
                 orderBy: {
                     performedDate: 'desc'
@@ -120,7 +120,7 @@ export class NecropsyEctoparasiteAnalysisService {
                 date: n.performedDate.toISOString(),
                 deadAnimal: {
                     id: n.deadAnimal.id,
-                    code: `${n.deadAnimal.codeSail.sail}_${n.deadAnimal.codeNumber}`
+                    code: n.deadAnimal.code
                 },
             })),
             genuses,

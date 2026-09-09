@@ -32,7 +32,7 @@ export class InterviewService {
                     select: {
                         id: true,
                         liveAnimalId: true,
-                        liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
+                        liveAnimal: { select: { id: true, code: true } },
                         animalAnswer: {
                             select: {
                                 animalQuestionId: true,
@@ -94,7 +94,7 @@ export class InterviewService {
                 const animalInterviews = i.animalInterview.map(ai => ({
                     id: ai.id,
                     liveAnimalId: ai.liveAnimalId,
-                    liveAnimalCode: `${ai.liveAnimal.codeSail.sail}_${ai.liveAnimal.codeNumber}`,
+                    liveAnimalCode: ai.liveAnimal.code,
                     answers: ai.animalAnswer.map(aa => ({
                         questionId: aa.animalQuestionId,
                         questionText: aa.animalQuestion.text,
@@ -128,13 +128,13 @@ export class InterviewService {
         });
 
         const liveAnimals = await prisma.liveAnimal.findMany({
-            select: { id: true, codeSail: { select: { sail: true } }, codeNumber: true, tutorId: true },
+            select: { id: true, code: true, tutorId: true },
             orderBy: { name: 'asc' }
         });
 
         const liveAnimalsWithTutors = liveAnimals.filter(la => la.tutorId !== null).map(la => ({
             id: la.id,
-            code: `${la.codeSail.sail}_${la.codeNumber}`,
+            code: la.code,
             tutorId: la.tutorId!,
         }));
 

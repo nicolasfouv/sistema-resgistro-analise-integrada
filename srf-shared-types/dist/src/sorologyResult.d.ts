@@ -9,27 +9,27 @@ export declare const sorologyResultSchema: z.ZodObject<{
     resultTypeId: z.ZodNumber;
     result: z.ZodNumber;
     interpretationId: z.ZodNumber;
-}, z.z.core.$strip>;
+}, z.core.$strip>;
 export declare const createSorologyResultInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
-    interpretationId: z.ZodNumber;
     sorologyTestId: z.ZodNumber;
     sorologyAgentId: z.ZodNumber;
     cuttingPointSymbol: z.ZodString;
     cuttingPointValue: z.ZodString;
     resultTypeId: z.ZodNumber;
     result: z.ZodNumber;
-}, z.z.core.$strip>;
+    interpretationId: z.ZodNumber;
+}, z.core.$strip>;
 export declare const updateSorologyResultInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
-    interpretationId: z.ZodNumber;
     sorologyTestId: z.ZodNumber;
     sorologyAgentId: z.ZodNumber;
     cuttingPointSymbol: z.ZodString;
     cuttingPointValue: z.ZodString;
     resultTypeId: z.ZodNumber;
     result: z.ZodNumber;
-}, z.z.core.$strip>;
+    interpretationId: z.ZodNumber;
+}, z.core.$strip>;
 export declare const getAllSorologyResultOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     veterinarianVisitId: z.ZodNumber;
@@ -52,7 +52,7 @@ export declare const getAllSorologyResultOutputSchema: z.ZodObject<{
     agentName: z.ZodString;
     resultTypeName: z.ZodString;
     interpretationName: z.ZodString;
-}, z.z.core.$strip>;
+}, z.core.$strip>;
 export declare const getFormOptionsSorologyResultOutputSchema: z.ZodObject<{
     veterinarianVisits: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
@@ -60,29 +60,29 @@ export declare const getFormOptionsSorologyResultOutputSchema: z.ZodObject<{
         liveAnimal: z.ZodObject<{
             id: z.ZodNumber;
             code: z.ZodString;
-        }, z.z.core.$strip>;
+        }, z.core.$strip>;
         veterinarian: z.ZodObject<{
             id: z.ZodNumber;
             name: z.ZodString;
-        }, z.z.core.$strip>;
-    }, z.z.core.$strip>>;
+        }, z.core.$strip>;
+    }, z.core.$strip>>;
     sorologyTests: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.z.core.$strip>>;
+    }, z.core.$strip>>;
     sorologyAgents: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.z.core.$strip>>;
+    }, z.core.$strip>>;
     resultTypes: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.z.core.$strip>>;
+    }, z.core.$strip>>;
     interpretations: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.z.core.$strip>>;
-}, z.z.core.$strip>;
+    }, z.core.$strip>>;
+}, z.core.$strip>;
 export type SorologyResult = z.infer<typeof sorologyResultSchema>;
 export type CreateSorologyResultInput = z.infer<typeof createSorologyResultInputSchema>;
 export type UpdateSorologyResultInput = z.infer<typeof updateSorologyResultInputSchema>;

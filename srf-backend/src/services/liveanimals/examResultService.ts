@@ -18,7 +18,7 @@ export class ExamResultService {
                 veterinarianVisit: {
                     select: {
                         id: true, date: true,
-                        liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
+                        liveAnimal: { select: { id: true, code: true } },
                         veterinarian: { select: { id: true, name: true } }
                     }
                 },
@@ -87,7 +87,7 @@ export class ExamResultService {
                     interpretationId: r.interpretation.id,
                     interpretationName: r.interpretation.name,
                     liveAnimalId: r.veterinarianVisit.liveAnimal.id,
-                    liveAnimalCode: `${r.veterinarianVisit.liveAnimal.codeSail.sail}_${r.veterinarianVisit.liveAnimal.codeNumber}`,
+                    liveAnimalCode: r.veterinarianVisit.liveAnimal.code,
                     veterinarianId: r.veterinarianVisit.veterinarian.id,
                     veterinarianName: r.veterinarianVisit.veterinarian.name,
                     erythrocytes: r.erythrocytes,
@@ -127,7 +127,7 @@ export class ExamResultService {
             select: {
                 id: true,
                 date: true,
-                liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
+                liveAnimal: { select: { id: true, code: true } },
                 veterinarian: { select: { id: true, name: true } }
             },
             orderBy: {
@@ -149,7 +149,7 @@ export class ExamResultService {
             veterinarianVisits: veterinarianVisits.map(v => ({
                 id: v.id,
                 date: v.date.toISOString(),
-                liveAnimal: { id: v.liveAnimal.id, code: `${v.liveAnimal.codeSail.sail}_${v.liveAnimal.codeNumber}` },
+                liveAnimal: { id: v.liveAnimal.id, code: v.liveAnimal.code },
                 veterinarian: v.veterinarian
             })),
             interpretations

@@ -20,7 +20,7 @@ export class HelminthAnalysisService {
                     select: {
                         id: true,
                         performedDate: true,
-                        deadAnimal: { select: { id: true, codeSail: { select: { sail: true } }, codeNumber: true } }
+                        deadAnimal: { select: { id: true, code: true } }
                     }
                 },
                 helminthSpecie: { select: { id: true, name: true } },
@@ -62,7 +62,7 @@ export class HelminthAnalysisService {
                 necropsyId: a.necropsy.id,
                 necropsyDate: a.necropsy.performedDate.toISOString(),
                 deadAnimalId: a.necropsy.deadAnimal.id,
-                deadAnimalCode: `${a.necropsy.deadAnimal.codeSail.sail}_${a.necropsy.deadAnimal.codeNumber}`,
+                deadAnimalCode: a.necropsy.deadAnimal.code,
                 helminthSpecieId: a.helminthSpecie.id,
                 helminthSpecieName: a.helminthSpecie.name,
                 locationId: a.location.id,
@@ -83,7 +83,7 @@ export class HelminthAnalysisService {
                 select: {
                     id: true,
                     performedDate: true,
-                    deadAnimal: { select: { id: true, codeSail: { select: { sail: true } }, codeNumber: true } }
+                    deadAnimal: { select: { id: true, code: true } }
                 },
                 orderBy: { performedDate: 'desc' }
             }),
@@ -109,7 +109,7 @@ export class HelminthAnalysisService {
                 performedDate: n.performedDate.toISOString(),
                 deadAnimal: {
                     id: n.deadAnimal.id,
-                    code: `${n.deadAnimal.codeSail.sail}_${n.deadAnimal.codeNumber}`
+                    code: n.deadAnimal.code
                 }
             })),
             helminthSpecies,
