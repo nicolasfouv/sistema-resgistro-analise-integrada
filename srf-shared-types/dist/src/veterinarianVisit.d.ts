@@ -8,8 +8,8 @@ export declare const createVeterinarianVisitInputSchema: z.ZodObject<{
     bodyMeasurements: z.ZodOptional<z.ZodArray<z.ZodObject<{
         bodyMeasurementTypeId: z.ZodNumber;
         value: z.ZodNumber;
-    }, z.z.core.$strip>>>;
-}, z.z.core.$strip>;
+    }, z.core.$strip>>>;
+}, z.core.$strip>;
 export declare const updateVeterinarianVisitInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
     veterinarianId: z.ZodNumber;
@@ -19,8 +19,8 @@ export declare const updateVeterinarianVisitInputSchema: z.ZodObject<{
     bodyMeasurements: z.ZodOptional<z.ZodArray<z.ZodObject<{
         bodyMeasurementTypeId: z.ZodNumber;
         value: z.ZodNumber;
-    }, z.z.core.$strip>>>;
-}, z.z.core.$strip>;
+    }, z.core.$strip>>>;
+}, z.core.$strip>;
 export declare const getAllVeterinarianVisitOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     canEdit: z.ZodBoolean;
@@ -47,23 +47,23 @@ export declare const getAllVeterinarianVisitOutputSchema: z.ZodObject<{
         bodyMeasurementTypeDescription: z.ZodString;
         bodyMeasurementTypeUnit: z.ZodString;
         value: z.ZodNumber;
-    }, z.z.core.$strip>>;
-}, z.z.core.$strip>;
+    }, z.core.$strip>>;
+}, z.core.$strip>;
 export declare const getFormOptionsVeterinarianVisitOutputSchema: z.ZodObject<{
     liveAnimals: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         code: z.ZodString;
-    }, z.z.core.$strip>>;
+    }, z.core.$strip>>;
     veterinarians: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
-    }, z.z.core.$strip>>;
+    }, z.core.$strip>>;
     bodyMeasurementTypes: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         description: z.ZodString;
         unit: z.ZodString;
-    }, z.z.core.$strip>>;
-}, z.z.core.$strip>;
+    }, z.core.$strip>>;
+}, z.core.$strip>;
 export type CreateVeterinarianVisitInput = z.infer<typeof createVeterinarianVisitInputSchema>;
 export type UpdateVeterinarianVisitInput = z.infer<typeof updateVeterinarianVisitInputSchema>;
 export type GetAllVeterinarianVisitOutput = z.infer<typeof getAllVeterinarianVisitOutputSchema>;

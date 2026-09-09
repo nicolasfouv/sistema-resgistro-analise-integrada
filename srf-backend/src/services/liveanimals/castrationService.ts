@@ -15,7 +15,7 @@ export class CastrationService {
         const castrations = await prisma.castration.findMany({
             select: {
                 id: true,
-                liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
+                liveAnimal: { select: { id: true, code: true } },
                 veterinarianVisit: {
                     select: {
                         id: true,
@@ -57,7 +57,7 @@ export class CastrationService {
                     canEdit: permission.canEdit,
                     createdByMe: creatorMap.get(String(c.id)) === userId,
                     liveAnimalId: c.liveAnimal.id,
-                    liveAnimalCode: `${c.liveAnimal.codeSail.sail}_${c.liveAnimal.codeNumber}`,
+                    liveAnimalCode: c.liveAnimal.code,
                     veterinarianVisitId: c.veterinarianVisit?.id || undefined,
                     veterinarianVisitDate: c.veterinarianVisit?.date.toISOString() || undefined,
                     veterinarianName: c.veterinarianVisit?.veterinarian.name || undefined,
@@ -74,15 +74,15 @@ export class CastrationService {
     async getFormOptions(): Promise<GetFormOptionsCastrationOutput> {
         const [liveAnimals, veterinarianVisits] = await Promise.all([
             prisma.liveAnimal.findMany({
-                select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true },
+                select: { id: true, code: true },
                 where: { active: true },
-                orderBy: [{ codeSail: { sail: 'asc' } }, { codeNumber: 'asc' }]
+                orderBy: { code: 'asc' }
             }),
             prisma.veterinarianVisit.findMany({
                 select: {
                     id: true,
                     date: true,
-                    liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
+                    liveAnimal: { select: { id: true, code: true } },
                     veterinarian: { select: { id: true, name: true } }
                 },
                 orderBy: {
@@ -94,7 +94,7 @@ export class CastrationService {
         return {
             liveAnimals: liveAnimals.map(a => ({
                 id: a.id,
-                code: `${a.codeSail.sail}_${a.codeNumber}`
+                code: a.code
             })),
             veterinarianVisits: veterinarianVisits
                 .map(v => ({
@@ -102,7 +102,7 @@ export class CastrationService {
                     date: v.date.toISOString(),
                     liveAnimal: {
                         id: v.liveAnimal.id,
-                        code: `${v.liveAnimal.codeSail.sail}_${v.liveAnimal.codeNumber}`
+                        code: v.liveAnimal.code
                     },
                     veterinarian: {
                         id: v.veterinarian.id,

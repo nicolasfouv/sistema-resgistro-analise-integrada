@@ -41,7 +41,7 @@ export function DeadAnimalExpansion({ item, close, refresh }: { item: GetAllDead
                 <div className="flex gap-2 w-full text-sm">
                     <div className="flex flex-col w-3/12">
                         <label className="ml-1 font-bold">Código</label>
-                        <input type="text" disabled value={item.code || `${item.sailCode}_${item.codeNumber}`} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <input type="text" disabled value={item.code} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     <div className="flex flex-col w-3/12">
                         <label className="ml-1 font-bold">Origem</label>

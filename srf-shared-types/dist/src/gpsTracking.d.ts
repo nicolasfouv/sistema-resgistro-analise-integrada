@@ -14,13 +14,13 @@ export declare const gpsTrackingSchema: z.ZodObject<{
     rawSpreadsheetUpdateDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     editedSpreadsheetLink: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     editedSpreadsheetUpdateDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-}, z.z.core.$strip>;
+}, z.core.$strip>;
 export declare const createGpsTrackingInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     trackingDeviceId: z.ZodNumber;
     startDate: z.ZodString;
     endDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     monitoredDays: z.ZodNumber;
     locationPoints: z.ZodNumber;
     livingArea: z.ZodNumber;
@@ -29,13 +29,13 @@ export declare const createGpsTrackingInputSchema: z.ZodObject<{
     rawSpreadsheetUpdateDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     editedSpreadsheetLink: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     editedSpreadsheetUpdateDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-}, z.z.core.$strip>;
+}, z.core.$strip>;
 export declare const updateGpsTrackingInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     trackingDeviceId: z.ZodNumber;
     startDate: z.ZodString;
     endDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     monitoredDays: z.ZodNumber;
     locationPoints: z.ZodNumber;
     livingArea: z.ZodNumber;
@@ -44,7 +44,7 @@ export declare const updateGpsTrackingInputSchema: z.ZodObject<{
     rawSpreadsheetUpdateDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     editedSpreadsheetLink: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     editedSpreadsheetUpdateDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
-}, z.z.core.$strip>;
+}, z.core.$strip>;
 export declare const getAllGpsTrackingOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     liveAnimalId: z.ZodNumber;
@@ -72,22 +72,22 @@ export declare const getAllGpsTrackingOutputSchema: z.ZodObject<{
     rawSpreadsheetUpdateDateFormatted: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     editedSpreadsheetUpdateDateFormatted: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     withdrawn: z.ZodBoolean;
-}, z.z.core.$strip>;
+}, z.core.$strip>;
 export declare const getFormOptionsGpsTrackingOutputSchema: z.ZodObject<{
     liveAnimals: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         code: z.ZodString;
-    }, z.z.core.$strip>>;
+    }, z.core.$strip>>;
     trackingDevices: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         brand: z.ZodString;
         serialNumber: z.ZodString;
-    }, z.z.core.$strip>>;
+    }, z.core.$strip>>;
     monitoringMethods: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         description: z.ZodString;
-    }, z.z.core.$strip>>;
-}, z.z.core.$strip>;
+    }, z.core.$strip>>;
+}, z.core.$strip>;
 export type GpsTracking = z.infer<typeof gpsTrackingSchema>;
 export type CreateGpsTrackingInput = z.infer<typeof createGpsTrackingInputSchema>;
 export type UpdateGpsTrackingInput = z.infer<typeof updateGpsTrackingInputSchema>;

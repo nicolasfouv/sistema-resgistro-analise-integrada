@@ -168,48 +168,28 @@ model passwordResetToken {
 
 model liveAnimal {
   id                 Int                  @id @default(autoincrement())
-  codeSailId         Int                  @map("id_codigo_sigla")
-  codeNumber         Int                  @map("codigo_numero")
+  code               String               @map("codigo") @unique
   specieId           Int                  @map("id_especie")
-  name               String?               @map("nome")
+  name               String?              @map("nome")
   genderId           Int                  @map("id_genero")
   birthDate          DateTime             @map("data_nascimento") @db.DateTime(0)
   active             Boolean              @map("ativo")
   animalPicture      String?              @map("foto_animal")
   cardLink           String?              @map("link_carteirinha")
-  tutorId            Int?                  @map("id_tutor")
-  codeSail           liveAnimalCodeSail  @relation(fields: [codeSailId], references: [id])
+  tutorId            Int?                 @map("id_tutor")
   specie             specie               @relation(fields: [specieId], references: [id])
   gender             enumAnimalGender     @relation(fields: [genderId], references: [id])
-  tutor              tutor?                @relation(fields: [tutorId], references: [id])
+  tutor              tutor?               @relation(fields: [tutorId], references: [id])
   vaccineApplication vaccineApplication[]
   castration         castration?
   animalInterview    animalInterview[]
   gpsTracking        gpsTracking?
   veterinarianVisit  veterinarianVisit[]
 
-  @@unique([codeSailId, codeNumber])
-  @@index([codeSailId], map: "animal_vivo_id_codigo_sail_fkey")
   @@index([specieId], map: "animal_vivo_id_especie_fkey")
   @@index([genderId], map: "animal_vivo_id_genero_fkey")
   @@index([tutorId], map: "animal_vivo_id_tutor_fkey")
   @@map("animal_vivo")
-}
-
-model liveAnimalCodeSail {
-  id         Int          @id @default(autoincrement())
-  sail       String       @unique @map("sigla")
-  liveAnimal liveAnimal[]
-
-  @@map("codigo_sigla_animal_vivo")
-}
-
-model deadAnimalCodeSail {
-  id         Int          @id @default(autoincrement())
-  sail       String       @unique @map("sigla")
-  deadAnimal deadAnimal[]
-
-  @@map("codigo_sigla_animal_morto")
 }
 
 model specie {
@@ -896,8 +876,7 @@ model storage {
 
 model deadAnimal {
   id                      Int                   @id @default(autoincrement())
-  codeSailId              Int                   @map("id_codigo_sigla")
-  codeNumber              Int                   @map("codigo_numero")
+  code              String                   @map("codigo") @unique
   deadAnimalGroupId       Int                   @map("id_grupo_animal_morto")
   specieId                Int                   @map("id_especie")
   deadAnimalOriginId      Int                   @map("id_origem_animal_morto")
@@ -908,7 +887,6 @@ model deadAnimal {
   collectionLatitude      Float                 @map("latitude_coleta")
   imageLink               String?               @map("link_imagem")
   note                    String?               @map("observacao")
-  codeSail                deadAnimalCodeSail    @relation(fields: [codeSailId], references: [id])
   specie                  specie                @relation(fields: [specieId], references: [id])
   deadAnimalGroup         deadAnimalGroup       @relation(fields: [deadAnimalGroupId], references: [id])
   deadAnimalOrigin        enumDeadAnimalOrigin  @relation(fields: [deadAnimalOriginId], references: [id])
@@ -916,8 +894,6 @@ model deadAnimal {
   deadAnimalStatus        enumDeadAnimalStatus  @relation(fields: [deadAnimalStatusId], references: [id])
   necropsy                necropsy?
 
-  @@unique([codeSailId, codeNumber])
-  @@index([codeSailId], map: "animal_morto_id_codigo_sigla_fkey")
   @@index([specieId], map: "animal_morto_id_especie_fkey")
   @@index([deadAnimalGroupId], map: "animal_morto_id_grupo_animal_morto_fkey")
   @@index([deadAnimalOriginId], map: "animal_morto_id_origem_animal_morto_fkey")

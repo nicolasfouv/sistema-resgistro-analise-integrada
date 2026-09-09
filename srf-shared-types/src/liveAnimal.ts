@@ -26,10 +26,7 @@ export const getAllLiveAnimalOutputSchema = z.object({
     id: z.number().int(),
     createdByMe: z.boolean(),
     canEdit: z.boolean(),
-    sailId: z.number().int(),
-    sailCode: z.string().nonempty(),
-    codeNumber: z.number().int(),
-    code: z.string().optional(),
+    code: z.string().nonempty(),
     name: z.string().optional(),
     specieId: z.number().int(),
     specieName: z.string().nonempty(),
@@ -51,10 +48,6 @@ export const getAllLiveAnimalOutputSchema = z.object({
 });
 
 export const getFormOptionsAnimalOutputSchema = z.object({
-    codeSails: z.array(z.object({
-        id: z.number().int(),
-        sail: z.string().nonempty()
-    })),
     species: z.array(z.object({
         id: z.number().int(),
         name: z.string().nonempty()
@@ -71,16 +64,15 @@ export const getFormOptionsAnimalOutputSchema = z.object({
 
 // Inputs
 export const createLiveAnimalInputSchema = z.object({
-    sailId: z.number().int({ error: 'ID da vela inválido' }),
-    codeNumber: z.number().int({ error: 'Número do código inválido' }),
+    code: z.string().nonempty(),
     name: z.string().optional(),
-    specieId: z.number().int({ error: 'ID da espécie inválido' }),
-    genderId: z.number().int({ error: 'ID do gênero inválido' }),
-    birthDate: z.string().nonempty({ error: 'Data de nascimento inválida' }),
+    specieId: z.number().int(),
+    genderId: z.number().int(),
+    birthDate: z.string().nonempty(),
     active: z.boolean(),
     animalPicture: z.string().optional(),
     cardLink: z.string().optional(),
-    tutorId: z.number().int({ error: 'ID do tutor inválido' }).optional()
+    tutorId: z.number().int().optional()
 });
 
 export const updateLiveAnimalInputSchema = createLiveAnimalInputSchema;

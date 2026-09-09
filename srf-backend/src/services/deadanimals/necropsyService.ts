@@ -18,7 +18,7 @@ export class NecropsyService {
             select: {
                 id: true,
                 deadAnimalId: true,
-                deadAnimal: { select: { id: true, codeSail: { select: { sail: true } }, codeNumber: true } },
+                deadAnimal: { select: { id: true, code: true } },
                 identifiedGender: { select: { id: true, name: true } },
                 tutor: { select: { id: true, name: true } },
                 performedDate: true,
@@ -74,7 +74,7 @@ export class NecropsyService {
                 canEdit: permission.canEdit,
                 createdByMe: creatorMap.get(String(n.id)) === userId,
                 deadAnimalId: n.deadAnimalId,
-                deadAnimalCode: `${n.deadAnimal.codeSail.sail}_${n.deadAnimal.codeNumber}`,
+                deadAnimalCode: n.deadAnimal.code,
                 identifiedGenderId: n.identifiedGender.id,
                 identifiedGenderName: n.identifiedGender.name,
                 tutorId: n.tutor?.id || undefined,
@@ -112,8 +112,8 @@ export class NecropsyService {
     async getFormOptions(): Promise<GetFormOptionsNecropsyOutput> {
         const [deadAnimals, identifiedGenders, bodyConditions, clinicalConditions, tutors, reproductiveConditions, ages, bodyMeasurementTypes] = await Promise.all([
             prisma.deadAnimal.findMany({
-                select: { id: true, codeSail: { select: { sail: true } }, codeNumber: true },
-                orderBy: [{ codeSail: { sail: 'asc' } }, { codeNumber: 'asc' }]
+                select: { id: true, code: true },
+                orderBy: { code: 'asc' }
             }),
             prisma.enumAnimalGender.findMany({
                 select: { id: true, name: true },
@@ -146,7 +146,7 @@ export class NecropsyService {
         ]);
 
         return {
-            deadAnimals: deadAnimals.map(da => ({ id: da.id, code: `${da.codeSail.sail}_${da.codeNumber}` })),
+            deadAnimals,
             identifiedGenders, bodyConditions, clinicalConditions, tutors, reproductiveConditions, ages, bodyMeasurementTypes
         };
     }

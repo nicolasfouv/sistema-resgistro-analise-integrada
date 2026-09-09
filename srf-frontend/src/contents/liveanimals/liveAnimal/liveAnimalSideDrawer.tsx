@@ -107,7 +107,7 @@ export function LiveAnimalSideDrawer({ filters, onClose }: LiveAnimalSideDrawerP
                                             Detalhes do Animal
                                         </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
-                                            <Field label="Código" value={animal.code || `${animal.sailCode}_${animal.codeNumber}`} />
+                                            <Field label="Código" value={animal.code} />
                                             <Field label="Nome" value={animal.name || 'Não informado'} />
                                             <Field label="Tutor" value={animal.tutorName || 'Não informado'} />
                                             <Field label="Espécie" value={animal.specieName} />

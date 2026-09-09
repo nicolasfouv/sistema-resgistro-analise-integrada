@@ -16,7 +16,7 @@ export class GpsTrackingService {
             select: {
                 id: true,
                 liveAnimalId: true,
-                liveAnimal: { select: { id: true, codeSail: { select: { id: true, sail: true } }, codeNumber: true } },
+                liveAnimal: { select: { id: true, code: true } },
                 trackingDeviceId: true,
                 trackingDevice: { select: { id: true, brand: true, serialNumber: true } },
                 startDate: true,
@@ -77,7 +77,7 @@ export class GpsTrackingService {
                     canEdit: permission.canEdit,
                     createdByMe: creatorMap.get(String(r.id)) === requesterId,
                     liveAnimalId: r.liveAnimal.id,
-                    liveAnimalCode: `${r.liveAnimal.codeSail.sail}_${r.liveAnimal.codeNumber}`,
+                    liveAnimalCode: r.liveAnimal.code,
                     trackingDeviceId: r.trackingDevice.id,
                     trackingDeviceBrandSerialNumber: `${r.trackingDevice.brand} ${r.trackingDevice.serialNumber}`,
                     startDate: r.startDate.toISOString(),
@@ -103,8 +103,8 @@ export class GpsTrackingService {
 
     async getFormOptions(): Promise<GetFormOptionsGpsTrackingOutput> {
         const liveAnimals = await prisma.liveAnimal.findMany({
-            select: { id: true, codeSail: { select: { sail: true } }, codeNumber: true },
-            orderBy: [{ codeSail: { sail: 'asc' } }, { codeNumber: 'asc' }]
+            select: { id: true, code: true },
+            orderBy: { code: 'asc' }
         });
 
         const trackingDevices = await prisma.trackingDevice.findMany({
@@ -117,7 +117,7 @@ export class GpsTrackingService {
             orderBy: { description: 'asc' }
         });
 
-        return { liveAnimals: liveAnimals.map(l => ({ id: l.id, code: `${l.codeSail.sail}_${l.codeNumber}` })), trackingDevices, monitoringMethods };
+        return { liveAnimals, trackingDevices, monitoringMethods };
     }
 
     async create(data: CreateGpsTrackingInput, requesterId: string) {

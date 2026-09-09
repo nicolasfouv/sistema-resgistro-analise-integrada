@@ -17,8 +17,7 @@ export class LiveAnimalService {
             select: {
                 // Dados principais
                 id: true,
-                codeSail: { select: { id: true, sail: true } },
-                codeNumber: true,
+                code: true,
                 specieId: true,
                 specie: { select: { id: true, name: true } },
                 name: true,
@@ -36,7 +35,7 @@ export class LiveAnimalService {
                 vaccineApplication: { select: { id: true } },
                 animalInterview: { select: { id: true } }
             },
-            orderBy: [{ codeSail: { sail: 'asc' } }, { codeNumber: 'asc' }]
+            orderBy: [{ code: 'asc' }]
         });
 
         // Permissões
@@ -65,10 +64,7 @@ export class LiveAnimalService {
 
                 return {
                     id: a.id,
-                    sailId: a.codeSail.id,
-                    sailCode: a.codeSail.sail,
-                    codeNumber: a.codeNumber,
-                    code: `${a.codeSail.sail}_${a.codeNumber}`,
+                    code: a.code,
                     specieId: a.specieId,
                     specieName: a.specie.name,
                     name: a.name || undefined,
@@ -95,11 +91,7 @@ export class LiveAnimalService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsAnimalOutput> {
-        const [codeSails, species, genders, tutors] = await Promise.all([
-            prisma.liveAnimalCodeSail.findMany({
-                select: { id: true, sail: true },
-                orderBy: { sail: 'asc' }
-            }),
+        const [species, genders, tutors] = await Promise.all([
             prisma.specie.findMany({
                 select: { id: true, name: true },
                 orderBy: { name: 'asc' }
@@ -114,15 +106,14 @@ export class LiveAnimalService {
             })
         ]);
 
-        return { codeSails, species, genders, tutors };
+        return { species, genders, tutors };
     }
 
     async create(data: CreateLiveAnimalInput, requesterId: string) {
         // Verifica se já existe um animal com aquela sigla e número
         const existingCode = await prisma.liveAnimal.findFirst({
             where: {
-                codeSailId: data.sailId,
-                codeNumber: data.codeNumber
+                code: data.code
             }
         });
         if (existingCode) throw new Error('Já existe um animal cadastrado com esta sigla e número.');
@@ -132,8 +123,7 @@ export class LiveAnimalService {
             // Cria o animal
             const animal = await tx.liveAnimal.create({
                 data: {
-                    codeSailId: data.sailId,
-                    codeNumber: data.codeNumber,
+                    code: data.code,
                     specieId: data.specieId,
                     name: data.name || null,
                     genderId: data.genderId,
@@ -164,8 +154,7 @@ export class LiveAnimalService {
         // Verifica se já existe um animal com aquela sigla e número
         const existingCode = await prisma.liveAnimal.findFirst({
             where: {
-                codeSailId: data.sailId,
-                codeNumber: data.codeNumber
+                code: data.code
             }
         });
         if (existingCode) throw new Error('Já existe um animal cadastrado com esta sigla e número.');
@@ -181,8 +170,7 @@ export class LiveAnimalService {
             const updatedAnimal = await tx.liveAnimal.update({
                 where: { id: recordId },
                 data: {
-                    codeSailId: data.sailId,
-                    codeNumber: data.codeNumber,
+                    code: data.code,
                     specieId: data.specieId,
                     name: data.name || null,
                     genderId: data.genderId,
