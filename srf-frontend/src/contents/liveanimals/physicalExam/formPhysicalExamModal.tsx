@@ -358,11 +358,12 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
                                 </label>
                                 <input
                                     type="number"
-                                    min={1}
+                                    min={0.1}
+                                    step={0.1}
                                     value={tempRectal}
                                     onChange={(e) => setTempRectal(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2"
-                                    placeholder="0"
+                                    placeholder="0,0"
                                     required
                                 />
                             </div>
@@ -443,11 +444,12 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
                                     </label>
                                     <input
                                         type="number"
-                                        min={1}
+                                        min={0.1}
+                                        step={0.1}
                                         value={weight}
                                         onChange={(e) => setWeight(e.target.value ? Number(e.target.value) : '')}
                                         className="border border-border rounded p-2 h-10"
-                                        placeholder="0"
+                                        placeholder="0,0"
                                         required
                                     />
                                 </div>
