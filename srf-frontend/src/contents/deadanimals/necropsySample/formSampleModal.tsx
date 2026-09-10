@@ -232,7 +232,7 @@ export function NecropsySampleFormModal({ sample, close, refresh }: NecropsySamp
                                     value={quantity}
                                     onChange={(e) => setQuantity(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2"
-                                    placeholder="0"
+                                    placeholder="Ex: 0"
                                     required
                                 />
                             </div>
@@ -317,7 +317,7 @@ export function NecropsySampleFormModal({ sample, close, refresh }: NecropsySamp
                                                     value={ss.quantity || ''}
                                                     onChange={(e) => updateSendSample(index, 'quantity', e.target.value)}
                                                     className="border border-border rounded p-2 bg-white"
-                                                    placeholder="0"
+                                                    placeholder="Ex: 0"
                                                     required
                                                 />
                                             </div>

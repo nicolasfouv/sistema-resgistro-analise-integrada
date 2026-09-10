@@ -237,7 +237,7 @@ export function NecropsyExamResultFormModal({ necropsyExamResult, close, refresh
                                         <div className="flex flex-col">
                                             <label className="text-sm font-bold mb-1 text-left">PB</label>
                                             <input type="number" step="1" min={0} value={pb ?? ''} onChange={(e) => setPB(e.target.value ? Number(e.target.value) : '')}
-                                                className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                                className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                                         </div>
                                         <div className="flex flex-col">
                                             <label className="text-sm font-bold mb-1 text-left">Agente Suspeito</label>
@@ -335,12 +335,12 @@ export function NecropsyExamResultFormModal({ necropsyExamResult, close, refresh
                                         <div className="flex flex-col">
                                             <label className="text-sm font-bold mb-1 text-left">CT Médio</label>
                                             <input type="number" step="any" value={meanCt ?? ''} onChange={(e) => setMeanCt(e.target.value ? Number(e.target.value) : undefined)}
-                                                className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                                className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                                         </div>
                                         <div className="flex flex-col">
                                             <label className="text-sm font-bold mb-1 text-left">Cópias Estimadas</label>
                                             <input type="number" step="any" value={estimatedCopies ?? ''} onChange={(e) => setEstimatedCopies(e.target.value ? Number(e.target.value) : undefined)}
-                                                className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                                className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                                         </div>
                                         <div className="flex flex-col">
                                             <label className="text-sm font-bold mb-1 text-left">Status QPCR</label>

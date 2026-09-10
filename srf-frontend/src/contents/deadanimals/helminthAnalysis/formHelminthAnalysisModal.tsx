@@ -137,17 +137,17 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Qtde de Machos</label>
                                 <input type="number" step="1" min="0" value={maleQuantity} onChange={(e) => setMaleQuantity(e.target.value ? Number(e.target.value) : '')}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Qtde de Fêmeas</label>
                                 <input type="number" step="1" min="0" value={femaleQuantity} onChange={(e) => setFemaleQuantity(e.target.value ? Number(e.target.value) : '')}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Qtde Total</label>
                                 <input type="number" step="1" min="0" value={totalQuantity} onChange={(e) => setTotalQuantity(e.target.value ? Number(e.target.value) : '')}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col col-span-4">
                                 <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>

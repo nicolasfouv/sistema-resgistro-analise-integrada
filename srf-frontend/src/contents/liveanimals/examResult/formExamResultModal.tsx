@@ -201,7 +201,7 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
                     )}
                 </label>
                 <input type="number" step="any" value={value} onChange={(e) => setter(e.target.value ? Number(e.target.value) : '')}
-                    className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
             </div>
         );
     }

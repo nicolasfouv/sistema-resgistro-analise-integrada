@@ -235,27 +235,27 @@ export function EctoparasiteAnalysisFormModal({ ectoparasiteAnalysis, close, ref
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Qtde de Machos</label>
                                 <input type="number" step="1" min="0" value={maleQuantity} onChange={(e) => setMaleQuantity(e.target.value ? Number(e.target.value) : '')}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Qtde de Fêmeas</label>
                                 <input type="number" step="1" min="0" value={femaleQuantity} onChange={(e) => setFemaleQuantity(e.target.value ? Number(e.target.value) : '')}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Qtde de Ninfas</label>
                                 <input type="number" step="1" min="0" value={nymphQuantity} onChange={(e) => setNymphQuantity(e.target.value ? Number(e.target.value) : '')}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Qtde de Larvas</label>
                                 <input type="number" step="1" min="0" value={larvaeQuantity} onChange={(e) => setLarvaeQuantity(e.target.value ? Number(e.target.value) : '')}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Qtde de Ovos</label>
                                 <input type="number" step="1" min="0" value={eggQuantity} onChange={(e) => setEggQuantity(e.target.value ? Number(e.target.value) : '')}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>

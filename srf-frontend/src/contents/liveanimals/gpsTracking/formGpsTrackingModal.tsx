@@ -158,17 +158,17 @@ export function GpsTrackingFormModal({ gpsTracking, close, refresh }: GpsTrackin
                                 <div className="flex flex-col">
                                     <label className="text-sm font-bold mb-1 text-left">Nº de Dias Monitorados</label>
                                     <input type="number" step="1" value={monitoredDays} onChange={(e) => setMonitoredDays(e.target.value ? Number(e.target.value) : '')}
-                                        className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                        className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="text-sm font-bold mb-1 text-left">Nº de Pontos de Localização</label>
                                     <input type="number" step="1" value={locationPoints} onChange={(e) => setLocationPoints(e.target.value ? Number(e.target.value) : '')}
-                                        className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                        className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="text-sm font-bold mb-1 text-left">Área de Vida</label>
                                     <input type="number" step="any" value={livingArea} onChange={(e) => setLivingArea(e.target.value ? Number(e.target.value) : '')}
-                                        className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                        className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="text-sm font-bold mb-1 text-left">Método Utilizado</label>

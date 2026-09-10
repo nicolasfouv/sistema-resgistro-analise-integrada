@@ -230,7 +230,7 @@ export function NecropsyFormModal({ necropsy, close, refresh }: NecropsyFormModa
                                     value={weight}
                                     onChange={(e) => setWeight(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2"
-                                    placeholder="0"
+                                    placeholder="Ex: 0"
                                     required
                                 />
                             </div>
@@ -308,7 +308,7 @@ export function NecropsyFormModal({ necropsy, close, refresh }: NecropsyFormModa
                                                 value={bm.value}
                                                 onChange={(e) => handleUpdateMeasurement(index, 'value', e.target.value)}
                                                 className='border border-border rounded p-2 bg-white'
-                                                placeholder="0,0"
+                                                placeholder="Ex: 0,0"
                                                 required
                                             />
                                         </div>

@@ -335,7 +335,7 @@ export function SorologyResultFormModal({ sorologyResult, close, refresh }: Soro
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Resultado</label>
                                 <input type="number" step="any" value={result} onChange={(e) => setResult(e.target.value ? Number(e.target.value) : '')}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="0" required />
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                         </div>
 

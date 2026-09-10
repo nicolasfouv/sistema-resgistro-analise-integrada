@@ -234,7 +234,7 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                                                 value={bm.value}
                                                 onChange={(e) => handleUpdateMeasurement(index, 'value', e.target.value)}
                                                 className='border border-border rounded p-2 bg-white'
-                                                placeholder="0,0"
+                                                placeholder="Ex: 0,0"
                                                 required
                                             />
                                         </div>

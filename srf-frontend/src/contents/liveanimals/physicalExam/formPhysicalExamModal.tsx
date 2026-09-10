@@ -320,7 +320,7 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
                                             value={fr}
                                             onChange={(e) => setFr(e.target.value ? Number(e.target.value) : '')}
                                             className="border border-border rounded p-2 bg-white h-10"
-                                            placeholder="0"
+                                            placeholder="Ex: 0"
                                             required
                                         />
                                     )}
@@ -342,7 +342,7 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
                                     value={fc}
                                     onChange={(e) => setFc(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2 bg-white h-10"
-                                    placeholder="0"
+                                    placeholder="Ex: 0"
                                     required
                                 />
                             </div>
@@ -363,7 +363,7 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
                                     value={tempRectal}
                                     onChange={(e) => setTempRectal(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2"
-                                    placeholder="0,0"
+                                    placeholder="Ex: 0,0"
                                     required
                                 />
                             </div>
@@ -405,7 +405,7 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
                                     value={tpc}
                                     onChange={(e) => setTpc(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2 h-10"
-                                    placeholder="0"
+                                    placeholder="Ex: 0"
                                     required
                                 />
                             </div>
@@ -449,7 +449,7 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
                                         value={weight}
                                         onChange={(e) => setWeight(e.target.value ? Number(e.target.value) : '')}
                                         className="border border-border rounded p-2 h-10"
-                                        placeholder="0,0"
+                                        placeholder="Ex: 0,0"
                                         required
                                     />
                                 </div>
@@ -470,7 +470,7 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
                                         value={score}
                                         onChange={(e) => setScore(e.target.value ? Number(e.target.value) : '')}
                                         className="border border-border rounded p-2 h-10"
-                                        placeholder="0"
+                                        placeholder="Ex: 0"
                                         required
                                     />
                                 </div>
