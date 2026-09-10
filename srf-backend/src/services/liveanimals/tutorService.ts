@@ -19,7 +19,8 @@ export class TutorService {
                 name: true,
                 genderId: true,
                 gender: { select: { id: true, name: true } },
-                birthDate: true
+                birthDate: true,
+                address: true
             },
             orderBy: {
                 name: 'asc'
@@ -55,6 +56,7 @@ export class TutorService {
                     genderId: t.genderId,
                     genderName: t.gender.name,
                     birthDate: t.birthDate.toISOString(),
+                    address: t.address || undefined,
                     canEdit: permission.canEdit,
                     createdByMe: creatorMap.get(String(t.id)) === requesterId
                 };
@@ -79,7 +81,8 @@ export class TutorService {
                 data: {
                     name: data.name,
                     genderId: data.genderId,
-                    birthDate: new Date(data.birthDate + 'T12:00:00Z')
+                    birthDate: new Date(data.birthDate + 'T12:00:00Z'),
+                    address: data.address || null
                 }
             });
 
@@ -109,7 +112,8 @@ export class TutorService {
                 data: {
                     name: data.name,
                     genderId: data.genderId,
-                    birthDate: new Date(data.birthDate + 'T12:00:00Z')
+                    birthDate: new Date(data.birthDate + 'T12:00:00Z'),
+                    address: data.address || null
                 }
             });
 

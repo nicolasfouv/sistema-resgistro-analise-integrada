@@ -8,6 +8,7 @@ export declare const getAllTutorOutputSchema: z.ZodObject<{
     genderName: z.ZodString;
     birthDate: z.ZodString;
     birthDateFormatted: z.ZodOptional<z.ZodString>;
+    address: z.ZodOptional<z.ZodString>;
 }, z.z.core.$strip>;
 export declare const getFormOptionsTutorOutputSchema: z.ZodObject<{
     genders: z.ZodArray<z.ZodObject<{
@@ -19,11 +20,13 @@ export declare const createTutorInputSchema: z.ZodObject<{
     name: z.ZodString;
     genderId: z.ZodNumber;
     birthDate: z.ZodString;
+    address: z.ZodOptional<z.ZodString>;
 }, z.z.core.$strip>;
 export declare const updateTutorInputSchema: z.ZodObject<{
     name: z.ZodString;
     genderId: z.ZodNumber;
     birthDate: z.ZodString;
+    address: z.ZodOptional<z.ZodString>;
 }, z.z.core.$strip>;
 export type GetAllTutorOutput = z.infer<typeof getAllTutorOutputSchema>;
 export type GetFormOptionsTutorOutput = z.infer<typeof getFormOptionsTutorOutputSchema>;

@@ -26,6 +26,7 @@ export function TutorFormModal({ tutor, close, refresh }: TutorFormModalProps) {
     const [name, setName] = useState<string>(tutor?.name ?? '');
     const [genderId, setGenderId] = useState<number | ''>(tutor?.genderId ?? '');
     const [birthDate, setBirthDate] = useState(tutor?.birthDate ? tutor.birthDate.split('T')[0] : '');
+    const [address, setAddress] = useState<string>(tutor?.address ?? '');
 
     useEffect(() => {
         async function loadOptions() {
@@ -48,6 +49,7 @@ export function TutorFormModal({ tutor, close, refresh }: TutorFormModalProps) {
                 name: name,
                 genderId: Number(genderId),
                 birthDate: birthDate,
+                address: address || undefined
             };
             if (isEditing && tutor) {
                 await updateTutor(tutor.id, data);
@@ -101,6 +103,11 @@ export function TutorFormModal({ tutor, close, refresh }: TutorFormModalProps) {
                                     <option value="">Selecione...</option>
                                     {options.genders.map(g => (<option key={g.id} value={g.id}>{g.name}</option>))}
                                 </select>
+                            </div>
+                            <div className="flex flex-col col-span-2">
+                                <label className="text-sm font-bold mb-1 text-left">Endereço (Opcional)</label>
+                                <input type="text" value={address} onChange={(e) => setAddress(e.target.value)}
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o endereço do tutor..." />
                             </div>
                         </div>
 

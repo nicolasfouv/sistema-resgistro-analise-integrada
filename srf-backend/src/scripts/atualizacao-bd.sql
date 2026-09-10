@@ -50,5 +50,27 @@ drop index analise_fezes_id_visita_veterinaria_key;
 -- 8) concluído
 alter table srf.entrevista_tutor
 add observacao varchar(191) null;
+
+-- 9) concluído
+
+-- 10) concluído
+
+-- 11) a fazer
+
+-- 12) concluído
+
+-- 13[parcialmente]) verificar quais campos devem ser removidos
+
+-- 14) a fazer
+
+-- 15) concluído
+
+-- 16) concluido
+
+-- 17) a fazer
+
+-- 18[parcialmente]) a alteração de animal entrará junto a outras alterações requisitadas
+alter table srf.tutor
+add endereco varchar(255) null;
 */
 

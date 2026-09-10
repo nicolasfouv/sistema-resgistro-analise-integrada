@@ -54,6 +54,11 @@ export function TutorExpansion({ item, close, refresh }: { item: GetAllTutorOutp
                     <label className="ml-1 font-bold">Gênero</label>
                     <input type="text" disabled value={item.genderName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
+                <div className="flex flex-col col-span-2">
+                    <label className="text-sm font-bold mb-1 text-left">Endereço (Opcional)</label>
+                    <input type="text" disabled value={item.address || 'Nenhum endereço informado'} 
+                    className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o nome do tutor..." />
+                </div>
             </div>
 
             {/* Registros Associados */}

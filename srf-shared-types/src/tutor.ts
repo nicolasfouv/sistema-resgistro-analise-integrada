@@ -9,7 +9,8 @@ export const getAllTutorOutputSchema = z.object({
     genderId: z.number().int(),
     genderName: z.string().nonempty(),
     birthDate: z.string().nonempty(),
-    birthDateFormatted: z.string().optional()
+    birthDateFormatted: z.string().optional(),
+    address: z.string().optional()
 });
 
 export const getFormOptionsTutorOutputSchema = z.object({
@@ -23,7 +24,8 @@ export const getFormOptionsTutorOutputSchema = z.object({
 export const createTutorInputSchema = z.object({
     name: z.string().nonempty({ error: 'Nome do tutor inválido' }),
     genderId: z.number().int({ error: 'ID do gênero inválido' }),
-    birthDate: z.string().nonempty({ error: 'Data de nascimento inválida' })
+    birthDate: z.string().nonempty({ error: 'Data de nascimento inválida' }),
+    address: z.string().optional()
 });
 
 export const updateTutorInputSchema = createTutorInputSchema;

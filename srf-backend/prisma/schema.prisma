@@ -319,6 +319,7 @@ model tutor {
   name           String          @map("nome")
   genderId       Int             @map("id_genero")
   birthDate      DateTime        @map("data_nascimento") @db.DateTime(0)
+  address        String?         @map("endereco")
   liveAnimal     liveAnimal[]
   tutorInterview tutorInterview?
   necropsy       necropsy[]
