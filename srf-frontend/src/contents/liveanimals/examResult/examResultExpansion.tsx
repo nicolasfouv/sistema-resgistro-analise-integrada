@@ -116,7 +116,7 @@ export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExam
             </div>
             <div className="gap-2 w-full text-sm grid grid-cols-4">
                 {[
-                    ['Leucócitos', item.whiteBloodCells], ['Bastonetes', item.bandCells],
+                    ['Leucócitos Totais', item.whiteBloodCells], ['Bastonetes', item.bandCells],
                     ['Segmentados', item.segmentedCells], ['Segmentados (%)', item.segmentedCellsPercentage],
                     ['Linfócitos', item.lymphocytes], ['Linfócitos (%)', item.lymphocytesPercentage],
                     ['Monócitos', item.monocytes], ['Monócitos (%)', item.monocytesPercentage],
@@ -136,7 +136,7 @@ export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExam
             </div>
             <div className="gap-2 w-full text-sm grid grid-cols-4">
                 <div key="ALT" className="flex flex-col w-full">
-                    <label className="ml-1 font-bold flex items-center">ALT
+                    <label className="ml-1 font-bold flex items-center">ALT (U/L)
                         <img src={grayQuestionMark}
                             title="ALT..."
                             alt="Sobre o campo ALT"
@@ -146,19 +146,19 @@ export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExam
                     <input type="text" disabled value={item.alt} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div key="Creatinina" className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Creatinina</label>
+                    <label className="ml-1 font-bold">Creatinina (mg/dL)</label>
                     <input type="text" disabled value={item.creatinine} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div key="Fosfatase Alcalina" className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Fosfatase Alcalina</label>
+                    <label className="ml-1 font-bold">Fosfatase Alcalina (U/L)</label>
                     <input type="text" disabled value={item.alkalinePhosphatase} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div key="Proteína Total" className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Proteína Total</label>
+                    <label className="ml-1 font-bold">Proteína Total (g/dL)</label>
                     <input type="text" disabled value={item.totalProtein} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div key="Ureia" className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Ureia</label>
+                    <label className="ml-1 font-bold">Ureia (mg/dL)</label>
                     <input type="text" disabled value={item.urea} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
             </div>

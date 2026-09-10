@@ -112,7 +112,7 @@ export function ExamResultSideDrawer({ filters, onClose }: ExamResultSideDrawerP
                                     <Field key='platelets' label='Plaquetas' value={String(result.platelets)} />
                                 </div>
                                 <div className="gap-2 w-full text-sm grid grid-cols-2 mt-2">
-                                    <Field key='leukocytes' label='Leucócitos' value={String(result.whiteBloodCells)} />
+                                    <Field key='leukocytes' label='Leucócitos Totais' value={String(result.whiteBloodCells)} />
                                     <Field key='bandCells' label='Bastonetes' value={String(result.bandCells)} />
                                     <Field key='segmentedCells' label='Segmentados' value={String(result.segmentedCells)} />
                                     <Field key='segmentedCellsPercentage' label='Segmentados (%)' value={String(result.segmentedCellsPercentage)} />

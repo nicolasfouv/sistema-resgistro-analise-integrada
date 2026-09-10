@@ -43,7 +43,7 @@ export const examResultSchema = z.object({
     hcm: z.number({ error: 'HCM deve ser um número' }),
     chcm: z.number({ error: 'CHCM deve ser um número' }),
     platelets: z.number({ error: 'Plaquetas deve ser um número' }),
-    whiteBloodCells: z.number({ error: 'Leucócitos deve ser um número' }),
+    whiteBloodCells: z.number({ error: 'Leucócitos Totais deve ser um número' }),
     bandCells: z.number({ error: 'Bastonetes deve ser um número' }),
     segmentedCells: z.number({ error: 'Segmentados deve ser um número' }),
     segmentedCellsPercentage: z.number({ error: 'Segmentados (%) deve ser um número' }),

@@ -287,7 +287,7 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
                             </div>
 
                             <div className="grid grid-cols-4 gap-4">
-                                {numInput('Leucócitos', whiteBloodCells, setWhiteBloodCells)}
+                                {numInput('Leucócitos Totais', whiteBloodCells, setWhiteBloodCells)}
                                 {numInput('Bastonetes', bandCells, setBandCells)}
                                 {numInput('Segmentados', segmentedCells, setSegmentedCells)}
                                 {numInput('Segmentados (%)', segmentedCellsPercentage, setSegmentedCellsPercentage)}
@@ -305,11 +305,11 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
                         <fieldset className="border border-border rounded p-4">
                             <legend className="text-sm font-bold text-standard-blue px-2">Bioquímico</legend>
                             <div className="grid grid-cols-4 gap-4">
-                                {numInput('ALT', alt, setAlt)}
-                                {numInput('Creatinina', creatinine, setCreatinine)}
-                                {numInput('Fosfatase Alcalina', alkalinePhosphatase, setAlkalinePhosphatase)}
-                                {numInput('Proteína Total', totalProtein, setTotalProtein)}
-                                {numInput('Ureia', urea, setUrea)}
+                                {numInput('ALT (U/L)', alt, setAlt)}
+                                {numInput('Creatinina (mg/dL)', creatinine, setCreatinine)}
+                                {numInput('Fosfatase Alcalina (U/L)', alkalinePhosphatase, setAlkalinePhosphatase)}
+                                {numInput('Proteína Total (g/dL)', totalProtein, setTotalProtein)}
+                                {numInput('Ureia (mg/dL)', urea, setUrea)}
                             </div>
                         </fieldset>
 
