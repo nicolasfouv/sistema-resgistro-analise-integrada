@@ -292,32 +292,32 @@ export function SorologyResultFormModal({ sorologyResult, close, refresh }: Soro
                                             <div className="flex items-center gap-1 h-10">
                                                 <input
                                                     type="number"
-                                                    step="1"
+                                                    step="0.1"
                                                     value={ratioLeft}
                                                     onChange={(e) => setRatioLeft(e.target.value)}
                                                     className="border border-border rounded p-2 bg-white h-10 w-full"
-                                                    placeholder="Ex: 1"
+                                                    placeholder="Ex: 0,0"
                                                     required
                                                 />
                                                 <span className="text-lg font-bold text-text-main">:</span>
                                                 <input
                                                     type="number"
-                                                    step="1"
+                                                    step="0.1"
                                                     value={ratioRight}
                                                     onChange={(e) => setRatioRight(e.target.value)}
                                                     className="border border-border rounded p-2 bg-white h-10 w-full"
-                                                    placeholder="Ex: 50"
+                                                    placeholder="Ex: 0,0"
                                                     required
                                                 />
                                             </div>
                                         ) : (
                                             <input
                                                 type="number"
-                                                step="any"
+                                                step="0.1"
                                                 value={cuttingPointValue}
                                                 onChange={(e) => setCuttingPointValue(e.target.value)}
-                                                className="border border-border rounded p-2 bg-white h-10"
-                                                placeholder={cuttingPointSymbol ? "Ex: 0.5" : "Selecione o símbolo primeiro"}
+                                                className={`border border-border rounded p-2 h-10 ${cuttingPointSymbol ? 'bg-white' : 'bg-gray-100'}`}
+                                                placeholder={cuttingPointSymbol ? "Ex: 0,0" : "Selecione o símbolo"}
                                                 disabled={!cuttingPointSymbol}
                                                 required
                                             />
@@ -334,8 +334,8 @@ export function SorologyResultFormModal({ sorologyResult, close, refresh }: Soro
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Resultado</label>
-                                <input type="number" step="any" value={result} onChange={(e) => setResult(e.target.value ? Number(e.target.value) : '')}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
+                                <input type="number" step="0.1" value={result} onChange={(e) => setResult(e.target.value ? Number(e.target.value) : '')}
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0,0" required />
                             </div>
                         </div>
 
