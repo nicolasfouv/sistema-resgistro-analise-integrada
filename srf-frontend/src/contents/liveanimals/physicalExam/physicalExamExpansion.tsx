@@ -125,7 +125,7 @@ export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPh
                     <label className="ml-1 font-bold flex items-center">Tempo de Preenchimento Capilar
                         <img src={grayQuestionMark}
                             title="Tempo de preenchimento capilar do animal em segundos"
-                            alt="Sobre o campo Tempo de Preenchimento Capilar"
+                            alt="Sobre o campo Tempo de Preenchimento Capilar (em minutos)"
                             className="inline-block size-4 ml-1"
                         />
                     </label>
