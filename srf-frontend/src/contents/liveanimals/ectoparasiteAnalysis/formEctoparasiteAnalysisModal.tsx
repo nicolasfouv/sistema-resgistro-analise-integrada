@@ -186,17 +186,17 @@ export function EctoparasiteAnalysisFormModal({ ectoparasiteAnalysis, close, ref
                             <legend className="text-sm font-bold text-standard-blue px-2">Visita Associada</legend>
                             <div className="grid grid-cols-3 gap-4">
                                 <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Data da Visita</label>
-                                    <select value={selectedDate} onChange={(e) => handleDateChange(e.target.value)} className="border border-border rounded p-2 bg-white" required>
-                                        <option value="">Selecione...</option>
-                                        {filteredDates.map(d => (<option key={d.iso} value={d.iso}>{d.formatted}</option>))}
-                                    </select>
-                                </div>
-                                <div className="flex flex-col">
                                     <label className="text-sm font-bold mb-1 text-left">Código do Animal</label>
                                     <select value={selectedAnimalId} onChange={(e) => handleAnimalChange(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white" required>
                                         <option value="">Selecione...</option>
                                         {filteredAnimals.map(a => (<option key={a.id} value={a.id}>{a.code}</option>))}
+                                    </select>
+                                </div>
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-bold mb-1 text-left">Data da Visita</label>
+                                    <select value={selectedDate} onChange={(e) => handleDateChange(e.target.value)} className="border border-border rounded p-2 bg-white" required>
+                                        <option value="">Selecione...</option>
+                                        {filteredDates.map(d => (<option key={d.iso} value={d.iso}>{d.formatted}</option>))}
                                     </select>
                                 </div>
                                 <div className="flex flex-col">
