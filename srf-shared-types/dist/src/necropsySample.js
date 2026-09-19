@@ -20,8 +20,8 @@ export const getAllNecropsySampleOutputSchema = z.object({
     note: z.string().optional(),
     sendSamples: z.array(z.object({
         id: z.number().int(),
-        storageId: z.number().int(),
-        storageName: z.string().nonempty(),
+        destinationId: z.number().int(),
+        destinationName: z.string().nonempty(),
         statusId: z.number().int(),
         statusName: z.string().nonempty(),
         sendDate: z.string().nonempty(),
@@ -49,6 +49,10 @@ export const getFormOptionsNecropsySampleOutputSchema = z.object({
         id: z.number().int(),
         name: z.string().nonempty()
     })),
+    destinations: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty()
+    })),
     storages: z.array(z.object({
         id: z.number().int(),
         name: z.string().nonempty()
@@ -64,7 +68,7 @@ export const createNecropsySampleInputSchema = z.object({
     imageLink: z.string().optional(),
     note: z.string().optional(),
     sendSamples: z.array(z.object({
-        storageId: z.number().int(),
+        destinationId: z.number().int(),
         statusId: z.number().int(),
         sendDate: z.string().nonempty(),
         quantity: z.number().int().positive(),
@@ -74,7 +78,7 @@ export const createNecropsySampleInputSchema = z.object({
 export const updateNecropsySampleInputSchema = createNecropsySampleInputSchema;
 export const sendSampleInputSchema = z.object({
     id: z.number().int(),
-    storageId: z.number().int(),
+    destinationId: z.number().int(),
     statusId: z.number().int(),
     sendDate: z.string().nonempty(),
     quantity: z.number().int().positive(),

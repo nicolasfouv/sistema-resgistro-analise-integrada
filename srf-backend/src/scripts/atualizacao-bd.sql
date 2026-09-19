@@ -25,6 +25,31 @@ alter table srf.envio_amostra_veterinario
 drop foreign  key envio_amostra_veterinario_id_armazenamento_fkey,
 drop column id_armazenamento;
 
+CREATE TABLE destino_amostra_necropsia (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL UNIQUE
+);
+
+INSERT INTO destino_amostra_necropsia (nome)
+VALUES
+    ('Teste sorológico'),
+    ('Leishmania'),
+    ('Rosangela'),
+    ('Reserva'),
+    ('Teste sorológico + Reserva');
+
+ALTER TABLE envio_amostra_necropsia
+    ADD id_destino_amostra INT NOT NULL;
+
+ALTER TABLE envio_amostra_necropsia
+    ADD CONSTRAINT envio_amostra_necropsia_id_destino_fkey
+    FOREIGN KEY (id_destino_amostra)
+    REFERENCES destino_amostra_necropsia(id);
+
+ALTER TABLE envio_amostra_necropsia
+    DROP FOREIGN KEY envio_amostra_necropsia_id_armazenamento_fkey,
+    DROP COLUMN id_armazenamento;
+
 -- 2[parcialmente]) discutir a necessidade do novo campo "data de envio"
 SET SQL_SAFE_UPDATES = 0;
 update srf.tipo_amostra_veterinaria
@@ -77,4 +102,3 @@ add endereco varchar(255) null;
 
 -- pensar sobre como vai funcionar a diferenciação de projetos no sistema
 */
-

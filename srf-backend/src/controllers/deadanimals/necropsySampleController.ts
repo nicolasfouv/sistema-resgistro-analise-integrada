@@ -58,7 +58,7 @@ export class NecropsySampleController {
             if (error.message === 'Status não encontrado.') return res.status(404).json({ error: error.message });
             if (error.message === 'Armazenamento não encontrado.') return res.status(404).json({ error: error.message });
             if (error.message === 'Não é possível criar amostras que compartilhem necrópsia e tipo.') return res.status(400).json({ error: error.message });
-            if (error.message === 'Não é possível enviar a mesma amostra para o mesmo local.') return res.status(400).json({ error: error.message });
+            if (error.message === 'Não é possível enviar a mesma amostra para o mesmo destino.') return res.status(400).json({ error: error.message });
             if (error.message === 'A data de envio da amostra não pode ser anterior à data da necrópsia.') return res.status(400).json({ error: error.message });
             if (error.message === 'A quantidade de amostras enviadas não pode exceder a quantidade total de amostras.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
@@ -88,7 +88,7 @@ export class NecropsySampleController {
             if (error.message === 'Status não encontrado.') return res.status(404).json({ error: error.message });
             if (error.message === 'Armazenamento não encontrado.') return res.status(404).json({ error: error.message });
             if (error.message === 'Não é possível criar amostras que compartilhem necrópsia e tipo.') return res.status(400).json({ error: error.message });
-            if (error.message === 'Não é possível enviar a mesma amostra para o mesmo local.') return res.status(400).json({ error: error.message });
+            if (error.message === 'Não é possível enviar a mesma amostra para o mesmo destino.') return res.status(400).json({ error: error.message });
             if (error.message === 'A data de envio da amostra não pode ser anterior à data da necrópsia.') return res.status(400).json({ error: error.message });
             if (error.message === 'A quantidade de amostras enviadas não pode exceder a quantidade total de amostras.') return res.status(400).json({ error: error.message });
             res.status(400).json({ error: error.message });

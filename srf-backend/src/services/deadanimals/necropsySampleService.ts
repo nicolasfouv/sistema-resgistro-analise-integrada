@@ -31,7 +31,7 @@ export class NecropsySampleService {
                 sendSampleNecropsy: {
                     select: {
                         id: true,
-                        storage: { select: { id: true, name: true } },
+                            destination: { select: { id: true, name: true } },
                         status: { select: { id: true, name: true } },
                         quantity: true,
                         sendDate: true,
@@ -86,15 +86,15 @@ export class NecropsySampleService {
                     note: s.note || undefined,
                     sendSamples: s.sendSampleNecropsy.map(sends => ({
                         id: sends.id,
-                        storageId: sends.storage.id,
-                        storageName: sends.storage.name,
+                        destinationId: sends.destination.id,
+                        destinationName: sends.destination.name,
                         statusId: sends.status.id,
                         statusName: sends.status.name,
                         sendDate: sends.sendDate.toISOString(),
                         quantity: sends.quantity,
                         note: sends.note || undefined
                     })),
-                    allStorageNames: s.storage.name + "," + s.sendSampleNecropsy.map(sends => sends.storage.name).join(","),
+                    allStorageNames: s.storage.name + "," + s.sendSampleNecropsy.map(sends => sends.destination.name).join(","),
                     allStatusNames: s.status.name + "," + s.sendSampleNecropsy.map(sends => sends.status.name).join(",")
                 };
             })
@@ -104,7 +104,7 @@ export class NecropsySampleService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsNecropsySampleOutput> {
-        const [necropsies, sampleTypes, status, storages] = await Promise.all([
+        const [necropsies, sampleTypes, status, destinations, storages] = await Promise.all([
             prisma.necropsy.findMany({
                 select: {
                     id: true,
@@ -121,6 +121,10 @@ export class NecropsySampleService {
                 select: { id: true, name: true },
                 orderBy: { name: 'asc' }
             }),
+            prisma.destinationSampleNecropsy.findMany({
+                select: { id: true, name: true },
+                orderBy: { name: 'asc' }
+            }),
             prisma.storage.findMany({
                 select: { id: true, name: true },
                 orderBy: { name: 'asc' }
@@ -133,7 +137,7 @@ export class NecropsySampleService {
                 performedDate: n.performedDate.toISOString(),
                 deadAnimal: { id: n.deadAnimal.id, code: n.deadAnimal.code }
             })),
-            sampleTypes, status, storages
+            sampleTypes, status, destinations, storages
         };
     }
 
@@ -163,7 +167,7 @@ export class NecropsySampleService {
             });
             if (!existingStatus) throw new Error('Status não encontrado.');
 
-            // Verifica se o storage existe
+                // Verifica se o storage existe
             const existingStorage = await tx.storage.findUnique({
                 where: {
                     id: data.storageId
@@ -196,8 +200,8 @@ export class NecropsySampleService {
             if (data.sendSamples) {
                 // Verifica duplicidade de amostras enviadas
                 data.sendSamples.forEach(sendSample => {
-                    const countStorageId = data.sendSamples!.filter(sends => sends.storageId === sendSample.storageId).length;
-                    if (countStorageId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo local.')
+                    const countDestinationId = data.sendSamples!.filter(sends => sends.destinationId === sendSample.destinationId).length;
+                    if (countDestinationId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo destino.')
                 });
 
                 // Verifica se a data de envio não é anterior à data da necropsia
@@ -220,7 +224,7 @@ export class NecropsySampleService {
                     const sendSampleCreated = await tx.sendSampleNecropsy.create({
                         data: {
                             sampleAllocationNecropsyId: sample.id,
-                            storageId: sendSample.storageId,
+                            destinationId: sendSample.destinationId,
                             statusId: sendSample.statusId,
                             quantity: sendSample.quantity,
                             sendDate: new Date(sendSample.sendDate + 'T12:00:00'),
@@ -314,8 +318,8 @@ export class NecropsySampleService {
             if (data.sendSamples) {
                 // Verifica duplicidade de amostras enviadas
                 data.sendSamples.forEach(sendSample => {
-                    const countStorageId = data.sendSamples!.filter(sends => sends.storageId === sendSample.storageId).length;
-                    if (countStorageId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo local.')
+                    const countDestinationId = data.sendSamples!.filter(sends => sends.destinationId === sendSample.destinationId).length;
+                    if (countDestinationId > 1) throw new Error('Não é possível enviar a mesma amostra para o mesmo destino.')
                 });
 
                 // Verifica se a data de envio não é anterior à data da necropsia
@@ -343,7 +347,7 @@ export class NecropsySampleService {
                     const sendSampleCreated = await tx.sendSampleNecropsy.create({
                         data: {
                             sampleAllocationNecropsyId: sample.id,
-                            storageId: sendSample.storageId,
+                            destinationId: sendSample.destinationId,
                             statusId: sendSample.statusId,
                             quantity: sendSample.quantity,
                             sendDate: new Date(sendSample.sendDate + 'T12:00:00'),

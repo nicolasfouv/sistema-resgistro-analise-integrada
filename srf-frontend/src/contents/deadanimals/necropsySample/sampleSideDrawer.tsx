@@ -117,7 +117,7 @@ export function NecropsySampleSideDrawer({ filters, onClose }: NecropsySampleSid
                                             Detalhes da Amostras
                                         </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
-                                            <Field label="Data da Visita" value={sample.necropsyDateFormatted || ''} />
+                                            <Field label="Data da Necrópsia" value={sample.necropsyDateFormatted || ''} />
                                             <Field label="Código do Animal" value={sample.deadAnimalCode} />
                                             <Field label="Tipo da Amostra" value={sample.sampleTypeDescription} />
                                             <Field label="Status" value={sample.statusName} />
@@ -139,7 +139,7 @@ export function NecropsySampleSideDrawer({ filters, onClose }: NecropsySampleSid
                                                 </h4>
                                                 {sample.sendSamples.map(ss => (
                                                     <div key={ss.id} className="gap-2 w-full text-sm grid grid-cols-2 mb-2 border border-border rounded p-2">
-                                                        <Field label="Local" value={ss.storageName} />
+                                                        <Field label="Destino" value={ss.destinationName} />
                                                         <Field label="Status" value={ss.statusName} />
                                                         <Field label="Data de Envio" value={ss.sendDateFormatted || ''} />
                                                         <Field label="Quantidade" value={String(ss.quantity)} />

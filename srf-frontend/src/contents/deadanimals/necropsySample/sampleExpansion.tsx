@@ -114,10 +114,10 @@ export function SampleExpansion({ item, close, refresh }: { item: GetAllNecropsy
                     </div>
                     {item.sendSamples.map(ss => (
                         <div key={ss.id} className="gap-2 w-full text-sm grid grid-cols-4 mb-3 border border-border rounded p-2">
-                            {/* Local de Armazenamento */}
+                            {/* Destino */}
                             <div className="flex flex-col w-full">
-                                <label className="ml-1 font-bold">Local</label>
-                                <input type="text" disabled value={ss.storageName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                                <label className="ml-1 font-bold">Destino</label>
+                                <input type="text" disabled value={ss.destinationName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                             </div>
                             {/* Status */}
                             <div className="flex flex-col w-full">

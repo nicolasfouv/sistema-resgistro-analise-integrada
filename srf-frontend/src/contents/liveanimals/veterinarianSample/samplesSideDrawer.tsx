@@ -141,7 +141,7 @@ export function SamplesSideDrawer({ filters, onClose }: SamplesSideDrawerProps) 
                                                 </h4>
                                                 {sample.sendSamples.map(ss => (
                                                     <div key={ss.id} className="gap-2 w-full text-sm grid grid-cols-2 mb-2 border border-border rounded p-2">
-                                                        <Field label="Local" value={ss.storageName} />
+                                                        <Field label="Destino" value={ss.destinationName} />
                                                         <Field label="Status" value={ss.statusName} />
                                                         <Field label="Data de Envio" value={ss.sendDateFormatted || ''} />
                                                         <Field label="Quantidade" value={String(ss.quantity)} />

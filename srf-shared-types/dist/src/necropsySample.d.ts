@@ -19,8 +19,8 @@ export declare const getAllNecropsySampleOutputSchema: z.ZodObject<{
     note: z.ZodOptional<z.ZodString>;
     sendSamples: z.ZodOptional<z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
-        storageId: z.ZodNumber;
-        storageName: z.ZodString;
+        destinationId: z.ZodNumber;
+        destinationName: z.ZodString;
         statusId: z.ZodNumber;
         statusName: z.ZodString;
         sendDate: z.ZodString;
@@ -48,6 +48,10 @@ export declare const getFormOptionsNecropsySampleOutputSchema: z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
     }, z.z.core.$strip>>;
+    destinations: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.z.core.$strip>>;
     storages: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
@@ -62,7 +66,7 @@ export declare const createNecropsySampleInputSchema: z.ZodObject<{
     imageLink: z.ZodOptional<z.ZodString>;
     note: z.ZodOptional<z.ZodString>;
     sendSamples: z.ZodOptional<z.ZodArray<z.ZodObject<{
-        storageId: z.ZodNumber;
+        destinationId: z.ZodNumber;
         statusId: z.ZodNumber;
         sendDate: z.ZodString;
         quantity: z.ZodNumber;
@@ -78,7 +82,7 @@ export declare const updateNecropsySampleInputSchema: z.ZodObject<{
     imageLink: z.ZodOptional<z.ZodString>;
     note: z.ZodOptional<z.ZodString>;
     sendSamples: z.ZodOptional<z.ZodArray<z.ZodObject<{
-        storageId: z.ZodNumber;
+        destinationId: z.ZodNumber;
         statusId: z.ZodNumber;
         sendDate: z.ZodString;
         quantity: z.ZodNumber;
@@ -87,7 +91,7 @@ export declare const updateNecropsySampleInputSchema: z.ZodObject<{
 }, z.z.core.$strip>;
 export declare const sendSampleInputSchema: z.ZodObject<{
     id: z.ZodNumber;
-    storageId: z.ZodNumber;
+    destinationId: z.ZodNumber;
     statusId: z.ZodNumber;
     sendDate: z.ZodString;
     quantity: z.ZodNumber;

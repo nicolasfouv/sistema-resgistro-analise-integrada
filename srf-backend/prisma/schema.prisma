@@ -879,7 +879,6 @@ model storage {
   name                         String                         @map("nome")
   sampleAllocationNecropsy     sampleAllocationNecropsy[]
   sampleAllocationVeterinarian sampleAllocationVeterinarian[]
-  sendSampleNecropsy           sendSampleNecropsy[]
 
   @@map("armazem")
 }
@@ -1108,19 +1107,27 @@ model sampleAllocationNecropsy {
 model sendSampleNecropsy {
   id                         Int                                @id @default(autoincrement())
   sampleAllocationNecropsyId Int                                @map("id_alocacao_amostra_necropsia")
-  storageId                  Int                                @map("id_armazenamento")
+  destinationId              Int                                @map("id_destino_amostra")
   statusId                   Int                                @map("id_status")
   quantity                   Int                                @map("quantidade")
   sendDate                   DateTime                           @map("data_envio") @db.DateTime(0)
   note                       String?                            @map("observacao")
   sampleAllocationNecropsy   sampleAllocationNecropsy           @relation(fields: [sampleAllocationNecropsyId], references: [id])
-  storage                    storage                            @relation(fields: [storageId], references: [id])
+  destination                destinationSampleNecropsy           @relation(fields: [destinationId], references: [id])
   status                     enumNecropsySampleAllocationStatus @relation(fields: [statusId], references: [id])
 
-  @@unique([sampleAllocationNecropsyId, storageId])
-  @@index([storageId], map: "envio_amostra_necropsia_id_armazenamento_fkey")
+  @@unique([sampleAllocationNecropsyId, destinationId])
+  @@index([destinationId], map: "envio_amostra_necropsia_id_destino_fkey")
   @@index([statusId], map: "envio_amostra_necropsia_id_status_fkey")
   @@map("envio_amostra_necropsia")
+}
+
+model destinationSampleNecropsy {
+  id                   Int                    @id @default(autoincrement())
+  name                 String                 @unique @map("nome")
+  sendSampleNecropsy   sendSampleNecropsy[]
+
+  @@map("destino_amostra_necropsia")
 }
 
 model cpcrSampleType {
