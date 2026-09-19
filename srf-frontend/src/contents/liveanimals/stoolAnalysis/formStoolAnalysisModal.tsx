@@ -211,7 +211,7 @@ export function StoolAnalysisFormModal({ stoolAnalysis, close, refresh }: StoolA
                                     {options.processingTechnologies.map(pt => (<option key={pt.id} value={pt.id}>{pt.name}</option>))}
                                 </select>
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col col-span-3">
                                 <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
                                 <textarea
                                     value={note}

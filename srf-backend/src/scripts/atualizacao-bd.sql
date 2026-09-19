@@ -25,7 +25,7 @@ alter table srf.envio_amostra_veterinario
 drop foreign  key envio_amostra_veterinario_id_armazenamento_fkey,
 drop column id_armazenamento;
 
--- 2[parcialmente])
+-- 2[parcialmente]) discutir a necessidade do novo campo "data de envio"
 SET SQL_SAFE_UPDATES = 0;
 update srf.tipo_amostra_veterinaria
 set descricao = 'Medula'
@@ -34,7 +34,7 @@ SET SQL_SAFE_UPDATES = 1;
 
 -- 3) verificar com Anderson como proceder
 
--- 4[parcialmente])
+-- 4[parcialmente]) fazer um link com sidedrawer entre a amostra de fezes e a analise
 alter table srf.analise_fezes
 add index analise_fezes_id_visita_veterinaria_idx (id_visita_veterinaria);
 
@@ -63,14 +63,18 @@ add observacao varchar(191) null;
 
 -- 14) a fazer
 
--- 15) concluído
+-- 15) concluído ex fisico
 
 -- 16) concluido
 
--- 17) a fazer
+-- 17) a fazer, verificar quais campos incluir
 
 -- 18[parcialmente]) a alteração de animal entrará junto a outras alterações requisitadas
 alter table srf.tutor
 add endereco varchar(255) null;
+
+-- 19) atualizar a parte de gps, separar pos fases: controle, castrado, vermifugado, castrado + vermifugado (não necessáriamente nessa ordem)
+
+-- pensar sobre como vai funcionar a diferenciação de projetos no sistema
 */
 
