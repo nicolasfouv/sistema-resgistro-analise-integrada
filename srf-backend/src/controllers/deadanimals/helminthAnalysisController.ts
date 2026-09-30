@@ -61,6 +61,7 @@ export class HelminthAnalysisController {
             if (error.message === 'Localização de helminto não encontrada.') return res.status(404).json({ error: error.message });
             if (error.message === 'Já existe uma análise de helminto para esta necropsia e espécie de helminto.') return res.status(409).json({ error: error.message });
             if (error.message === 'A soma de machos e fêmeas deve ser igual ou inferior ao total.') return res.status(400).json({ error: error.message });
+            if (error.message === 'Deve haver pelo menos uma localização informada.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }
@@ -88,6 +89,7 @@ export class HelminthAnalysisController {
             if (error.message === 'Localização de helminto não encontrada.') return res.status(404).json({ error: error.message });
             if (error.message === 'Já existe uma análise de helminto para esta necropsia e espécie de helminto.') return res.status(409).json({ error: error.message });
             if (error.message === 'A soma de machos e fêmeas deve ser igual ou inferior ao total.') return res.status(400).json({ error: error.message });
+            if (error.message === 'Deve haver pelo menos uma localização informada.') return res.status(400).json({ error: error.message });
             return res.status(500).json({ error: error.message });
         }
     }

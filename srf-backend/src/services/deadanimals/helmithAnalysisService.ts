@@ -130,6 +130,9 @@ export class HelminthAnalysisService {
             // Soma macho e femea e verifica se é maior que o total
             if (data.maleQuantity + data.femaleQuantity > data.totalQuantity) throw new Error('A soma de machos e fêmeas deve ser igual ou inferior ao total.');
 
+            // Verifica se há locação informada
+            if (data.locations.length === 0) throw new Error('Deve haver pelo menos uma localização informada.');
+
             // Cria o registro de análise de helminto
             const analysis = await tx.helminthAnalysis.create({
                 data: {
@@ -188,6 +191,9 @@ export class HelminthAnalysisService {
 
             // Soma macho e femea e verifica se é maior que o total
             if (data.maleQuantity + data.femaleQuantity > data.totalQuantity) throw new Error('A soma de machos e fêmeas deve ser igual ou inferior ao total.');
+
+            // Verifica se há locação informada
+            if (data.locations.length === 0) throw new Error('Deve haver pelo menos uma localização informada.');
 
             // Atualiza o registro de análise de helminto
             const analysis = await tx.helminthAnalysis.update({
