@@ -64,15 +64,15 @@ export function HelminthAnalysisExpansion({ item, close, refresh }: { item: GetA
                     <input type="text" disabled value={item.locations.map(l => l.locationName).join(' - ')} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Qtde de Machos</label>
+                    <label className="ml-1 font-bold">Quantidade de Machos</label>
                     <input type="text" disabled value={String(item.maleQuantity)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Qtde de Fêmeas</label>
+                    <label className="ml-1 font-bold">Quantidade de Fêmeas</label>
                     <input type="text" disabled value={String(item.femaleQuantity)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Qtde Total</label>
+                    <label className="ml-1 font-bold">Quantidade Total</label>
                     <input type="text" disabled value={String(item.totalQuantity)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div className="flex flex-col w-full col-span-3">

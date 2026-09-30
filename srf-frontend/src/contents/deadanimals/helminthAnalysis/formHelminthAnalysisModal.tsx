@@ -180,6 +180,7 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
                                     {options.locations.filter(l => !locations.includes(l.id)).length > 0 && (
                                         <select
                                             value=""
+                                            required={locations.length === 0}
                                             onChange={(e) => {
                                                 if (e.target.value) handleAddLocation(Number(e.target.value));
                                             }}
