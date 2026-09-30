@@ -266,11 +266,11 @@ export function NecropsyFormModal({ necropsy, close, refresh }: NecropsyFormModa
 
                             <div className="flex flex-col col-span-3">
                                 <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
-                                <input
-                                    type="text"
+                                <textarea
                                     value={note}
                                     onChange={(e) => setNote(e.target.value)}
-                                    className="border border-border rounded p-2"
+                                    className="border border-border rounded p-2 bg-white resize-none"
+                                    rows={3}
                                     placeholder="Digite as observações..."
                                 />
                             </div>
@@ -305,7 +305,7 @@ export function NecropsyFormModal({ necropsy, close, refresh }: NecropsyFormModa
                                                 type="number"
                                                 step={0.1}
                                                 min={0.1}
-                                                value={bm.value}
+                                                value={bm.value || ''}
                                                 onChange={(e) => handleUpdateMeasurement(index, 'value', e.target.value)}
                                                 className='border border-border rounded p-2 bg-white'
                                                 placeholder="Ex: 0,0"

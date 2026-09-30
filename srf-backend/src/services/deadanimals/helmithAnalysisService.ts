@@ -24,7 +24,7 @@ export class HelminthAnalysisService {
                     }
                 },
                 helminthSpecie: { select: { id: true, name: true } },
-                location: { select: { id: true, name: true } },
+                helmithAllocation: { select: { location: { select: { id: true, name: true } } } },
                 maleQuantity: true,
                 femaleQuantity: true,
                 totalQuantity: true,
@@ -65,8 +65,7 @@ export class HelminthAnalysisService {
                 deadAnimalCode: a.necropsy.deadAnimal.code,
                 helminthSpecieId: a.helminthSpecie.id,
                 helminthSpecieName: a.helminthSpecie.name,
-                locationId: a.location.id,
-                locationName: a.location.name,
+                locations: a.helmithAllocation.map(ha => ({ locationId: ha.location.id, locationName: ha.location.name })),
                 maleQuantity: a.maleQuantity,
                 femaleQuantity: a.femaleQuantity,
                 totalQuantity: a.totalQuantity,
@@ -119,36 +118,11 @@ export class HelminthAnalysisService {
 
     async create(data: CreateHelminthAnalysisInput, requesterId: string) {
         return prisma.$transaction(async (tx) => {
-            // Verifica se a necropsia existe
-            const existingNecropsy = await tx.necropsy.findUnique({
-                where: {
-                    id: data.necropsyId
-                }
-            });
-            if (!existingNecropsy) throw new Error('Necrópsia não encontrada.');
-
-            // Verifica se a espécie de helminto existe
-            const existingHelminthSpecies = await tx.helminthSpecie.findUnique({
-                where: {
-                    id: data.helminthSpecieId
-                }
-            });
-            if (!existingHelminthSpecies) throw new Error('Espécie de helminto não encontrada.');
-
-            // Verifica se a localização existe
-            const existingLocation = await tx.helminthLocation.findUnique({
-                where: {
-                    id: data.locationId
-                }
-            });
-            if (!existingLocation) throw new Error('Localização de helminto não encontrada.');
-
             // Verifica se já existe um registro de análise de helminto para esta necropsia e espécie de helminto
             const existingAnalysis = await tx.helminthAnalysis.findFirst({
                 where: {
                     necropsyId: data.necropsyId,
                     helminthSpecieId: data.helminthSpecieId,
-                    locationId: data.locationId
                 }
             });
             if (existingAnalysis) throw new Error('Já existe um registro de análise de helminto para esta necropsia e espécie de helminto.');
@@ -161,13 +135,21 @@ export class HelminthAnalysisService {
                 data: {
                     necropsyId: data.necropsyId,
                     helminthSpecieId: data.helminthSpecieId,
-                    locationId: data.locationId,
                     maleQuantity: data.maleQuantity,
                     femaleQuantity: data.femaleQuantity,
                     totalQuantity: data.totalQuantity,
                     note: data.note || null
                 }
             });
+
+            const allocation = await Promise.all(data.locations.map(async (location) => {
+                return tx.helmithAllocation.create({
+                    data: {
+                        helminthAnalysisId: analysis.id,
+                        locationId: location.locationId
+                    }
+                });
+            }));
 
             // Audit log
             const changes = [
@@ -194,36 +176,11 @@ export class HelminthAnalysisService {
             });
             if (!existingAnalysis) throw new Error('Análise de helminto não encontrada.');
 
-            // Verifica se a necropsia existe
-            const existingNecropsy = await tx.necropsy.findUnique({
-                where: {
-                    id: data.necropsyId
-                }
-            });
-            if (!existingNecropsy) throw new Error('Necrópsia não encontrada.');
-
-            // Verifica se a espécie de helminto existe
-            const existingHelminthSpecies = await tx.helminthSpecie.findUnique({
-                where: {
-                    id: data.helminthSpecieId
-                }
-            });
-            if (!existingHelminthSpecies) throw new Error('Espécie de helminto não encontrada.');
-
-            // Verifica se a localização existe
-            const existingLocation = await tx.helminthLocation.findUnique({
-                where: {
-                    id: data.locationId
-                }
-            });
-            if (!existingLocation) throw new Error('Localização de helminto não encontrada.');
-
             // Verifica se já existe um registro de análise de helminto para esta necropsia e espécie de helminto
             const existingAnalysisForNecropsyAndSpecie = await tx.helminthAnalysis.findFirst({
                 where: {
                     necropsyId: data.necropsyId,
                     helminthSpecieId: data.helminthSpecieId,
-                    locationId: data.locationId,
                     id: { not: recordId }
                 }
             });
@@ -240,13 +197,29 @@ export class HelminthAnalysisService {
                 data: {
                     necropsyId: data.necropsyId,
                     helminthSpecieId: data.helminthSpecieId,
-                    locationId: data.locationId,
                     maleQuantity: data.maleQuantity,
                     femaleQuantity: data.femaleQuantity,
                     totalQuantity: data.totalQuantity,
                     note: data.note || null
                 }
             });
+
+            // Remove as localizações existentes
+            await tx.helmithAllocation.deleteMany({
+                where: {
+                    helminthAnalysisId: recordId
+                }
+            });
+
+            // Cria as novas localizações
+            await Promise.all(data.locations.map(async (location) => {
+                return tx.helmithAllocation.create({
+                    data: {
+                        helminthAnalysisId: recordId,
+                        locationId: location.locationId
+                    }
+                });
+            }));
 
             // Audit log
             const changes = [
@@ -273,6 +246,13 @@ export class HelminthAnalysisService {
                 }
             });
             if (!existingAnalysis) throw new Error('Análise de helminto não encontrada.');
+
+            // Remove as alocações
+            await tx.helmithAllocation.deleteMany({
+                where: {
+                    helminthAnalysisId: recordId
+                }
+            });
 
             // Remove a análise de helminto
             await tx.helminthAnalysis.delete({

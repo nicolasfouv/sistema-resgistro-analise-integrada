@@ -10,8 +10,10 @@ declare const getAllHelminthAnalysisOutputSchema: z.ZodObject<{
     deadAnimalCode: z.ZodString;
     helminthSpecieId: z.ZodNumber;
     helminthSpecieName: z.ZodString;
-    locationId: z.ZodNumber;
-    locationName: z.ZodString;
+    locations: z.ZodArray<z.ZodObject<{
+        locationId: z.ZodNumber;
+        locationName: z.ZodString;
+    }, z.core.$strip>>;
     maleQuantity: z.ZodNumber;
     femaleQuantity: z.ZodNumber;
     totalQuantity: z.ZodNumber;
@@ -38,7 +40,9 @@ declare const getFormOptionsHelminthAnalysisOutputSchema: z.ZodObject<{
 declare const createHelminthAnalysisInputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
     helminthSpecieId: z.ZodNumber;
-    locationId: z.ZodNumber;
+    locations: z.ZodArray<z.ZodObject<{
+        locationId: z.ZodNumber;
+    }, z.core.$strip>>;
     maleQuantity: z.ZodNumber;
     femaleQuantity: z.ZodNumber;
     totalQuantity: z.ZodNumber;
@@ -47,7 +51,9 @@ declare const createHelminthAnalysisInputSchema: z.ZodObject<{
 declare const updateHelminthAnalysisInputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
     helminthSpecieId: z.ZodNumber;
-    locationId: z.ZodNumber;
+    locations: z.ZodArray<z.ZodObject<{
+        locationId: z.ZodNumber;
+    }, z.core.$strip>>;
     maleQuantity: z.ZodNumber;
     femaleQuantity: z.ZodNumber;
     totalQuantity: z.ZodNumber;

@@ -1023,28 +1023,37 @@ model bodyMeasurementNecropsy {
 }
 
 model helminthAnalysis {
-  id               Int              @id @default(autoincrement())
-  necropsyId       Int              @map("id_necropsia")
-  helminthSpecieId Int              @map("id_especie_helminto")
-  locationId       Int              @map("id_localizacao")
-  maleQuantity     Int              @map("quantidade_machos")
-  femaleQuantity   Int              @map("quantidade_femeas")
-  totalQuantity    Int              @map("quantidade_total")
-  note             String?          @map("observacao")
-  location         helminthLocation @relation(fields: [locationId], references: [id])
-  helminthSpecie   helminthSpecie   @relation(fields: [helminthSpecieId], references: [id])
-  necropsy         necropsy         @relation(fields: [necropsyId], references: [id])
+  id                Int                 @id @default(autoincrement())
+  necropsyId        Int                 @map("id_necropsia")
+  helminthSpecieId  Int                 @map("id_especie_helminto")
+  maleQuantity      Int                 @map("quantidade_machos")
+  femaleQuantity    Int                 @map("quantidade_femeas")
+  totalQuantity     Int                 @map("quantidade_total")
+  note              String?             @map("observacao")
+  helminthSpecie    helminthSpecie      @relation(fields: [helminthSpecieId], references: [id])
+  necropsy          necropsy            @relation(fields: [necropsyId], references: [id])
+  helmithAllocation helmithAllocation[]
 
-  @@unique([necropsyId, helminthSpecieId, locationId])
-  @@index([locationId], map: "analise_helminto_id_localizacao_fkey")
+  @@unique([necropsyId, helminthSpecieId])
   @@index([helminthSpecieId], map: "analise_helminto_id_especie_helminto_fkey")
   @@map("analise_helminto")
 }
 
+model helmithAllocation {
+  id                 Int              @id @default(autoincrement())
+  helminthAnalysisId Int              @map("id_analise_helminto")
+  locationId         Int              @map("id_localizacao")
+  helminthAnalysis   helminthAnalysis @relation(fields: [helminthAnalysisId], references: [id])
+  location           helminthLocation @relation(fields: [locationId], references: [id])
+
+  @@unique([helminthAnalysisId, locationId])
+  @@map("alocacao_helminto")
+}
+
 model helminthLocation {
-  id               Int                @id @default(autoincrement())
-  name             String             @unique @map("nome")
-  helminthAnalysis helminthAnalysis[]
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique @map("nome")
+  helmithAllocation helmithAllocation[]
 
   @@map("localizacao_helminto")
 }

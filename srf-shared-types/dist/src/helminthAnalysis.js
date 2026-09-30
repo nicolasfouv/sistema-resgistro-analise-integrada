@@ -25,12 +25,14 @@ const getAllHelminthAnalysisOutputSchema = z.object({
     deadAnimalCode: z.string().nonempty(),
     helminthSpecieId: z.number().int(),
     helminthSpecieName: z.string().nonempty(),
-    locationId: z.number().int(),
-    locationName: z.string().nonempty(),
+    locations: z.array(z.object({
+        locationId: z.number().int(),
+        locationName: z.string().nonempty()
+    })),
     maleQuantity: z.number().int(),
     femaleQuantity: z.number().int(),
     totalQuantity: z.number().int(),
-    note: z.string().optional(),
+    note: z.string().optional()
 });
 const getFormOptionsHelminthAnalysisOutputSchema = z.object({
     necropsies: z.array(z.object({
@@ -38,26 +40,28 @@ const getFormOptionsHelminthAnalysisOutputSchema = z.object({
         performedDate: z.string().nonempty(),
         deadAnimal: z.object({
             id: z.number().int(),
-            code: z.string().nonempty(),
+            code: z.string().nonempty()
         })
     })),
     helminthSpecies: z.array(z.object({
         id: z.number().int(),
-        name: z.string().nonempty(),
+        name: z.string().nonempty()
     })),
     locations: z.array(z.object({
         id: z.number().int(),
-        name: z.string().nonempty(),
+        name: z.string().nonempty()
     }))
 });
 // Inputs
 const createHelminthAnalysisInputSchema = z.object({
     necropsyId: z.number().int(),
     helminthSpecieId: z.number().int(),
-    locationId: z.number().int(),
+    locations: z.array(z.object({
+        locationId: z.number().int()
+    })),
     maleQuantity: z.number().int(),
     femaleQuantity: z.number().int(),
     totalQuantity: z.number().int(),
-    note: z.string().optional(),
+    note: z.string().optional()
 });
 const updateHelminthAnalysisInputSchema = createHelminthAnalysisInputSchema;

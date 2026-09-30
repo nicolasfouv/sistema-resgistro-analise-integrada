@@ -170,8 +170,13 @@ export function DeadAnimalFormModal({ deadAnimal, close, refresh }: DeadAnimalFo
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
-                                <textarea value={note} onChange={(e) => setNote(e.target.value)}
-                                    className="border border-border rounded p-2 bg-white min-h-[60px]" placeholder="Digite observações..." />
+                                <textarea
+                                    value={note}
+                                    onChange={(e) => setNote(e.target.value)}
+                                    className="border border-border rounded p-2 bg-white resize-none"
+                                    rows={3}
+                                    placeholder="Digite as observações..."
+                                />
                             </div>
                         </div>
 

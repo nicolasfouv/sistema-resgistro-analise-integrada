@@ -26,7 +26,7 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
     // Campos da análise
     const [necropsyId, setNecropsyId] = useState<number | ''>(helminthAnalysis?.necropsyId ?? '');
     const [specieId, setSpecieId] = useState<number | ''>(helminthAnalysis?.helminthSpecieId ?? '');
-    const [locationId, setLocationId] = useState<number | ''>(helminthAnalysis?.locationId ?? '');
+    const [locations, setLocations] = useState<number[]>(helminthAnalysis?.locations.map(l => l.locationId) ?? []);
     const [maleQuantity, setMaleQuantity] = useState<number | ''>(helminthAnalysis?.maleQuantity ?? '');
     const [femaleQuantity, setFemaleQuantity] = useState<number | ''>(helminthAnalysis?.femaleQuantity ?? '');
     const [totalQuantity, setTotalQuantity] = useState<number | ''>(helminthAnalysis?.totalQuantity ?? '');
@@ -44,6 +44,16 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
         loadOptions();
     }, []);
 
+    function handleAddLocation(locationId: number) {
+        if (!options) return;
+        if (locations.some(l => l === locationId)) return;
+        setLocations(prev => [...prev, locationId]);
+    }
+
+    function handleRemoveLocation(locationId: number) {
+        setLocations(locations.filter(l => l !== locationId));
+    }
+
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         if (!necropsyId) {
@@ -56,7 +66,7 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
             const data = {
                 necropsyId: Number(necropsyId),
                 helminthSpecieId: Number(specieId),
-                locationId: Number(locationId),
+                locations: locations.map(l => ({ locationId: Number(l) })),
                 maleQuantity: Number(maleQuantity),
                 femaleQuantity: Number(femaleQuantity),
                 totalQuantity: Number(totalQuantity),
@@ -120,13 +130,13 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
 
                         {/* Campos da Análise */}
                         <div className="grid grid-cols-4 gap-4">
-                            <div className="flex flex-col col-span-4">
+                            {/* <div className="flex flex-col col-span-4">
                                 <label className="text-sm font-bold mb-1 text-left">Localização</label>
                                 <select value={locationId} onChange={(e) => setLocationId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
                                     <option value="">Selecione...</option>
                                     {options.locations.map(l => (<option key={l.id} value={l.id}>{l.name}</option>))}
                                 </select>
-                            </div>
+                            </div> */}
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Espécie do Helminto</label>
                                 <select value={specieId} onChange={(e) => setSpecieId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
@@ -135,27 +145,60 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
                                 </select>
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Qtde de Machos</label>
+                                <label className="text-sm font-bold mb-1 text-left">Quantidade de Machos</label>
                                 <input type="number" step="1" min="0" value={maleQuantity} onChange={(e) => setMaleQuantity(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Qtde de Fêmeas</label>
+                                <label className="text-sm font-bold mb-1 text-left">Quantidade de Fêmeas</label>
                                 <input type="number" step="1" min="0" value={femaleQuantity} onChange={(e) => setFemaleQuantity(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Qtde Total</label>
+                                <label className="text-sm font-bold mb-1 text-left">Quantidade Total</label>
                                 <input type="number" step="1" min="0" value={totalQuantity} onChange={(e) => setTotalQuantity(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col col-span-4">
+                                <label className="text-sm font-bold mb-1 text-left">Localização</label>
+                                <div className="grid grid-cols-5 gap-4">
+                                    {locations && locations.map(l => (
+                                        <div className="relative">
+                                            <input key={l} type="text" value={options?.locations.find(loc => loc.id === l)?.name} className="border border-border rounded p-2 bg-white h-10 w-full" disabled />
+                                            <div className="absolute top-[-10px] right-0 flex items-center bg-white px-2  rounded">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleRemoveLocation(l)}
+                                                    className="text-standard-red font-bold text-xs cursor-pointer"
+                                                    title="Remover medida"
+                                                >
+                                                    ✕ Remover
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {options.locations.filter(l => !locations.includes(l.id)).length > 0 && (
+                                        <select
+                                            value=""
+                                            onChange={(e) => {
+                                                if (e.target.value) handleAddLocation(Number(e.target.value));
+                                            }}
+                                            className="border border-border rounded p-2 bg-white h-10"
+                                        >
+                                            <option value="">Selecione...</option>
+                                            {options.locations.filter(l => !locations.includes(l.id)).map(l => (<option key={l.id} value={l.id}>{l.name}</option>))}
+                                        </select>
+
+                                    )}
+                                </div>
+                            </div>
+                            <div className="flex flex-col col-span-4">
                                 <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
-                                <input
-                                    type="text"
+                                <textarea
                                     value={note}
                                     onChange={(e) => setNote(e.target.value)}
-                                    className="border border-border rounded p-2"
+                                    className="border border-border rounded p-2 bg-white resize-none"
+                                    rows={3}
                                     placeholder="Digite as observações..."
                                 />
                             </div>

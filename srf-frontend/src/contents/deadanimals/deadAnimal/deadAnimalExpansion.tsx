@@ -97,28 +97,30 @@ export function DeadAnimalExpansion({ item, close, refresh }: { item: GetAllDead
                 </div>
                 <div className="flex flex-col w-full col-span-2">
                     <label className="ml-1 font-bold">Observações</label>
-                    <input type="text" disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <textarea rows={3} disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input resize-none" />
                 </div>
             </div>
 
             {/* Registros Associados */}
-            <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
-                <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
-            </div>
-            <div className="gap-2 w-full text-sm flex flex-wrap mb-1">
-                {item.hasNecropsy && (
-                    <button
-                        onClick={() => setShowNecropsyDrawer(true)}
-                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                        title="Necrópsia (em breve)"
-                    >
-                        Necrópsia
-                    </button>
-                )}
-                {!item.hasNecropsy && (
-                    <span className="text-text-input text-sm py-2">Nenhum registro associado encontrado.</span>
-                )}
-            </div>
+            {(item.hasNecropsy) && (
+                <>
+                    <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
+                        <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
+                    </div>
+                    <div className="gap-2 w-full text-sm flex flex-wrap mb-1">
+                        {item.hasNecropsy && (
+                            <button
+                                onClick={() => setShowNecropsyDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                                title="Necrópsia (em breve)"
+                            >
+                                Necrópsia
+                            </button>
+                        )}
+                    </div>
+                </>
+            )}
         </>
     )
 }
+

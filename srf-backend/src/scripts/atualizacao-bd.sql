@@ -62,6 +62,48 @@ alter table srf.visita_veterinaria
 drop index visita_veterinaria_id_animal_vivo_id_veterinario_data_key,
 add unique key visita_veterinaria_id_animal_vivo_data_key (id_animal_vivo, data);
 
+CREATE TABLE srf.`alocacao_helminto` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `id_analise_helminto` int NOT NULL,
+    `id_localizacao` int NOT NULL,
+
+    PRIMARY KEY (`id`),
+
+    UNIQUE KEY `alocacao_helminto_id_analise_helminto_id_localizacao_key`
+        (`id_analise_helminto`, `id_localizacao`),
+
+    KEY `alocacao_helminto_id_localizacao_fkey`
+        (`id_localizacao`),
+
+    CONSTRAINT `alocacao_helminto_id_analise_helminto_fkey`
+        FOREIGN KEY (`id_analise_helminto`)
+        REFERENCES `analise_helminto` (`id`)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+
+    CONSTRAINT `alocacao_helminto_id_localizacao_fkey`
+        FOREIGN KEY (`id_localizacao`)
+        REFERENCES `localizacao_helminto` (`id`)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+);
+
+ALTER TABLE srf.`analise_helminto`
+DROP FOREIGN KEY `analise_helminto_id_localizacao_fkey`;
+
+ALTER TABLE srf.`analise_helminto`
+DROP INDEX `analise_helminto_id_necropsia_id_especie_helminto_id_localiz_key`;
+
+ALTER TABLE srf.`analise_helminto`
+ADD UNIQUE KEY `analise_helminto_id_necropsia_id_especie_helminto_key`
+(
+    `id_necropsia`,
+    `id_especie_helminto`
+);
+
+ALTER TABLE srf.`analise_helminto`
+DROP COLUMN `id_localizacao`;
+
 -- 4[parcialmente]) fazer um link com sidedrawer entre a amostra de fezes e a analise
 alter table srf.analise_fezes
 add index analise_fezes_id_visita_veterinaria_idx (id_visita_veterinaria);
@@ -104,4 +146,24 @@ add endereco varchar(255) null;
 -- 19) atualizar a parte de gps, separar pos fases: controle, castrado, vermifugado, castrado + vermifugado (não necessáriamente nessa ordem)
 
 -- pensar sobre como vai funcionar a diferenciação de projetos no sistema
+
+
+ALTER TABLE srf.`analise_helminto`
+DROP FOREIGN KEY `analise_helminto_id_localizacao_fkey`;
+
+ALTER TABLE srf.`analise_helminto`
+DROP INDEX `analise_helminto_id_localizacao_fkey`;
+
+ALTER TABLE srf.`analise_helminto`
+DROP INDEX `analise_helminto_id_necropsia_id_especie_helminto_id_localiz_key`;
+
+ALTER TABLE srf.`analise_helminto`
+ADD UNIQUE KEY `analise_helminto_id_necropsia_id_especie_helminto_key`
+    (`id_necropsia`, `id_especie_helminto`);
+
+ALTER TABLE srf.`analise_helminto`
+DROP COLUMN `id_localizacao`;
 */
+
+
+
