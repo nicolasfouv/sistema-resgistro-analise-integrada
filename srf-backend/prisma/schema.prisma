@@ -1,6 +1,6 @@
 generator client {
-  provider   = "prisma-client-js"
-  output     = "../generated/prisma"
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -168,7 +168,7 @@ model passwordResetToken {
 
 model liveAnimal {
   id                 Int                  @id @default(autoincrement())
-  code               String               @map("codigo") @unique
+  code               String               @unique @map("codigo")
   specieId           Int                  @map("id_especie")
   name               String?              @map("nome")
   genderId           Int                  @map("id_genero")
@@ -399,14 +399,13 @@ model veterinarianVisit {
   sorologyAnalysis     sorologyAnalysis?
   vaccineApplication   vaccineApplication[]
   castration           castration?
-  // exam                 exam?
   physicalExam         physicalExam?
   bodyMeasurement      bodyMeasurementVeterinarian[]
   examResult           examResult?
   liveAnimal           liveAnimal                         @relation(fields: [liveAnimalId], references: [id])
   veterinarian         veterinarian                       @relation(fields: [veterinarianId], references: [id])
 
-  @@unique([liveAnimalId, veterinarianId, date])
+  @@unique([liveAnimalId, date])
   @@index([veterinarianId], map: "visita_veterinaria_id_veterinario_fkey")
   @@map("visita_veterinaria")
 }
@@ -479,8 +478,8 @@ model enumVaccineType {
 // }
 
 model enumExamInterpretation {
-  id   Int    @id @default(autoincrement())
-  name String @map("nome")
+  id         Int          @id @default(autoincrement())
+  name       String       @map("nome")
   examResult examResult[]
 
   @@map("enum_interpretacao")
@@ -703,35 +702,35 @@ model ectoparasiteSpecie {
 }
 
 model examResult {
-  id                       Int               @id @default(autoincrement())
-  veterinarianVisitId      Int               @unique @map("id_visita_veterinaria")
-  interpretationId         Int               @map("id_interpretacao")
-  erythrocytes             Float             @map("eritrocitos")
-  hemoglobin               Float             @map("hemoglobina")
-  hematocrit               Float             @map("hematocrito")
-  vcm                      Float             @map("vcm")
-  hcm                      Float             @map("hcm")
-  chcm                     Float             @map("chcm")
-  platelets                Float             @map("plaquetas")
-  whiteBloodCells          Float             @map("leucocitos")
-  bandCells                Float             @map("bastonetes")
-  segmentedCells           Float             @map("segmentados")
-  segmentedCellsPercentage Float             @map("segmentados_percentual")
-  lymphocytes              Float             @map("linfocitos")
-  lymphocytesPercentage    Float             @map("linfocitos_percentual")
-  monocytes                Float             @map("monocitos")
-  monocytesPercentage      Float             @map("monocitos_percentual")
-  eosinophils              Float             @map("eosinofilos")
-  eosinophilsPercentage    Float             @map("eosinofilos_percentual")
-  basophils                Float             @map("basofilos")
-  basophilsPercentage      Float             @map("basofilos_percentual")
-  alt                      Float             @map("alt")
-  creatinine               Float             @map("creatinina")
-  alkalinePhosphatase      Float             @map("fosfatase_alcalina")
-  totalProtein             Float             @map("proteina_total")
-  urea                     Float             @map("ureia")
-  note                     String?           @map("observacao")
-  veterinarianVisit        veterinarianVisit @relation(fields: [veterinarianVisitId], references: [id])
+  id                       Int                    @id @default(autoincrement())
+  veterinarianVisitId      Int                    @unique @map("id_visita_veterinaria")
+  interpretationId         Int                    @map("id_interpretacao")
+  erythrocytes             Float                  @map("eritrocitos")
+  hemoglobin               Float                  @map("hemoglobina")
+  hematocrit               Float                  @map("hematocrito")
+  vcm                      Float                  @map("vcm")
+  hcm                      Float                  @map("hcm")
+  chcm                     Float                  @map("chcm")
+  platelets                Float                  @map("plaquetas")
+  whiteBloodCells          Float                  @map("leucocitos")
+  bandCells                Float                  @map("bastonetes")
+  segmentedCells           Float                  @map("segmentados")
+  segmentedCellsPercentage Float                  @map("segmentados_percentual")
+  lymphocytes              Float                  @map("linfocitos")
+  lymphocytesPercentage    Float                  @map("linfocitos_percentual")
+  monocytes                Float                  @map("monocitos")
+  monocytesPercentage      Float                  @map("monocitos_percentual")
+  eosinophils              Float                  @map("eosinofilos")
+  eosinophilsPercentage    Float                  @map("eosinofilos_percentual")
+  basophils                Float                  @map("basofilos")
+  basophilsPercentage      Float                  @map("basofilos_percentual")
+  alt                      Float                  @map("alt")
+  creatinine               Float                  @map("creatinina")
+  alkalinePhosphatase      Float                  @map("fosfatase_alcalina")
+  totalProtein             Float                  @map("proteina_total")
+  urea                     Float                  @map("ureia")
+  note                     String?                @map("observacao")
+  veterinarianVisit        veterinarianVisit      @relation(fields: [veterinarianVisitId], references: [id])
   interpretation           enumExamInterpretation @relation(fields: [interpretationId], references: [id])
 
   @@map("resultado_exame")
@@ -833,8 +832,8 @@ model sendSampleVeterinarian {
 }
 
 model destinationSample {
-  id                   Int                   @id @default(autoincrement())
-  name                 String                @map("nome")
+  id                     Int                      @id @default(autoincrement())
+  name                   String                   @map("nome")
   sendSampleVeterinarian sendSampleVeterinarian[]
 
   @@map("destino_amostra")
@@ -885,7 +884,7 @@ model storage {
 
 model deadAnimal {
   id                      Int                   @id @default(autoincrement())
-  code                    String                @map("codigo") @unique
+  code                    String                @unique @map("codigo")
   deadAnimalGroupId       Int                   @map("id_grupo_animal_morto")
   specieId                Int                   @map("id_especie")
   deadAnimalOriginId      Int                   @map("id_origem_animal_morto")
@@ -1043,8 +1042,8 @@ model helminthAnalysis {
 }
 
 model helminthLocation {
-  id            Int            @id @default(autoincrement())
-  name          String         @unique @map("nome")
+  id               Int                @id @default(autoincrement())
+  name             String             @unique @map("nome")
   helminthAnalysis helminthAnalysis[]
 
   @@map("localizacao_helminto")
@@ -1113,7 +1112,7 @@ model sendSampleNecropsy {
   sendDate                   DateTime                           @map("data_envio") @db.DateTime(0)
   note                       String?                            @map("observacao")
   sampleAllocationNecropsy   sampleAllocationNecropsy           @relation(fields: [sampleAllocationNecropsyId], references: [id])
-  destination                destinationSampleNecropsy           @relation(fields: [destinationId], references: [id])
+  destination                destinationSampleNecropsy          @relation(fields: [destinationId], references: [id])
   status                     enumNecropsySampleAllocationStatus @relation(fields: [statusId], references: [id])
 
   @@unique([sampleAllocationNecropsyId, destinationId])
@@ -1123,9 +1122,9 @@ model sendSampleNecropsy {
 }
 
 model destinationSampleNecropsy {
-  id                   Int                    @id @default(autoincrement())
-  name                 String                 @unique @map("nome")
-  sendSampleNecropsy   sendSampleNecropsy[]
+  id                 Int                  @id @default(autoincrement())
+  name               String               @unique @map("nome")
+  sendSampleNecropsy sendSampleNecropsy[]
 
   @@map("destino_amostra_necropsia")
 }

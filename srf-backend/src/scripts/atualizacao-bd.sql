@@ -50,7 +50,7 @@ ALTER TABLE envio_amostra_necropsia
     DROP FOREIGN KEY envio_amostra_necropsia_id_armazenamento_fkey,
     DROP COLUMN id_armazenamento;
 
--- 2[parcialmente]) discutir a necessidade do novo campo "data de envio"
+-- 2) concluído
 SET SQL_SAFE_UPDATES = 0;
 update srf.tipo_amostra_veterinaria
 set descricao = 'Medula'
@@ -58,6 +58,9 @@ where descricao = 'Mêdulo';
 SET SQL_SAFE_UPDATES = 1;
 
 -- 3) verificar com Anderson como proceder
+alter table srf.visita_veterinaria
+drop index visita_veterinaria_id_animal_vivo_id_veterinario_data_key,
+add unique key visita_veterinaria_id_animal_vivo_data_key (id_animal_vivo, data);
 
 -- 4[parcialmente]) fazer um link com sidedrawer entre a amostra de fezes e a analise
 alter table srf.analise_fezes

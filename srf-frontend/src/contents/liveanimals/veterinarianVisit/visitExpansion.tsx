@@ -136,9 +136,10 @@ export function VisitExpansion({ item, close, refresh }: { item: GetAllVeterinar
                         )}
                     </div>
                 </div>
+
                 <div className="flex flex-col w-full col-span-3">
-                    <label htmlFor="email" className="ml-1 font-bold">Observações</label>
-                    <input type="text" disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <label className="ml-1 font-bold">Observações</label>
+                    <textarea rows={3} disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input resize-none" />
                 </div>
             </div>
 

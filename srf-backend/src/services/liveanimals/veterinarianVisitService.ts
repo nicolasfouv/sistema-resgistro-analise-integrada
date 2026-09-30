@@ -211,13 +211,12 @@ export class VeterinarianVisitService {
             const existingVisit = await tx.veterinarianVisit.findFirst({
                 where: {
                     liveAnimalId: data.liveAnimalId,
-                    veterinarianId: data.veterinarianId,
                     date: new Date(data.date + 'T12:00:00Z'),
                 }
             });
 
             if (existingVisit) {
-                throw new Error('Não é possível criar uma visita veterinária com a mesma data e veterinário para o mesmo animal.');
+                throw new Error('Não é possível criar uma visita veterinária com a mesma data para o mesmo animal.');
             }
 
             // Create veterinarian visit
@@ -298,13 +297,12 @@ export class VeterinarianVisitService {
                         not: visitId
                     },
                     liveAnimalId: data.liveAnimalId,
-                    veterinarianId: data.veterinarianId,
                     date: new Date(data.date + 'T12:00:00Z'),
                 }
             });
 
             if (existingVisit) {
-                throw new Error('Não é possível alterar uma visita veterinária para a mesma data e veterinário para o mesmo animal.');
+                throw new Error('Não é possível alterar uma visita veterinária com a mesma data para o mesmo animal.');
             }
 
             // Check for duplicate body measurements
