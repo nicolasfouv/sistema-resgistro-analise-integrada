@@ -3,11 +3,13 @@ import { type GetAllVeterinarianSampleOutput } from "srf-shared-types";
 import { VeterinarianSampleFormModal } from "./formSampleModal";
 import { DeleteSampleModal } from "./deleteSampleModal";
 import { VeterinarianVisitSideDrawer } from "../veterinarianVisit/veterinarianVisitSideDrawer";
+import { StoolAnalysisSideDrawer } from "../stoolAnalysis/stoolAnalysisSideDrawer";
 
 export function SampleExpansion({ item, close, refresh }: { item: GetAllVeterinarianSampleOutput; close: () => void; refresh: () => void }) {
     const [showFormModal, setShowFormModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showVeterinarianVisitDrawer, setShowVeterinarianVisitDrawer] = useState(false);
+    const [showStoolAnalysisDrawer, setShowStoolAnalysisDrawer] = useState(false);
 
     return (
         <>
@@ -31,6 +33,12 @@ export function SampleExpansion({ item, close, refresh }: { item: GetAllVeterina
                     onClose={() => setShowVeterinarianVisitDrawer(false)}
                 />
             )}
+            {showStoolAnalysisDrawer && (
+                <StoolAnalysisSideDrawer
+                    filters={{ veterinarianVisitId: item.veterinarianVisitId }}
+                    onClose={() => setShowStoolAnalysisDrawer(false)}
+                />
+            )}
             {/* Cabeçalho de Expansão */}
             <div className="sticky top-0 z-10 bg-form-bg pb-2">
                 <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
@@ -50,15 +58,15 @@ export function SampleExpansion({ item, close, refresh }: { item: GetAllVeterina
                     </div>
                 </div>
                 <div className="flex gap-2 w-full text-sm">
-                    {/* Data da Visita */}
-                    <div className="flex flex-col w-2/12">
-                        <label htmlFor="date" className="ml-1 font-bold">Data da Visita</label>
-                        <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                    </div>
                     {/* Animal */}
                     <div className="flex flex-col w-2/12">
                         <label className="ml-1 font-bold">Código do Animal</label>
                         <input type="text" disabled value={item.liveAnimalCode} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                    {/* Data da Visita */}
+                    <div className="flex flex-col w-2/12">
+                        <label htmlFor="date" className="ml-1 font-bold">Data da Visita</label>
+                        <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     {/* Veterinário */}
                     <div className="flex flex-col w-2/12">
@@ -107,7 +115,7 @@ export function SampleExpansion({ item, close, refresh }: { item: GetAllVeterina
                 {/* Observações */}
                 <div className="flex flex-col w-full col-span-3">
                     <label htmlFor="email" className="ml-1 font-bold">Observações</label>
-                    <input type="text" disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <textarea rows={3} disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input resize-none" />
                 </div>
             </div>
 
@@ -122,7 +130,7 @@ export function SampleExpansion({ item, close, refresh }: { item: GetAllVeterina
                             {/* Local de Armazenamento */}
                             <div className="flex flex-col w-full">
                                 <label className="ml-1 font-bold">Local</label>
-                                <input type="text" disabled value={ss.storageName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                                <input type="text" disabled value={ss.destinationName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                             </div>
                             {/* Status */}
                             <div className="flex flex-col w-full">
@@ -143,7 +151,7 @@ export function SampleExpansion({ item, close, refresh }: { item: GetAllVeterina
                             {ss.note && (
                                 <div className="flex flex-col w-full col-span-4">
                                     <label className="ml-1 font-bold">Observações</label>
-                                    <input type="text" disabled value={ss.note} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                                    <textarea rows={2} disabled value={ss.note} className="mb-2 border border-border rounded px-2 py-1 text-text-input resize-none" />
                                 </div>
                             )}
                         </div>
@@ -161,6 +169,14 @@ export function SampleExpansion({ item, close, refresh }: { item: GetAllVeterina
                 >
                     Visita Veterinária
                 </button>
+                {item.hasStoolAnalysis && (
+                    <button
+                        onClick={() => setShowStoolAnalysisDrawer(true)}
+                        className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                    >
+                        Análise de Fezes
+                    </button>
+                )}
             </div>
         </>
     );

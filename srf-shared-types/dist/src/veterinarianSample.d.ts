@@ -90,6 +90,7 @@ export declare const getAllVeterinarianSampleOutputSchema: z.ZodObject<{
         quantity: z.ZodNumber;
         note: z.ZodOptional<z.ZodString>;
     }, z.z.core.$strip>>>;
+    hasStoolAnalysis: z.ZodBoolean;
 }, z.z.core.$strip>;
 export declare const getFormOptionsVeterinarianSampleOutputSchema: z.ZodObject<{
     veterinarianVisits: z.ZodArray<z.ZodObject<{

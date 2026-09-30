@@ -118,8 +118,8 @@ export function SamplesSideDrawer({ filters, onClose }: SamplesSideDrawerProps) 
                                             Detalhes da Amostras
                                         </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
-                                            <Field label="Data da Visita" value={sample.veterinarianVisitDateFormatted || ''} />
                                             <Field label="Código do Animal" value={sample.liveAnimalCode} />
+                                            <Field label="Data da Visita" value={sample.veterinarianVisitDateFormatted || ''} />
                                             <Field label="Veterinário" value={sample.veterinarianName} />
                                             <Field label="Tipo da Amostra" value={sample.sampleTypeDescription} />
                                             <Field label="Status" value={sample.statusName} />

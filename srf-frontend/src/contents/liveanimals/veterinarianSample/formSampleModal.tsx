@@ -246,22 +246,6 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                         <fieldset className="border border-border rounded p-4">
                             <legend className="text-sm font-bold text-standard-blue px-2">Visita Associada</legend>
                             <div className="grid grid-cols-3 gap-4">
-                                {/* Data da Visita */}
-                                <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Data da Visita</label>
-                                    <select
-                                        value={selectedDate}
-                                        onChange={(e) => handleDateChange(e.target.value)}
-                                        className="border border-border rounded p-2 bg-white"
-                                        required
-                                    >
-                                        <option value="">Selecione...</option>
-                                        {filteredDates.map(d => (
-                                            <option key={d.iso} value={d.iso}>{d.formatted}</option>
-                                        ))}
-                                    </select>
-                                </div>
-
                                 {/* Animal */}
                                 <div className="flex flex-col">
                                     <label className="text-sm font-bold mb-1 text-left">Código do Animal</label>
@@ -274,6 +258,22 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                                         <option value="">Selecione...</option>
                                         {filteredAnimals.map(a => (
                                             <option key={a.id} value={a.id}>{a.code}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Data da Visita */}
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-bold mb-1 text-left">Data da Visita</label>
+                                    <select
+                                        value={selectedDate}
+                                        onChange={(e) => handleDateChange(e.target.value)}
+                                        className="border border-border rounded p-2 bg-white"
+                                        required
+                                    >
+                                        <option value="">Selecione...</option>
+                                        {filteredDates.map(d => (
+                                            <option key={d.iso} value={d.iso}>{d.formatted}</option>
                                         ))}
                                     </select>
                                 </div>
@@ -447,11 +447,11 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
 
                                             <div className="flex flex-col col-span-4">
                                                 <label className="text-xs font-bold mb-1 text-left">Observação (Opcional)</label>
-                                                <input
-                                                    type="text"
+                                                <textarea
+                                                    rows={2}
                                                     value={ss.note || ''}
                                                     onChange={(e) => updateSendSample(index, 'note', e.target.value)}
-                                                    className="border border-border rounded p-2 bg-white"
+                                                    className="border border-border rounded p-2 bg-white resize-none"
                                                     placeholder="Observação do envio..."
                                                 />
                                             </div>

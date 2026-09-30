@@ -20,7 +20,8 @@ export class VeterinarianSampleService {
                     select: {
                         id: true, date: true,
                         liveAnimal: { select: { id: true, code: true } },
-                        veterinarian: { select: { id: true, name: true } }
+                        veterinarian: { select: { id: true, name: true } },
+                        stoolAnalysis: { select: { id: true } }
                     }
                 },
                 sampleType: { select: { id: true, description: true } },
@@ -38,7 +39,7 @@ export class VeterinarianSampleService {
                         sendDate: true,
                         note: true
                     }
-                }
+                },
             },
             orderBy: {
                 veterinarianVisit: {
@@ -96,7 +97,8 @@ export class VeterinarianSampleService {
                         sendDate: sends.sendDate.toISOString(),
                         quantity: sends.quantity,
                         note: sends.note || undefined
-                    }))
+                    })),
+                    hasStoolAnalysis: s.veterinarianVisit.stoolAnalysis.length > 0 && s.sampleType.description.toLowerCase().includes('fezes')
                 };
             })
         );
