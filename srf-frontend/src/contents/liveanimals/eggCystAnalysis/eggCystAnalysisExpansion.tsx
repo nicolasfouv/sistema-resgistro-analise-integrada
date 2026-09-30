@@ -33,13 +33,13 @@ export function EggCystAnalysisExpansion({ item, close, refresh }: { item: GetAl
                     </div>
                 </div>
                 <div className="flex gap-2 w-full text-sm">
-                    <div className="flex flex-col w-2/12">
-                        <label className="ml-1 font-bold">Data da Visita</label>
-                        <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                    </div>
                     <div className="flex flex-col w-3/12">
                         <label className="ml-1 font-bold">Código do Animal</label>
                         <input type="text" disabled value={item.liveAnimalCode} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                    <div className="flex flex-col w-2/12">
+                        <label className="ml-1 font-bold">Data da Visita</label>
+                        <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     <div className="flex flex-col w-3/12">
                         <label className="ml-1 font-bold">Veterinário</label>
@@ -56,7 +56,7 @@ export function EggCystAnalysisExpansion({ item, close, refresh }: { item: GetAl
             {/* CORPO DA EXPANSÃO */}
             <div className="gap-2 w-full text-sm grid grid-cols-3 mb-2">
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Qtde de ovos/cistos</label>
+                    <label className="ml-1 font-bold">Quantidade de ovos/cistos</label>
                     <input type="text" disabled value={String(item.quantity)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div className="flex flex-col w-full col-span-2">

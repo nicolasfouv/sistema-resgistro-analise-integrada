@@ -50,15 +50,15 @@ export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPh
                     </div>
                 </div>
                 <div className="flex gap-2 w-full text-sm">
-                    {/* Data da Visita */}
-                    <div className="flex flex-col w-2/12">
-                        <label htmlFor="date" className="ml-1 font-bold">Data da Visita</label>
-                        <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                    </div>
                     {/* Animal */}
                     <div className="flex flex-col w-2/12">
                         <label className="ml-1 font-bold">Código do Animal</label>
                         <input type="text" disabled value={item.liveAnimalCode} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                    {/* Data da Visita */}
+                    <div className="flex flex-col w-2/12">
+                        <label htmlFor="date" className="ml-1 font-bold">Data da Visita</label>
+                        <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     {/* Veterinário */}
                     <div className="flex flex-col w-2/12">

@@ -111,8 +111,8 @@ export function EctoparasiteAnalysisSideDrawer({ filters, onClose }: Ectoparasit
                                             Detalhes da Análise de Ectoparasitos
                                         </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
-                                            <Field label="Data da Visita" value={result.veterinarianVisitDateFormatted || ''} />
                                             <Field label="Código do Animal" value={result.liveAnimalCode} />
+                                            <Field label="Data da Visita" value={result.veterinarianVisitDateFormatted || ''} />
                                             <Field label="Veterinário" value={result.veterinarianName} />
                                             <Field label="Gênero" value={result.genusName} />
                                             <Field label="Espécie" value={result.specieName} />

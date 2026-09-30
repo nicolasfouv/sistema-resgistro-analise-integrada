@@ -225,22 +225,6 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
                         <fieldset className="border border-border rounded p-4">
                             <legend className="text-sm font-bold text-standard-blue px-2">Visita Associada</legend>
                             <div className="grid grid-cols-3 gap-4">
-                                {/* Data da Visita */}
-                                <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Data da Visita</label>
-                                    <select
-                                        value={selectedDate}
-                                        onChange={(e) => handleDateChange(e.target.value)}
-                                        className="border border-border rounded p-2 bg-white"
-                                        required
-                                    >
-                                        <option value="">Selecione...</option>
-                                        {filteredDates.map(d => (
-                                            <option key={d.iso} value={d.iso}>{d.formatted}</option>
-                                        ))}
-                                    </select>
-                                </div>
-
                                 {/* Animal */}
                                 <div className="flex flex-col">
                                     <label className="text-sm font-bold mb-1 text-left">Código do Animal</label>
@@ -253,6 +237,22 @@ export function PhysicalExamFormModal({ exam, close, refresh }: PhysicalExamForm
                                         <option value="">Selecione...</option>
                                         {filteredAnimals.map(a => (
                                             <option key={a.id} value={a.id}>{a.code}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Data da Visita */}
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-bold mb-1 text-left">Data da Visita</label>
+                                    <select
+                                        value={selectedDate}
+                                        onChange={(e) => handleDateChange(e.target.value)}
+                                        className="border border-border rounded p-2 bg-white"
+                                        required
+                                    >
+                                        <option value="">Selecione...</option>
+                                        {filteredDates.map(d => (
+                                            <option key={d.iso} value={d.iso}>{d.formatted}</option>
                                         ))}
                                     </select>
                                 </div>

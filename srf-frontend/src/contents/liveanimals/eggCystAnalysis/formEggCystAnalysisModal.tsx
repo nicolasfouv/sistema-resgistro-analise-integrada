@@ -207,7 +207,7 @@ export function EggCystAnalysisFormModal({ eggCystAnalysis, close, refresh }: Eg
                                 </select>
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Qtde de ovos/cistos</label>
+                                <label className="text-sm font-bold mb-1 text-left">Quantidade de ovos/cistos</label>
                                 <input type="number" step="0.1" min="0" value={quantity} onChange={(e) => setQuantity(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0,0" required />
                             </div>

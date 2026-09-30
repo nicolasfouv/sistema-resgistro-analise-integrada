@@ -57,7 +57,7 @@ set descricao = 'Medula'
 where descricao = 'Mêdulo';
 SET SQL_SAFE_UPDATES = 1;
 
--- 3) verificar com Anderson como proceder
+-- 3) concluído
 alter table srf.visita_veterinaria
 drop index visita_veterinaria_id_animal_vivo_id_veterinario_data_key,
 add unique key visita_veterinaria_id_animal_vivo_data_key (id_animal_vivo, data);

@@ -22,8 +22,8 @@ export const ExamResultContentDefinition = {
     id: 'resultadoexame-av',
     label: 'Hemograma/Bioquímico',
     columns: [
-        { key: 'veterinarianVisitDateFormatted', label: 'Data da Visita', width: 'w-2/12' },
         { key: 'liveAnimalCode', label: 'Código do Animal', width: 'w-3/12' },
+        { key: 'veterinarianVisitDateFormatted', label: 'Data da Visita', width: 'w-2/12' },
         { key: 'veterinarianName', label: 'Veterinário', width: 'w-3/12' },
         { key: 'interpretationName', label: 'Interpretação', width: 'w-3/12' }
         // deixar w-1/12 sobrando para ações
@@ -31,8 +31,8 @@ export const ExamResultContentDefinition = {
     get filterFields() {
         return [
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
-            { key: 'veterinarianVisitDate', label: 'Data da Visita', type: 'date' },
             { key: 'liveAnimalCode', label: 'Código do Animal', type: 'text' },
+            { key: 'veterinarianVisitDate', label: 'Data da Visita', type: 'date' },
             { key: 'veterinarianName', label: 'Veterinário', type: 'text' },
             { key: 'interpretationName', label: 'Interpretação', type: 'enum', options: interpretationOptions }
         ];

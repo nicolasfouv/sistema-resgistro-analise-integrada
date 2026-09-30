@@ -202,7 +202,7 @@ export function StoolAnalysisFormModal({ stoolAnalysis, close, refresh }: StoolA
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Peso das Fezes (g)</label>
                                 <input type="number" step="0.01" min="0" value={weight} onChange={(e) => setWeight(e.target.value ? Number(e.target.value) : '')}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="0.00" required />
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0,0" required />
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Método de Processamento</label>
