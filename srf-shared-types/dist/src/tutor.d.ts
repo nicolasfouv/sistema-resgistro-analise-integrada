@@ -9,6 +9,7 @@ export declare const getAllTutorOutputSchema: z.ZodObject<{
     birthDate: z.ZodString;
     birthDateFormatted: z.ZodOptional<z.ZodString>;
     address: z.ZodOptional<z.ZodString>;
+    hasLiveAnimal: z.ZodBoolean;
 }, z.z.core.$strip>;
 export declare const getFormOptionsTutorOutputSchema: z.ZodObject<{
     genders: z.ZodArray<z.ZodObject<{

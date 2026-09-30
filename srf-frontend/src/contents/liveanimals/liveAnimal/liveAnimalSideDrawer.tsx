@@ -33,6 +33,7 @@ export function LiveAnimalSideDrawer({ filters, onClose }: LiveAnimalSideDrawerP
                     }))
                     .filter(a => {
                         if (filters.liveAnimalId && a.id !== filters.liveAnimalId) return false;
+                        if (filters.tutorId && a.tutorId !== filters.tutorId) return false;
                         return true;
                     });
                 setAnimals(filtered);
@@ -42,11 +43,18 @@ export function LiveAnimalSideDrawer({ filters, onClose }: LiveAnimalSideDrawerP
 
     const pageFilters: any[] = [];
     if (filters.liveAnimalId) {
-        const firstAnimal = animals[0];
-        if (firstAnimal) {
-            pageFilters.push({ field: 'code', value: { type: 'text' as const, term: firstAnimal.code } });
+        const first = animals[0];
+        if (first) {
+            pageFilters.push({ field: 'code', value: { type: 'text' as const, term: first.code } });
         }
     }
+    if (filters.tutorId) {
+        const first = animals[0];
+        if (first) {
+            pageFilters.push({ field: 'tutorName', value: { type: 'text' as const, term: first.tutorName } });
+        }
+    }
+
     const pageUrl = `/animaisvivos/animais/animal-av?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
 
     return (
@@ -112,7 +120,7 @@ export function LiveAnimalSideDrawer({ filters, onClose }: LiveAnimalSideDrawerP
                                             <Field label="Tutor" value={animal.tutorName || 'Não informado'} />
                                             <Field label="Espécie" value={animal.specieName} />
                                             <Field label="Gênero" value={animal.genderName} />
-                                            <Field label="Data de Nascimento" value={animal.birthDateFormatted || ''} />
+                                            <Field label="Data de Nascimento" value={animal.birthDateFormatted || 'Não informado'} />
                                             <Field label="Ativo?" value={animal.active ? 'Sim' : 'Não'} />
                                             <Field label="Foto do Animal" value={animal.animalPicture || 'Não informado'} fullWidth />
                                             <Field label="Foto do Cartão" value={animal.cardLink || 'Não informado'} fullWidth />

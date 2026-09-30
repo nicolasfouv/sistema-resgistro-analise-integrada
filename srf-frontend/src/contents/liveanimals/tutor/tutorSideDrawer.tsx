@@ -16,6 +16,7 @@ interface TutorSideDrawerProps {
 export function TutorSideDrawer({ filters, onClose }: TutorSideDrawerProps) {
     const [tutors, setTutors] = useState<GetAllTutorOutput[]>([]);
     const [loading, setLoading] = useState(true);
+    const [expandedId, setExpandedId] = useState<number | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,8 +30,8 @@ export function TutorSideDrawer({ filters, onClose }: TutorSideDrawerProps) {
                             ? new Date(tutor.birthDate).toLocaleDateString('pt-BR')
                             : '',
                     }))
-                    .filter(tutor => {
-                        if (filters.tutorId && tutor.id !== filters.tutorId) return false;
+                    .filter(t => {
+                        if (filters.tutorId && t.id !== filters.tutorId) return false;
                         return true;
                     });
                 setTutors(filtered);
@@ -39,9 +40,11 @@ export function TutorSideDrawer({ filters, onClose }: TutorSideDrawerProps) {
     }, [filters.tutorId]);
 
     const pageFilters: any[] = [];
-    const first = tutors[0];
-    if (first) {
-        pageFilters.push({ field: 'name', value: { type: 'text' as const, term: first.name } });
+    if (filters.tutorId) {
+        const first = tutors[0];
+        if (first) {
+            pageFilters.push({ field: 'name', value: { type: 'text' as const, term: first.name } });
+        }
     }
     const pageUrl = `/animaisvivos/entrevistas/tutor?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
 
@@ -73,20 +76,46 @@ export function TutorSideDrawer({ filters, onClose }: TutorSideDrawerProps) {
 
             {!loading && tutors.length > 0 && (
                 <div className="flex flex-col gap-3">
-                    {tutors.map(tutor => (
-                        <div key={tutor.id} className="border border-border rounded bg-form-bg">
-                            <div className="px-4 py-4">
-                                <h4 className="font-bold text-text-main text-xs uppercase mb-3 border-b border-gray-600 pb-1">
-                                    Detalhes do Tutor
-                                </h4>
-                                <div className="gap-2 w-full text-sm grid grid-cols-2">
-                                    <Field label="Nome" value={tutor.name} />
-                                    <Field label="Gênero" value={tutor.genderName} />
-                                    <Field label="Data de Nascimento" value={tutor.birthDateFormatted || ''} />
-                                </div>
+                    {tutors.map(tutor => {
+                        const isExpanded = expandedId === tutor.id;
+                        return (
+                            <div
+                                key={tutor.id}
+                                className="border border-border rounded bg-white"
+                            >
+                                {/* Cabeçalho do Registro */}
+                                <button
+                                    onClick={() => setExpandedId(isExpanded ? null : tutor.id)}
+                                    className="w-full flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-hover-bg transition-colors"
+                                >
+                                    <div className="flex flex-col items-start gap-0.5">
+                                        <span className="text-sm font-bold text-text-main">{tutor.name}</span>
+                                        <span className="text-xs text-text-light-gray">
+                                            {tutor.birthDateFormatted || ''} · {tutor.genderName}
+                                        </span>
+                                    </div>
+                                    <span className="text-standard-blue text-xs font-bold uppercase">
+                                        {isExpanded ? 'Recolher' : 'Expandir'}
+                                    </span>
+                                </button>
+
+                                {/* Detalhes Expandidos */}
+                                {isExpanded && (
+                                    <div className="px-4 pb-4 border-t border-border bg-form-bg">
+                                        <h4 className="font-bold text-text-main text-xs uppercase my-2 border-b border-gray-600 pb-1">
+                                            Detalhes do Tutor
+                                        </h4>
+                                        <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
+                                            <Field label="Nome" value={tutor.name} />
+                                            <Field label="Data de Nascimento" value={tutor.birthDateFormatted || ''} />
+                                            <Field label="Gênero" value={tutor.genderName} />
+                                            <Field label="Endereço" value={tutor.address || 'Não informado'} fullWidth />
+                                        </div>
+                                    </div>
+                                )}
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             )}
         </SideDrawer>

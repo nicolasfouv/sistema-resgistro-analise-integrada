@@ -20,7 +20,9 @@ export class TutorService {
                 genderId: true,
                 gender: { select: { id: true, name: true } },
                 birthDate: true,
-                address: true
+                address: true,
+                // Registros Associados
+                liveAnimal: { select: { id: true } }
             },
             orderBy: {
                 name: 'asc'
@@ -58,7 +60,8 @@ export class TutorService {
                     birthDate: t.birthDate.toISOString(),
                     address: t.address || undefined,
                     canEdit: permission.canEdit,
-                    createdByMe: creatorMap.get(String(t.id)) === requesterId
+                    createdByMe: creatorMap.get(String(t.id)) === requesterId,
+                    hasLiveAnimal: t.liveAnimal.length > 0
                 };
             })
         );

@@ -69,16 +69,18 @@ export function CastrationExpansion({ item, close, refresh }: { item: GetAllCast
                         <label className="ml-1 font-bold">Data</label>
                         <input type="text" disabled value={item.dateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    {/* Observações */}
-                    <div className="flex flex-col w-4/12">
+                </div>
+                {/* Observações */}
+                <div className="gap-2 w-full text-sm grid grid-cols-1">
+                    <div className="flex flex-col w-full">
                         <label className="ml-1 font-bold">Observações</label>
-                        <input type="text" disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <textarea rows={3} disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input resize-none" />
                     </div>
                 </div>
             </div>
             <hr className="border-gray-200" />
 
-            {/* ==== Registros Associados ==== */}
+            {/* Registros Associados */}
             <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                 <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
             </div>

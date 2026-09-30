@@ -146,12 +146,14 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
                         <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
                     </div>
                     <div className="gap-2 w-full text-sm flex flex-wrap mb-1">
-                        <button
-                            onClick={() => setShowTutorDrawer(true)}
-                            className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                        >
-                            Tutor
-                        </button>
+                        {item.tutorId && (
+                            <button
+                                onClick={() => setShowTutorDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            >
+                                Tutor
+                            </button>
+                        )}
                         {item.hasCastration && (
                             <button
                                 onClick={() => setShowCastrationDrawer(true)}

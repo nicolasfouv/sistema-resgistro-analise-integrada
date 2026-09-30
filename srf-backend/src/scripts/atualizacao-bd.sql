@@ -11,7 +11,7 @@ create table destino_amostra (
     nome varchar(255) unique
 );
 
-INSERT INTO srf.destino_amostra(name)
+INSERT INTO srf.destino_amostra(nome)
 VALUES ('Teste sorológico'), ('Leishmania'), ('Rosangela'), ('Reserva'), ('Teste sorológico + Reserva');
 
 alter table srf.envio_amostra_veterinario

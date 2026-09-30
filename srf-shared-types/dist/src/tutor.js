@@ -9,7 +9,8 @@ export const getAllTutorOutputSchema = z.object({
     genderName: z.string().nonempty(),
     birthDate: z.string().nonempty(),
     birthDateFormatted: z.string().optional(),
-    address: z.string().optional()
+    address: z.string().optional(),
+    hasLiveAnimal: z.boolean()
 });
 export const getFormOptionsTutorOutputSchema = z.object({
     genders: z.array(z.object({

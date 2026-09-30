@@ -36,9 +36,20 @@ export function TutorExpansion({ item, close, refresh }: { item: GetAllTutorOutp
                     </div>
                 </div>
                 <div className="flex gap-2 w-full text-sm">
-                    <div className="flex flex-col w-full">
+                    <div className="flex flex-col w-4/12">
                         <label className="ml-1 font-bold">Nome</label>
-                        <input type="text" disabled value={item.name || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <input type="text" disabled value={item.name || ''}
+                            className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                    <div className="flex flex-col w-4/12">
+                        <label className="ml-1 font-bold">Data de Nascimento</label>
+                        <input type="text" disabled value={item.birthDateFormatted}
+                            className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                    <div className="flex flex-col w-3/12">
+                        <label className="ml-1 font-bold">Gênero</label>
+                        <input type="text" disabled value={item.genderName}
+                            className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                 </div>
             </div>
@@ -46,33 +57,31 @@ export function TutorExpansion({ item, close, refresh }: { item: GetAllTutorOutp
 
             {/* Corpo */}
             <div className="gap-2 w-full text-sm grid grid-cols-2 mb-2 mt-2">
-                <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Data de Nascimento</label>
-                    <input type="text" disabled value={item.birthDateFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                </div>
-                <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Gênero</label>
-                    <input type="text" disabled value={item.genderName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                </div>
                 <div className="flex flex-col col-span-2">
-                    <label className="text-sm font-bold mb-1 text-left">Endereço (Opcional)</label>
-                    <input type="text" disabled value={item.address || 'Nenhum endereço informado'} 
-                    className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o nome do tutor..." />
+                    <label className="text-sm font-bold mb-1 text-left">Endereço</label>
+                    <input type="text" disabled value={item.address || 'Nenhum endereço informado'}
+                        className="b-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
             </div>
 
             {/* Registros Associados */}
-            <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
-                <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
-            </div>
-            <div className="gap-2 w-full text-sm flex flex-wrap mb-2">
-                <button
-                    onClick={() => setShowLiveAnimalDrawer(true)}
-                    className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
-                >
-                    Animais
-                </button>
-            </div>
+            {(item.hasLiveAnimal) && (
+                <>
+                    <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
+                        <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
+                    </div>
+                    <div className="gap-2 w-full text-sm flex flex-wrap mb-2">
+                        {item.hasLiveAnimal && (
+                            <button
+                                onClick={() => setShowLiveAnimalDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            >
+                                Animais
+                            </button>
+                        )}
+                    </div>
+                </>
+            )}
         </>
     )
 }
