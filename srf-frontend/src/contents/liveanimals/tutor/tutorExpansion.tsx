@@ -56,7 +56,17 @@ export function TutorExpansion({ item, close, refresh }: { item: GetAllTutorOutp
             <hr className="border-gray-200" />
 
             {/* Corpo */}
-            <div className="gap-2 w-full text-sm grid grid-cols-2 mb-2 mt-2">
+            <div className="gap-2 w-full text-sm grid grid-cols-3 mb-2 mt-2">
+                <div className="grid grid-cols-2 gap-2">
+                    <div className="flex flex-col">
+                        <label className="ml-1 font-bold">Latitude</label>
+                        <input type="text" disabled value={item.latitude || 'Nenhuma latitude informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="ml-1 font-bold">Longitude</label>
+                        <input type="text" disabled value={item.longitude || 'Nenhuma longitude informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                </div>
                 <div className="flex flex-col col-span-2">
                     <label className="text-sm font-bold mb-1 text-left">Endereço</label>
                     <input type="text" disabled value={item.address || 'Nenhum endereço informado'}

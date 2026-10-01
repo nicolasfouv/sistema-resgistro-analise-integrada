@@ -11,6 +11,8 @@ export const getAllTutorOutputSchema = z.object({
     birthDate: z.string().nonempty(),
     birthDateFormatted: z.string().optional(),
     address: z.string().optional(),
+    latitude: z.number().optional(),
+    longitude: z.number().optional(),
     hasLiveAnimal: z.boolean()
 });
 
@@ -26,7 +28,9 @@ export const createTutorInputSchema = z.object({
     name: z.string().nonempty({ error: 'Nome do tutor inválido' }),
     genderId: z.number().int({ error: 'ID do gênero inválido' }),
     birthDate: z.string().nonempty({ error: 'Data de nascimento inválida' }),
-    address: z.string().optional()
+    address: z.string().optional(),
+    latitude: z.number().optional(),
+    longitude: z.number().optional()
 });
 
 export const updateTutorInputSchema = createTutorInputSchema;

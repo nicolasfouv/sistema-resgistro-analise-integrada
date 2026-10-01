@@ -23,6 +23,8 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
     const [error, setError] = useState<string>('');
     const [options, setOptions] = useState<GetFormOptionsAnimalOutput | null>(null);
 
+    const [outSampling, setOutSampling] = useState<boolean>(liveAnimal?.outSampling ?? false);
+
     const [code, setCode] = useState<string>(liveAnimal?.code ?? '');
     const [name, setName] = useState<string>(liveAnimal?.name ?? '');
     const [tutorId, setTutorId] = useState<number | ''>(liveAnimal?.tutorId ?? '');
@@ -33,6 +35,8 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
     const [active, setActive] = useState(liveAnimal?.active ?? true);
     const [animalPicture, setAnimalPicture] = useState<string>(liveAnimal?.animalPicture ?? '');
     const [cardLink, setCardLink] = useState<string>(liveAnimal?.cardLink ?? '');
+    const [longitude, setLongitude] = useState<number | ''>(liveAnimal?.longitude ?? '');
+    const [latitude, setLatitude] = useState<number | ''>(liveAnimal?.latitude ?? '');
 
     useEffect(() => {
         async function loadOptions() {
@@ -60,8 +64,11 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
                 birthDate: birthDate || undefined,
                 age: age ? (age === 'real' ? true : false) : undefined,
                 active: Boolean(active),
+                outSampling: Boolean(outSampling),
                 animalPicture: animalPicture || undefined,
-                cardLink: cardLink || undefined
+                cardLink: cardLink || undefined,
+                longitude: longitude || undefined,
+                latitude: latitude || undefined
             };
             if (isEditing && liveAnimal) {
                 await updateLiveAnimal(liveAnimal.id, data);
@@ -98,28 +105,50 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
 
                     <form onSubmit={handleSubmit} className="w-full flex flex-col overflow-y-auto gap-4 mt-2 flex-1 min-h-0">
                         {/* Campos do Animal */}
-                        <div className="grid grid-cols-3 gap-4">
-                            <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Código</label>
-                                <input type="text" value={code} onChange={(e) => setCode(e.target.value)}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o código..." required />
+                        <fieldset className="border border-border rounded p-4">
+                            <legend className="text-sm font-bold text-standard-blue px-2">Dados Básicos</legend>
+                            <div className="grid grid-cols-3 gap-4">
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-bold mb-1 text-left">Código</label>
+                                    <input type="text" value={code} onChange={(e) => setCode(e.target.value)}
+                                        className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o código..." required />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-bold mb-1 text-left">Espécie</label>
+                                    <select value={specieId} onChange={(e) => setSpecieId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
+                                        <option value="">Selecione...</option>
+                                        {options.species.map(s => (<option key={s.id} value={s.id}>{s.name}</option>))}
+                                    </select>
+                                </div>
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-bold mb-1 text-left">Gênero</label>
+                                    <select value={genderId} onChange={(e) => setGenderId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
+                                        <option value="">Selecione...</option>
+                                        {options.genders.map(g => (<option key={g.id} value={g.id}>{g.name}</option>))}
+                                    </select>
+                                </div>
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-bold mb-1 text-left">Ativo?</label>
+                                    <select value={active ? 'true' : 'false'} onChange={(e) => setActive(e.target.value === 'true')} className="border border-border rounded p-2 bg-white h-10" required>
+                                        <option value="true">Sim</option>
+                                        <option value="false">Não</option>
+                                    </select>
+                                </div>
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-bold mb-1 text-left">Fora da Amostragem?</label>
+                                    <select value={outSampling ? 'true' : 'false'} onChange={(e) => setOutSampling(e.target.value === 'true')} className="border border-border rounded p-2 bg-white h-10" required>
+                                        <option value="true">Sim</option>
+                                        <option value="false">Não</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Espécie</label>
-                                <select value={specieId} onChange={(e) => setSpecieId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
-                                    <option value="">Selecione...</option>
-                                    {options.species.map(s => (<option key={s.id} value={s.id}>{s.name}</option>))}
-                                </select>
-                            </div>
-                            <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Ativo?</label>
-                                <select value={active ? 'true' : 'false'} onChange={(e) => setActive(e.target.value === 'true')} className="border border-border rounded p-2 bg-white h-10" required>
-                                    <option value="true">Sim</option>
-                                    <option value="false">Não</option>
-                                </select>
-                            </div>
-                        </div>
+                        </fieldset>
                         <div className="grid grid-cols-2 gap-4">
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Nome (Opcional)</label>
+                                <input type="text" value={name} onChange={(e) => setName(e.target.value)}
+                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o nome do animal..." />
+                            </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Data de Nascimento (Opcional)</label>
                                 <div className="flex gap-4">
@@ -132,18 +161,20 @@ export function LiveAnimalFormModal({ liveAnimal, close, refresh }: LiveAnimalFo
                                         className="border border-border rounded p-2 bg-white h-10 w-3/5" required={age !== ''} />
                                 </div>
                             </div>
-                            <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Gênero</label>
-                                <select value={genderId} onChange={(e) => setGenderId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
-                                    <option value="">Selecione...</option>
-                                    {options.genders.map(g => (<option key={g.id} value={g.id}>{g.name}</option>))}
-                                </select>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-bold mb-1 text-left">Latitude (Opcional)</label>
+                                    <input type="number" step="0.1" value={latitude ?? ''} onChange={(e) => setLatitude(e.target.value ? Number(e.target.value) : '')}
+                                        className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0,0" required={!!longitude} />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-bold mb-1 text-left">Longitude (Opcional)</label>
+                                    <input type="number" step="0.1" value={longitude ?? ''} onChange={(e) => setLongitude(e.target.value ? Number(e.target.value) : '')}
+                                        className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0,0" required={!!latitude} />
+                                </div>
                             </div>
-                            <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Nome (Opcional)</label>
-                                <input type="text" value={name} onChange={(e) => setName(e.target.value)}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o nome do animal..." />
-                            </div>
+
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Tutor (Opcional)</label>
                                 <select value={tutorId} onChange={(e) => setTutorId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10">

@@ -29,6 +29,9 @@ export class LiveAnimalService {
                 animalPicture: true,
                 cardLink: true,
                 tutor: { select: { id: true, name: true } },
+                outSampling: true,
+                latitude: true,
+                longitude: true,
                 // Registros associados
                 gpsTracking: { select: { id: true } },
                 castration: { select: { id: true } },
@@ -64,6 +67,8 @@ export class LiveAnimalService {
                 const permission = await this.auditService.canUserEditRecord(requesterId, this.tableName, String(a.id), this.formId);
 
                 return {
+                    canEdit: permission.canEdit,
+                    createdByMe: creatorMap.get(String(a.id)) === requesterId,
                     id: a.id,
                     code: a.code,
                     specieId: a.specieId,
@@ -76,10 +81,11 @@ export class LiveAnimalService {
                     active: a.active,
                     animalPicture: a.animalPicture || undefined,
                     cardLink: a.cardLink || undefined,
-                    canEdit: permission.canEdit,
-                    createdByMe: creatorMap.get(String(a.id)) === requesterId,
                     tutorId: a.tutor?.id || undefined,
                     tutorName: a.tutor?.name || undefined,
+                    outSampling: a.outSampling,
+                    latitude: a.latitude || undefined,
+                    longitude: a.longitude || undefined,
                     hasGpsTracking: !!a.gpsTracking,
                     hasCastration: !!a.castration,
                     hasVeterinarianVisit: a.veterinarianVisit.length > 0,
@@ -134,7 +140,10 @@ export class LiveAnimalService {
                     active: data.active,
                     animalPicture: data.animalPicture || null,
                     cardLink: data.cardLink || null,
-                    tutorId: data.tutorId || null
+                    tutorId: data.tutorId || null,
+                    outSampling: data.outSampling,
+                    latitude: data.latitude || null,
+                    longitude: data.longitude || null
                 }
             });
 
@@ -182,7 +191,10 @@ export class LiveAnimalService {
                     active: data.active,
                     animalPicture: data.animalPicture || null,
                     cardLink: data.cardLink || null,
-                    tutorId: data.tutorId || null
+                    tutorId: data.tutorId || null,
+                    outSampling: data.outSampling,
+                    latitude: data.latitude || null,
+                    longitude: data.longitude || null
                 }
             });
 

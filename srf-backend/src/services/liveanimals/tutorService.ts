@@ -21,6 +21,8 @@ export class TutorService {
                 gender: { select: { id: true, name: true } },
                 birthDate: true,
                 address: true,
+                latitude: true,
+                longitude: true,
                 // Registros Associados
                 liveAnimal: { select: { id: true } }
             },
@@ -61,7 +63,9 @@ export class TutorService {
                     address: t.address || undefined,
                     canEdit: permission.canEdit,
                     createdByMe: creatorMap.get(String(t.id)) === requesterId,
-                    hasLiveAnimal: t.liveAnimal.length > 0
+                    hasLiveAnimal: t.liveAnimal.length > 0,
+                    latitude: t.latitude || undefined,
+                    longitude: t.longitude || undefined
                 };
             })
         );
@@ -85,7 +89,9 @@ export class TutorService {
                     name: data.name,
                     genderId: data.genderId,
                     birthDate: new Date(data.birthDate + 'T12:00:00Z'),
-                    address: data.address || null
+                    address: data.address || null,
+                    latitude: data.latitude || null,
+                    longitude: data.longitude || null
                 }
             });
 
@@ -116,7 +122,9 @@ export class TutorService {
                     name: data.name,
                     genderId: data.genderId,
                     birthDate: new Date(data.birthDate + 'T12:00:00Z'),
-                    address: data.address || null
+                    address: data.address || null,
+                    latitude: data.latitude || null,
+                    longitude: data.longitude || null
                 }
             });
 

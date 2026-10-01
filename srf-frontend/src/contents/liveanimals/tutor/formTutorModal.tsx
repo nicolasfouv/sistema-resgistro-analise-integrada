@@ -27,6 +27,8 @@ export function TutorFormModal({ tutor, close, refresh }: TutorFormModalProps) {
     const [genderId, setGenderId] = useState<number | ''>(tutor?.genderId ?? '');
     const [birthDate, setBirthDate] = useState(tutor?.birthDate ? tutor.birthDate.split('T')[0] : '');
     const [address, setAddress] = useState<string>(tutor?.address ?? '');
+    const [latitude, setLatitude] = useState<number | ''>(tutor?.latitude ?? '');
+    const [longitude, setLongitude] = useState<number | ''>(tutor?.longitude ?? '');
 
     useEffect(() => {
         async function loadOptions() {
@@ -49,7 +51,9 @@ export function TutorFormModal({ tutor, close, refresh }: TutorFormModalProps) {
                 name: name,
                 genderId: Number(genderId),
                 birthDate: birthDate,
-                address: address || undefined
+                address: address || undefined,
+                latitude: latitude || undefined,
+                longitude: longitude || undefined
             };
             if (isEditing && tutor) {
                 await updateTutor(tutor.id, data);
@@ -86,8 +90,8 @@ export function TutorFormModal({ tutor, close, refresh }: TutorFormModalProps) {
 
                     <form onSubmit={handleSubmit} className="w-full flex flex-col overflow-y-auto gap-4 mt-2 flex-1 min-h-0">
                         {/* Campos do Tutor */}
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="flex flex-col col-span-2">
+                        <div className="grid grid-cols-3 gap-4">
+                            <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Nome</label>
                                 <input type="text" value={name} onChange={(e) => setName(e.target.value)}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Digite o nome do tutor..." required />
@@ -103,6 +107,18 @@ export function TutorFormModal({ tutor, close, refresh }: TutorFormModalProps) {
                                     <option value="">Selecione...</option>
                                     {options.genders.map(g => (<option key={g.id} value={g.id}>{g.name}</option>))}
                                 </select>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-bold mb-1 text-left">Latitude (Opcional)</label>
+                                    <input type="number" step="0.1" value={latitude ?? ''} onChange={(e) => setLatitude(e.target.value ? Number(e.target.value) : '')}
+                                        className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0,0" required={!!longitude} />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-bold mb-1 text-left">Longitude (Opcional)</label>
+                                    <input type="number" step="0.1" value={longitude ?? ''} onChange={(e) => setLongitude(e.target.value ? Number(e.target.value) : '')}
+                                        className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0,0" required={!!latitude} />
+                                </div>
                             </div>
                             <div className="flex flex-col col-span-2">
                                 <label className="text-sm font-bold mb-1 text-left">Endereço (Opcional)</label>

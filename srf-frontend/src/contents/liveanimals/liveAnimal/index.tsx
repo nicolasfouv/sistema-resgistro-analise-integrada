@@ -24,10 +24,11 @@ export const LiveAnimalContentDefinition = {
     id: 'animal-av', //formId
     label: 'Animais',
     columns: [
-        { key: 'code', label: 'Código', width: 'w-4/12' },
-        { key: 'specieName', label: 'Espécie', width: 'w-4/12' },
-        { key: 'activeFormatted', label: 'Ativo?', width: 'w-3/12', }
-        // deixar w-1/12 sobrando para ações
+        { key: 'code', label: 'Código', width: 'w-2/12' },
+        { key: 'specieName', label: 'Espécie', width: 'w-3/12' },
+        { key: 'genderName', label: 'Gênero', width: 'w-2/12' },
+        { key: 'activeFormatted', label: 'Ativo?', width: 'w-2/12' },
+        { key: 'outSamplingFormated', label: 'Fora da Amostragem?', width: 'w-2/12' }
     ],
     get filterFields() {
         return [
@@ -39,6 +40,7 @@ export const LiveAnimalContentDefinition = {
             { key: 'genderName', label: 'Gênero', type: 'enum', options: gendersOptions },
             { key: 'birthDate', label: 'Data de Nascimento', type: 'date' },
             { key: 'active', label: 'Ativo?', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
+            { key: 'outSampling', label: 'Fora da Amostra?', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'hasGpsTracking', label: 'Possui GPS?', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'hasCastration', label: 'Possui Castração?', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'hasAnimalInterview', label: 'Possui Entrevista?', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
@@ -70,7 +72,8 @@ export async function fetchLiveAnimalsData() {
         ...r,
         activeFormatted: r.active ? 'Sim' : 'Não',
         birthDateFormatted: r.birthDate ? new Date(r.birthDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : '',
-        ageFormatted: r.age ? 'Real' : 'Estimada'
+        ageFormatted: r.age ? 'Real' : 'Estimada',
+        outSamplingFormated: r.outSampling ? 'Sim' : 'Não'
     }));
 };
 

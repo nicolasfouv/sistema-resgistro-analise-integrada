@@ -104,14 +104,14 @@ ADD UNIQUE KEY `analise_helminto_id_necropsia_id_especie_helminto_key`
 ALTER TABLE srf.`analise_helminto`
 DROP COLUMN `id_localizacao`;
 
--- 4[parcialmente]) fazer um link com sidedrawer entre a amostra de fezes e a analise
+-- 4) concluído
 alter table srf.analise_fezes
 add index analise_fezes_id_visita_veterinaria_idx (id_visita_veterinaria);
 
 alter table srf.analise_fezes
 drop index analise_fezes_id_visita_veterinaria_key;
 
--- 5) concluído
+-- 5) concluído <==========
 
 -- 6) concluído
 
@@ -131,7 +131,19 @@ add observacao varchar(191) null;
 
 -- 13[parcialmente]) verificar quais campos devem ser removidos
 
--- 14) a fazer
+-- 14 & 18) adicionar lat e long em tutor
+alter table srf.tutor
+add endereco varchar(255) null,
+add latitude double null,
+add longitude double null;
+
+alter table srf.animal_vivo
+add latitude double null,
+add longitude double null,
+add fora_da_amostragem boolean default(false);
+
+alter table srf.animal_vivo
+modify column ativo boolean not null default(false);;
 
 -- 15) concluído ex fisico
 
@@ -139,31 +151,8 @@ add observacao varchar(191) null;
 
 -- 17) a fazer, verificar quais campos incluir
 
--- 18[parcialmente]) a alteração de animal entrará junto a outras alterações requisitadas
-alter table srf.tutor
-add endereco varchar(255) null;
-
 -- 19) atualizar a parte de gps, separar pos fases: controle, castrado, vermifugado, castrado + vermifugado (não necessáriamente nessa ordem)
 
 -- pensar sobre como vai funcionar a diferenciação de projetos no sistema
 
-
-ALTER TABLE srf.`analise_helminto`
-DROP FOREIGN KEY `analise_helminto_id_localizacao_fkey`;
-
-ALTER TABLE srf.`analise_helminto`
-DROP INDEX `analise_helminto_id_localizacao_fkey`;
-
-ALTER TABLE srf.`analise_helminto`
-DROP INDEX `analise_helminto_id_necropsia_id_especie_helminto_id_localiz_key`;
-
-ALTER TABLE srf.`analise_helminto`
-ADD UNIQUE KEY `analise_helminto_id_necropsia_id_especie_helminto_key`
-    (`id_necropsia`, `id_especie_helminto`);
-
-ALTER TABLE srf.`analise_helminto`
-DROP COLUMN `id_localizacao`;
 */
-
-
-

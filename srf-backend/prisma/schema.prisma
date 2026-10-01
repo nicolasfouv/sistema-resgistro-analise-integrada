@@ -174,10 +174,13 @@ model liveAnimal {
   genderId           Int                  @map("id_genero")
   birthDate          DateTime?            @map("data_nascimento") @db.DateTime(0)
   age                Boolean?             @map("idade")
-  active             Boolean              @map("ativo")
+  active             Boolean              @default(false) @map("ativo")
   animalPicture      String?              @map("foto_animal")
   cardLink           String?              @map("link_carteirinha")
   tutorId            Int?                 @map("id_tutor")
+  outSampling        Boolean              @default(false) @map("fora_da_amostragem")
+  latitude           Float?               @map("latitude")
+  longitude          Float?               @map("longitude")
   specie             specie               @relation(fields: [specieId], references: [id])
   gender             enumAnimalGender     @relation(fields: [genderId], references: [id])
   tutor              tutor?               @relation(fields: [tutorId], references: [id])
@@ -320,6 +323,8 @@ model tutor {
   genderId       Int             @map("id_genero")
   birthDate      DateTime        @map("data_nascimento") @db.DateTime(0)
   address        String?         @map("endereco")
+  latitude       Float?          @map("latitude")
+  longitude      Float?          @map("longitude")
   liveAnimal     liveAnimal[]
   tutorInterview tutorInterview?
   necropsy       necropsy[]

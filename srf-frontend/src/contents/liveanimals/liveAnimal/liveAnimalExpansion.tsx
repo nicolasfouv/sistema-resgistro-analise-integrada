@@ -71,49 +71,75 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
                     </div>
                 </div>
                 <div className="flex gap-2 w-full text-sm">
-                    <div className="flex flex-col w-4/12">
+                    <div className="flex flex-col w-2/12">
                         <label className="ml-1 font-bold">Código</label>
                         <input type="text" disabled value={item.code} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    <div className="flex flex-col w-4/12">
+                    <div className="flex flex-col w-3/12">
                         <label className="ml-1 font-bold">Espécie</label>
                         <input type="text" disabled value={item.specieName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    <div className="flex flex-col w-3/12">
+                    <div className="flex flex-col w-2/12">
+                        <label className="ml-1 font-bold">Gênero</label>
+                        <input type="text" disabled value={item.genderName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                    <div className="flex flex-col w-2/12">
                         <label className="ml-1 font-bold">Ativo?</label>
                         <input type="text" disabled value={item.active ? "Sim" : "Não"} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                    <div className="flex flex-col w-2/12">
+                        <label className="ml-1 font-bold">Fora da Amostragem?</label>
+                        <input type="text" disabled value={item.outSampling ? "Sim" : "Não"} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                 </div>
             </div>
             <hr className="border-gray-200" />
 
             {/* Corpo */}
-            <div className="gap-2 w-full text-sm grid grid-cols-4 mb-2">
-                <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Data de Nascimento</label>
-                    {item.birthDateFormatted && (
-                        <div className="flex gap-2">
-                            <input type="text" disabled value={item.ageFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input w-2/5" />
-                            <input type="text" disabled value={item.birthDateFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input w-3/5" />
-                        </div>
-                    )}
-                    {!item.birthDateFormatted && (
-                        <input type="text" disabled value="Nenhuma data informada" className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                    )}
-                </div>
-                <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Gênero</label>
-                    <input type="text" disabled value={item.genderName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                </div>
+            <div className="gap-2 w-full text-sm grid grid-cols-3 mb-2">
                 <div className="flex flex-col w-full">
                     <label className="ml-1 font-bold">Nome</label>
                     <input type="text" disabled value={item.name || 'Nenhum nome informado'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                    {item.birthDateFormatted && (
+                        <>
+                            <div className="flex flex-col">
+                                <label className="ml-1 font-bold">Tipo da Data de Nascimento</label>
+                                <input type="text" disabled value={item.ageFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="ml-1 font-bold">Data de Nascimento</label>
+                                <input type="text" disabled value={item.birthDateFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                            </div>
+                        </>
+                    )}
+                    {!item.birthDateFormatted && (
+                        <div className="flex flex-col col-span-2">
+                            <label className="ml-1 font-bold">Data de Nascimento</label>
+                            <input type="text" disabled value="Nenhuma data informada" className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        </div>
+                    )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                    <div className="flex flex-col">
+                        <label className="ml-1 font-bold">Latitude</label>
+                        <input type="text" disabled value={item.latitude || 'Nenhuma latitude informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="ml-1 font-bold">Longitude</label>
+                        <input type="text" disabled value={item.longitude || 'Nenhuma longitude informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                </div>
+
                 <div className="flex flex-col w-full">
                     <label className="ml-1 font-bold">Tutor</label>
                     <input type="text" disabled value={item.tutorName || 'Nenhum tutor informado'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
-                <div className="flex flex-col w-full col-span-4">
+
+                <div className="flex flex-col w-full col-span-3">
                     <label className="ml-1 font-bold">Foto</label>
                     <div className="mb-2 border border-border rounded px-2 py-1 text-text-input">
                         {item.animalPicture ? (
@@ -125,7 +151,7 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
                         )}
                     </div>
                 </div>
-                <div className="flex flex-col w-full col-span-4">
+                <div className="flex flex-col w-full col-span-3">
                     <label className="ml-1 font-bold">Carteirinha</label>
                     <div className="mb-2 border border-border rounded px-2 py-1 text-text-input">
                         {item.cardLink ? (

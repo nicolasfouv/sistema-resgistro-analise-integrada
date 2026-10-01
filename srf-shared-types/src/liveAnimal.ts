@@ -42,6 +42,10 @@ export const getAllLiveAnimalOutputSchema = z.object({
     cardLink: z.string().optional(),
     tutorId: z.number().int().optional(),
     tutorName: z.string().optional(),
+    outSampling: z.boolean(),
+    outSamplingFormated: z.string().optional(),
+    latitude: z.number().optional(),
+    longitude: z.number().optional(),
     hasGpsTracking: z.boolean(),
     hasCastration: z.boolean(),
     hasVeterinarianVisit: z.boolean(),
@@ -75,7 +79,10 @@ export const createLiveAnimalInputSchema = z.object({
     active: z.boolean(),
     animalPicture: z.string().optional(),
     cardLink: z.string().optional(),
-    tutorId: z.number().int().optional()
+    tutorId: z.number().int().optional(),
+    outSampling: z.boolean(),
+    latitude: z.number().optional(),
+    longitude: z.number().optional()
 });
 
 export const updateLiveAnimalInputSchema = createLiveAnimalInputSchema;

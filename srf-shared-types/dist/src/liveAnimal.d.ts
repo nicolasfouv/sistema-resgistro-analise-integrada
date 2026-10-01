@@ -19,6 +19,10 @@ export declare const getAllLiveAnimalOutputSchema: z.ZodObject<{
     cardLink: z.ZodOptional<z.ZodString>;
     tutorId: z.ZodOptional<z.ZodNumber>;
     tutorName: z.ZodOptional<z.ZodString>;
+    outSampling: z.ZodBoolean;
+    outSamplingFormated: z.ZodOptional<z.ZodString>;
+    latitude: z.ZodOptional<z.ZodNumber>;
+    longitude: z.ZodOptional<z.ZodNumber>;
     hasGpsTracking: z.ZodBoolean;
     hasCastration: z.ZodBoolean;
     hasVeterinarianVisit: z.ZodBoolean;
@@ -50,6 +54,9 @@ export declare const createLiveAnimalInputSchema: z.ZodObject<{
     animalPicture: z.ZodOptional<z.ZodString>;
     cardLink: z.ZodOptional<z.ZodString>;
     tutorId: z.ZodOptional<z.ZodNumber>;
+    outSampling: z.ZodBoolean;
+    latitude: z.ZodOptional<z.ZodNumber>;
+    longitude: z.ZodOptional<z.ZodNumber>;
 }, z.z.core.$strip>;
 export declare const updateLiveAnimalInputSchema: z.ZodObject<{
     code: z.ZodString;
@@ -62,6 +69,9 @@ export declare const updateLiveAnimalInputSchema: z.ZodObject<{
     animalPicture: z.ZodOptional<z.ZodString>;
     cardLink: z.ZodOptional<z.ZodString>;
     tutorId: z.ZodOptional<z.ZodNumber>;
+    outSampling: z.ZodBoolean;
+    latitude: z.ZodOptional<z.ZodNumber>;
+    longitude: z.ZodOptional<z.ZodNumber>;
 }, z.z.core.$strip>;
 export type GetAllLiveAnimalOutput = z.infer<typeof getAllLiveAnimalOutputSchema>;
 export type GetFormOptionsAnimalOutput = z.infer<typeof getFormOptionsAnimalOutputSchema>;

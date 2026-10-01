@@ -109,6 +109,10 @@ export function TutorSideDrawer({ filters, onClose }: TutorSideDrawerProps) {
                                             <Field label="Nome" value={tutor.name} />
                                             <Field label="Data de Nascimento" value={tutor.birthDateFormatted || ''} />
                                             <Field label="Gênero" value={tutor.genderName} />
+                                        </div>
+                                        <div className="gap-2 w-full text-sm grid grid-cols-2 mt-2">
+                                            <Field label="Latitude" value={tutor.latitude?.toString() || 'Não informado'} />
+                                            <Field label="Longitude" value={tutor.longitude?.toString() || 'Não informado'} />
                                             <Field label="Endereço" value={tutor.address || 'Não informado'} fullWidth />
                                         </div>
                                     </div>

@@ -9,6 +9,8 @@ export declare const getAllTutorOutputSchema: z.ZodObject<{
     birthDate: z.ZodString;
     birthDateFormatted: z.ZodOptional<z.ZodString>;
     address: z.ZodOptional<z.ZodString>;
+    latitude: z.ZodOptional<z.ZodNumber>;
+    longitude: z.ZodOptional<z.ZodNumber>;
     hasLiveAnimal: z.ZodBoolean;
 }, z.z.core.$strip>;
 export declare const getFormOptionsTutorOutputSchema: z.ZodObject<{
@@ -22,12 +24,16 @@ export declare const createTutorInputSchema: z.ZodObject<{
     genderId: z.ZodNumber;
     birthDate: z.ZodString;
     address: z.ZodOptional<z.ZodString>;
+    latitude: z.ZodOptional<z.ZodNumber>;
+    longitude: z.ZodOptional<z.ZodNumber>;
 }, z.z.core.$strip>;
 export declare const updateTutorInputSchema: z.ZodObject<{
     name: z.ZodString;
     genderId: z.ZodNumber;
     birthDate: z.ZodString;
     address: z.ZodOptional<z.ZodString>;
+    latitude: z.ZodOptional<z.ZodNumber>;
+    longitude: z.ZodOptional<z.ZodNumber>;
 }, z.z.core.$strip>;
 export type GetAllTutorOutput = z.infer<typeof getAllTutorOutputSchema>;
 export type GetFormOptionsTutorOutput = z.infer<typeof getFormOptionsTutorOutputSchema>;
