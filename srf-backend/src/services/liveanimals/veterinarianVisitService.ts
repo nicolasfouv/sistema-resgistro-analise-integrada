@@ -95,6 +95,12 @@ export class VeterinarianVisitService {
         });
         const visitIdsWithCastration = new Set(castrationCounts.map(c => c.veterinarianVisitId));
 
+        const dewormingRecords = await prisma.deworming.findMany({
+            where: { veterinarianVisitId: { in: visitIds } },
+            select: { veterinarianVisitId: true }
+        });
+        const visitIdsWithDeworming = new Set(dewormingRecords.map(record => record.veterinarianVisitId));
+
         const [user, userAccess, levels] = await Promise.all([
             prisma.user.findUnique({
                 where: { id: userId },
@@ -160,6 +166,7 @@ export class VeterinarianVisitService {
                 hasEctoparasiteAnalysis: visitIdsWithEctoparasiteAnalysis.has(v.id),
                 hasStoolAnalysis: visitIdsWithStoolAnalysis.has(v.id),
                 hasCastration: visitIdsWithCastration.has(v.id),
+                hasDeworming: visitIdsWithDeworming.has(v.id),
                 liveAnimalId: v.liveAnimal.id,
                 liveAnimalCode: v.liveAnimal.code,
                 assigneeId: v.assignee.id,

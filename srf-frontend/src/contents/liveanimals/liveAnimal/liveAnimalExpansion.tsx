@@ -6,6 +6,7 @@ import { GpsTrackingSideDrawer } from "../gpsTracking/gpsTrackingSideDrawer";
 import { VaccineSideDrawer } from "../vaccine/vaccineSideDrawer";
 import { VeterinarianVisitSideDrawer } from "../veterinarianVisit/veterinarianVisitSideDrawer";
 import { CastrationSideDrawer } from "../castration/castrationSideDrawer";
+import { DewormingSideDrawer } from "../deworming/dewormingSideDrawer";
 import { TutorSideDrawer } from "../tutor/tutorSideDrawer";
 
 export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLiveAnimalOutput; close: () => void; refresh: () => void }) {
@@ -14,6 +15,7 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
 
     const [showTutorDrawer, setShowTutorDrawer] = useState(false);
     const [showCastrationDrawer, setShowCastrationDrawer] = useState(false);
+    const [showDewormingDrawer, setShowDewormingDrawer] = useState(false);
     const [showGpsTrackingDrawer, setShowGpsTrackingDrawer] = useState(false);
     const [showVaccineApplicationDrawer, setShowVaccineApplicationDrawer] = useState(false);
     const [showVeterinarianVisitDrawer, setShowVeterinarianVisitDrawer] = useState(false);
@@ -57,6 +59,12 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
                 <CastrationSideDrawer
                     filters={{ liveAnimalId: item.id }}
                     onClose={() => setShowCastrationDrawer(false)}
+                />
+            )}
+            {showDewormingDrawer && (
+                <DewormingSideDrawer
+                    filters={{ liveAnimalId: item.id }}
+                    onClose={() => setShowDewormingDrawer(false)}
                 />
             )}
 
@@ -166,7 +174,7 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
             </div>
 
             {/* Registros Associados */}
-            {(item.tutorId || item.hasCastration || item.hasGpsTracking || item.hasVaccineApplication || item.hasVeterinarianVisit) && (
+            {(item.tutorId || item.hasCastration || item.hasDeworming || item.hasGpsTracking || item.hasVaccineApplication || item.hasVeterinarianVisit) && (
                 <>
                     <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                         <h3 className="font-bold text-text-main uppercase">Registros Associados</h3>
@@ -186,6 +194,14 @@ export function LiveAnimalExpansion({ item, close, refresh }: { item: GetAllLive
                                 className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
                             >
                                 Castração
+                            </button>
+                        )}
+                        {item.hasDeworming && (
+                            <button
+                                onClick={() => setShowDewormingDrawer(true)}
+                                className="bg-standard-blue text-white font-bold cursor-pointer px-4 py-2 rounded text-sm"
+                            >
+                                Vermifugação
                             </button>
                         )}
                         {item.hasGpsTracking && (

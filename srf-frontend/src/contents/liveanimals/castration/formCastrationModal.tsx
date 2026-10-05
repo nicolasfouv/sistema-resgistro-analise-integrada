@@ -237,7 +237,7 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                                         className={`border border-border rounded p-2 ${!selectedAnimalId ? 'bg-gray-100' : 'bg-white'}`}
                                         disabled={!selectedAnimalId}
                                     >
-                                        <option value="">Selecione...</option>
+                                        <option value="">Sem visita associada...</option>
                                         {filteredDates.map(d => (
                                             <option key={d.iso} value={d.iso}>{d.formatted}</option>
                                         ))}

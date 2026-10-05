@@ -33,6 +33,7 @@ export declare const getAllVeterinarianVisitOutputSchema: z.ZodObject<{
     hasEctoparasiteAnalysis: z.ZodBoolean;
     hasStoolAnalysis: z.ZodBoolean;
     hasCastration: z.ZodBoolean;
+    hasDeworming: z.ZodBoolean;
     liveAnimalId: z.ZodNumber;
     liveAnimalCode: z.ZodString;
     assigneeId: z.ZodNumber;

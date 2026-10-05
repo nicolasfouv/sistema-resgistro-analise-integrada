@@ -62,6 +62,7 @@ import { fetchGpsTrackingData, GpsTrackingContent } from "./liveanimals/gpsTrack
 import { fetchInterviewData, InterviewContent } from "./liveanimals/interview/index";
 import { fetchLiveAnimalsData, LiveAnimalContent } from "./liveanimals/liveAnimal/index";
 import { fetchCastrationData, CastrationContent } from "./liveanimals/castration/index";
+import { fetchDewormingData, DewormingContent } from "./liveanimals/deworming/index";
 import { fetchTutorData, TutorContent } from "./liveanimals/tutor/index";
 import { fetchDeadAnimalsData, DeadAnimalContent } from "./deadanimals/deadAnimal/index";
 import { fetchNecropsyData, NecropsyContent } from "./deadanimals/necropsy/index";
@@ -215,11 +216,25 @@ export function initRegistry() {
         component: CastrationContent
     });
 
+    registerContent('animaisvivos', 'animais', 'Animais', {
+        id: DewormingContent.id,
+        label: DewormingContent.label,
+        loader: fetchDewormingData,
+        component: DewormingContent
+    });
+
     registerContent('animaisvivos', 'veterinario', 'Veterinário', {
         id: CastrationContent.id,
         label: CastrationContent.label,
         loader: fetchCastrationData,
         component: CastrationContent
+    });
+
+    registerContent('animaisvivos', 'veterinario', 'Veterinário', {
+        id: DewormingContent.id,
+        label: DewormingContent.label,
+        loader: fetchDewormingData,
+        component: DewormingContent
     });
 
     registerContent('animaismortos', 'animaisatropelados', 'Animais Atropelados', {
@@ -279,4 +294,3 @@ export function initRegistry() {
     });
 
 }
-

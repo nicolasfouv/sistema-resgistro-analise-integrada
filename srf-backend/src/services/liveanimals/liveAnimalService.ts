@@ -35,6 +35,7 @@ export class LiveAnimalService {
                 // Registros associados
                 gpsTracking: { select: { id: true } },
                 castration: { select: { id: true } },
+                deworming: { select: { id: true } },
                 veterinarianVisit: { select: { id: true } },
                 vaccineApplication: { select: { id: true } },
                 animalInterview: { select: { id: true } }
@@ -88,6 +89,7 @@ export class LiveAnimalService {
                     longitude: a.longitude || undefined,
                     hasGpsTracking: !!a.gpsTracking,
                     hasCastration: !!a.castration,
+                    hasDeworming: !!a.deworming,
                     hasVeterinarianVisit: a.veterinarianVisit.length > 0,
                     hasVaccineApplication: a.vaccineApplication.length > 0,
                     hasAnimalInterview: a.animalInterview.length > 0

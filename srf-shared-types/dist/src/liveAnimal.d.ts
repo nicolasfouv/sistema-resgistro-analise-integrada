@@ -25,6 +25,7 @@ export declare const getAllLiveAnimalOutputSchema: z.ZodObject<{
     longitude: z.ZodOptional<z.ZodNumber>;
     hasGpsTracking: z.ZodBoolean;
     hasCastration: z.ZodBoolean;
+    hasDeworming: z.ZodBoolean;
     hasVeterinarianVisit: z.ZodBoolean;
     hasVaccineApplication: z.ZodBoolean;
     hasAnimalInterview: z.ZodBoolean;

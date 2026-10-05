@@ -121,18 +121,6 @@ export function CastrationSideDrawer({ filters, onClose }: CastrationSideDrawerP
                                             <Field label="Data" value={castration.dateFormatted || ''} />
                                             <Field label="Observações" value={castration.note || 'Nenhuma observação informada'} fullWidth />
                                         </div>
-
-                                        {castration.veterinarianVisitId && (
-                                            <div className="mt-3">
-                                                <h4 className="font-bold text-text-main text-xs uppercase mb-2 border-b border-gray-600 pb-1">
-                                                    Visita Veterinária Associada
-                                                </h4>
-                                                <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
-                                                    <Field label="Data da Visita" value={castration.veterinarianVisitDateFormatted!} />
-                                                    <Field label="Responsável" value={castration.assigneeName!} />
-                                                </div>
-                                            </div>
-                                        )}
                                     </div>
                                 )}
                             </div>

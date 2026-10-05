@@ -116,6 +116,50 @@ drop index analise_fezes_id_visita_veterinaria_key;
 -- 6) concluído
 
 -- 7) a fazer => formulário de vermifugação
+INSERT INTO srf.formulario (`id`, `nome`, `id_sub_categoria`)
+VALUES ('vermifugacao', 'Vermifugação', 'animais');
+
+CREATE TABLE IF NOT EXISTS srf.`medicamento` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `nome` VARCHAR(191) NOT NULL,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `vermifugacao` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `id_animal_vivo` INT NOT NULL,
+    `id_responsavel` INT NOT NULL,
+    `data_inicio` DATETIME(0) NOT NULL,
+    `data_fim` DATETIME(0) NULL,
+    `id_medicamento` INT NOT NULL,
+    `observacao` VARCHAR(191) NULL,
+    UNIQUE INDEX `vermifugacao_id_animal_vivo_key` (`id_animal_vivo`),
+    INDEX `vermifugacao_id_responsavel_fkey` (`id_responsavel`),
+    INDEX `vermifugacao_id_medicamento_fkey` (`id_medicamento`),
+    PRIMARY KEY (`id`),
+    CONSTRAINT `vermifugacao_id_animal_vivo_fkey`
+        FOREIGN KEY (`id_animal_vivo`) REFERENCES `animal_vivo` (`id`)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT `vermifugacao_id_responsavel_fkey`
+        FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT `vermifugacao_id_medicamento_fkey`
+        FOREIGN KEY (`id_medicamento`) REFERENCES `medicamento` (`id`)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+ALTER TABLE srf.`vermifugacao`
+    ADD COLUMN `id_visita_veterinaria` INT NULL,
+    ADD UNIQUE INDEX `vermifugacao_id_visita_veterinaria_key` (`id_visita_veterinaria`);
+
+ALTER TABLE srf.`vermifugacao`
+    ADD CONSTRAINT `vermifugacao_id_visita_veterinaria_fkey`
+    FOREIGN KEY (`id_visita_veterinaria`) REFERENCES `visita_veterinaria` (`id`)
+    ON DELETE RESTRICT ON UPDATE CASCADE;
+    
+ALTER TABLE srf.vermifugacao 
+ADD UNIQUE INDEX vermifugacao_id_animal_vivo_key (id_animal_vivo)
+
 
 -- 8) concluído
 alter table srf.entrevista_tutor
@@ -335,7 +379,7 @@ modify column ativo boolean not null default(false);;
 
 -- 16) concluido
 
--- 17) a fazer, verificar quais campos incluir
+-- 17) a fazer, verificar quais campos incluir - esperar a planinha com dados
 
 -- 19) concluído
 

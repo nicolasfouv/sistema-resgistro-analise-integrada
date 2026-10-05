@@ -48,6 +48,7 @@ export const getAllLiveAnimalOutputSchema = z.object({
     longitude: z.number().optional(),
     hasGpsTracking: z.boolean(),
     hasCastration: z.boolean(),
+    hasDeworming: z.boolean(),
     hasVeterinarianVisit: z.boolean(),
     hasVaccineApplication: z.boolean(),
     hasAnimalInterview: z.boolean()

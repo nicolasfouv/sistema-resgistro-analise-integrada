@@ -13,6 +13,7 @@ export * from "./interview.js";
 export * from "./liveAnimal.js";
 export * from "./tutor.js";
 export * from "./castration.js";
+export * from "./deworming.js";
 export * from "./deadAnimal.js";
 export * from "./necropsy.js";
 export * from "./necropsySample.js";

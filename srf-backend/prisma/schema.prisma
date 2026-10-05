@@ -186,6 +186,7 @@ model liveAnimal {
   tutor              tutor?               @relation(fields: [tutorId], references: [id])
   vaccineApplication vaccineApplication[]
   castration         castration?
+  deworming          deworming?
   animalInterview    animalInterview[]
   gpsTracking        gpsTracking?
   veterinarianVisit  veterinarianVisit[]
@@ -401,6 +402,33 @@ model castration {
   @@map("castracao")
 }
 
+model deworming {
+  id          Int         @id @default(autoincrement())
+  liveAnimalId Int        @unique(map: "vermifugacao_id_animal_vivo_key") @map("id_animal_vivo")
+  assigneeId  Int         @map("id_responsavel")
+  veterinarianVisitId Int? @unique @map("id_visita_veterinaria")
+  startDate   DateTime    @map("data_inicio") @db.DateTime(0)
+  endDate     DateTime?   @map("data_fim") @db.DateTime(0)
+  medicationId Int        @map("id_medicamento")
+  note        String?     @map("observacao")
+  liveAnimal  liveAnimal  @relation(fields: [liveAnimalId], references: [id])
+  assignee    veterinarian @relation(fields: [assigneeId], references: [id])
+  veterinarianVisit veterinarianVisit? @relation(fields: [veterinarianVisitId], references: [id])
+  medication  medication  @relation(fields: [medicationId], references: [id])
+
+  @@index([assigneeId], map: "vermifugacao_id_responsavel_fkey")
+  @@index([medicationId], map: "vermifugacao_id_medicamento_fkey")
+  @@map("vermifugacao")
+}
+
+model medication {
+  id        Int         @id @default(autoincrement())
+  name      String      @map("nome")
+  dewormings deworming[]
+
+  @@map("medicamento")
+}
+
 model veterinarianVisit {
   id                   Int                                @id @default(autoincrement())
   liveAnimalId         Int                                @map("id_animal_vivo")
@@ -414,6 +442,7 @@ model veterinarianVisit {
   sorologyAnalysis     sorologyAnalysis?
   vaccineApplication   vaccineApplication[]
   castration           castration?
+  deworming            deworming?
   physicalExam         physicalExam?
   bodyMeasurement      bodyMeasurementVeterinarian[]
   examResult           examResult?
@@ -430,6 +459,7 @@ model veterinarian {
   name                              String                             @map("nome")
   veterinarianVisit                 veterinarianVisit[]
   castrations                       castration[]
+  dewormings                        deworming[]
   vaccineApplications               vaccineApplication[]
   stoolAnalyses                     stoolAnalysis[]
   physicalExams                     physicalExam[]

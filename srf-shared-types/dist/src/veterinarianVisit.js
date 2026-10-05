@@ -25,6 +25,7 @@ export const getAllVeterinarianVisitOutputSchema = z.object({
     hasEctoparasiteAnalysis: z.boolean(),
     hasStoolAnalysis: z.boolean(),
     hasCastration: z.boolean(),
+    hasDeworming: z.boolean(),
     liveAnimalId: z.number().int(),
     liveAnimalCode: z.string().nonempty(),
     assigneeId: z.number().int(),

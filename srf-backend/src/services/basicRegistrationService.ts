@@ -27,6 +27,7 @@ const sharedTypes: TypeConfig[] = [
 // Tipos exclusivos de Animais Vivos
 const liveAnimalOnlyTypes: TypeConfig[] = [
     { label: 'Responsável', prismaModel: 'veterinarian', valueField: 'name', valueFieldLabel: 'Nome' },
+    { label: 'Medicamento', prismaModel: 'medication', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Tipo da Vacina', prismaModel: 'vaccine', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Tipo de Aplicação da Vacina', prismaModel: 'enumVaccineType', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Interpretação do Exame', prismaModel: 'enumExamInterpretation', valueField: 'name', valueFieldLabel: 'Nome' },
