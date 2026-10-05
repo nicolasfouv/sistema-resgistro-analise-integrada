@@ -111,7 +111,7 @@ add index analise_fezes_id_visita_veterinaria_idx (id_visita_veterinaria);
 alter table srf.analise_fezes
 drop index analise_fezes_id_visita_veterinaria_key;
 
--- 5) concluído <==========
+-- 5) concluído
 
 -- 6) concluído
 
@@ -125,191 +125,197 @@ add observacao varchar(191) null;
 
 -- 10) concluído
 
--- 11) alterar a tipagem(feito), backend(feito) e frontend de vários forms
-ALTER TABLE rastreio_gps
+-- 11) concluído
+ALTER TABLE srf.rastreio_gps
     ADD COLUMN id_responsavel INT NOT NULL;
 
-ALTER TABLE entrevista_tutor
+ALTER TABLE srf.entrevista_tutor
     ADD COLUMN id_responsavel INT NOT NULL;
 
-ALTER TABLE castracao
+ALTER TABLE srf.castracao
     ADD COLUMN id_responsavel INT NULL;
     
-ALTER TABLE aplicacao_vacina
+ALTER TABLE srf.aplicacao_vacina
     ADD COLUMN id_responsavel INT NOT NULL;
 
-ALTER TABLE analise_fezes
+ALTER TABLE srf.analise_fezes
     ADD COLUMN id_responsavel INT NOT NULL;
 
-ALTER TABLE analise_ovo_cisto
+ALTER TABLE srf.analise_ovo_cisto
     ADD COLUMN id_responsavel INT NOT NULL;
 
-ALTER TABLE analise_molecular
+ALTER TABLE srf.analise_molecular
     ADD COLUMN id_responsavel INT NOT NULL;
 
-ALTER TABLE exame_fisico
+ALTER TABLE srf.exame_fisico
     ADD COLUMN id_responsavel INT NOT NULL;
 
-ALTER TABLE analise_ectoparasito_veterinario
+ALTER TABLE srf.analise_ectoparasito_veterinario
     ADD COLUMN id_responsavel INT NOT NULL;
 
-ALTER TABLE resultado_exame
+ALTER TABLE srf.resultado_exame
     ADD COLUMN id_responsavel INT NOT NULL;
 
-ALTER TABLE analise_sorologica
+ALTER TABLE srf.analise_sorologica
     ADD COLUMN id_responsavel INT NOT NULL;
 
-ALTER TABLE necropsia
+ALTER TABLE srf.necropsia
     ADD COLUMN id_responsavel INT NOT NULL;
 
-ALTER TABLE analise_helminto
+ALTER TABLE srf.analise_helminto
     ADD COLUMN id_responsavel INT NOT NULL;
 
-ALTER TABLE resultado_cpcr
+ALTER TABLE srf.resultado_cpcr
     ADD COLUMN id_responsavel INT NOT NULL;
 
-ALTER TABLE resultado_qpcr
+ALTER TABLE srf.resultado_qpcr
     ADD COLUMN id_responsavel INT NOT NULL;
     
-ALTER TABLE rastreio_gps
+ALTER TABLE srf.rastreio_gps
     ADD INDEX `rastreio_gps_id_responsavel_fkey` (`id_responsavel`);
 
-ALTER TABLE entrevista_tutor
+ALTER TABLE srf.entrevista_tutor
     ADD INDEX `entrevista_tutor_id_responsavel_fkey` (`id_responsavel`),
     ADD INDEX `entrevista_tutor_id_tutor_fkey` (`id_tutor`);
 
-ALTER TABLE castracao
+ALTER TABLE srf.castracao
     ADD INDEX `castracao_id_responsavel_fkey` (`id_responsavel`);
 
-ALTER TABLE aplicacao_vacina
+ALTER TABLE srf.aplicacao_vacina
     ADD INDEX `aplicacao_vacina_id_responsavel_fkey` (`id_responsavel`);
 
-ALTER TABLE analise_fezes
+ALTER TABLE srf.analise_fezes
     ADD INDEX `analise_fezes_id_responsavel_fkey` (`id_responsavel`);
 
-ALTER TABLE analise_ovo_cisto
+ALTER TABLE srf.analise_ovo_cisto
     ADD INDEX `analise_ovo_cisto_id_responsavel_fkey` (`id_responsavel`);
 
-ALTER TABLE analise_molecular
+ALTER TABLE srf.analise_molecular
     ADD INDEX `analise_molecular_id_responsavel_fkey` (`id_responsavel`);
 
-ALTER TABLE exame_fisico
+ALTER TABLE srf.exame_fisico
     ADD INDEX `exame_fisico_id_responsavel_fkey` (`id_responsavel`);
 
-ALTER TABLE analise_ectoparasito_veterinario
+ALTER TABLE srf.analise_ectoparasito_veterinario
     ADD INDEX `analise_ectoparasito_veterinario_id_responsavel_fkey` (`id_responsavel`);
 
-ALTER TABLE resultado_exame
+ALTER TABLE srf.resultado_exame
     ADD INDEX `resultado_exame_id_responsavel_fkey` (`id_responsavel`);
 
-ALTER TABLE analise_sorologica
+ALTER TABLE srf.analise_sorologica
     ADD INDEX `analise_sorologica_id_responsavel_fkey` (`id_responsavel`);
 
-ALTER TABLE necropsia
+ALTER TABLE srf.necropsia
     ADD INDEX `necropsia_id_responsavel_fkey` (`id_responsavel`);
 
-ALTER TABLE analise_helminto
+ALTER TABLE srf.analise_helminto
     ADD INDEX `analise_helminto_id_responsavel_fkey` (`id_responsavel`);
 
-ALTER TABLE resultado_cpcr
+ALTER TABLE srf.resultado_cpcr
     ADD INDEX `resultado_cpcr_id_responsavel_fkey` (`id_responsavel`);
 
-ALTER TABLE resultado_qpcr
+ALTER TABLE srf.resultado_qpcr
     ADD INDEX `resultado_qpcr_id_responsavel_fkey` (`id_responsavel`);
     
-ALTER TABLE rastreio_gps
+ALTER TABLE srf.rastreio_gps
     ADD CONSTRAINT `fk_rastreio_gps_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
-ALTER TABLE entrevista_tutor
+ALTER TABLE srf.entrevista_tutor
     ADD CONSTRAINT `fk_entrevista_tutor_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
-ALTER TABLE castracao
+ALTER TABLE srf.castracao
     ADD CONSTRAINT `fk_castracao_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
-ALTER TABLE aplicacao_vacina
+ALTER TABLE srf.aplicacao_vacina
     ADD CONSTRAINT `fk_aplicacao_vacina_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
-ALTER TABLE analise_fezes
+ALTER TABLE srf.analise_fezes
     ADD CONSTRAINT `fk_analise_fezes_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
-ALTER TABLE analise_ovo_cisto
+ALTER TABLE srf.analise_ovo_cisto
     ADD CONSTRAINT `fk_analise_ovo_cisto_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
-ALTER TABLE analise_molecular
+ALTER TABLE srf.analise_molecular
     ADD CONSTRAINT `fk_analise_molecular_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
-ALTER TABLE exame_fisico
+ALTER TABLE srf.exame_fisico
     ADD CONSTRAINT `fk_exame_fisico_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
-ALTER TABLE analise_ectoparasito_veterinario
+ALTER TABLE srf.analise_ectoparasito_veterinario
     ADD CONSTRAINT `fk_analise_ectoparasito_vet_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
-ALTER TABLE resultado_exame
+ALTER TABLE srf.resultado_exame
     ADD CONSTRAINT `fk_resultado_exame_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
-ALTER TABLE analise_sorologica
+ALTER TABLE srf.analise_sorologica
     ADD CONSTRAINT `fk_analise_sorologica_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
-ALTER TABLE necropsia
+ALTER TABLE srf.necropsia
     ADD CONSTRAINT `fk_necropsia_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
-ALTER TABLE analise_helminto
+ALTER TABLE srf.analise_helminto
     ADD CONSTRAINT `fk_analise_helminto_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
-ALTER TABLE resultado_cpcr
+ALTER TABLE srf.resultado_cpcr
     ADD CONSTRAINT `fk_resultado_cpcr_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
-ALTER TABLE resultado_qpcr
+ALTER TABLE srf.resultado_qpcr
     ADD CONSTRAINT `fk_resultado_qpcr_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
     
-ALTER TABLE visita_veterinaria
+ALTER TABLE srf.visita_veterinaria
     DROP FOREIGN KEY `visita_veterinaria_id_veterinario_fkey`;
 
-ALTER TABLE visita_veterinaria
+ALTER TABLE srf.visita_veterinaria
     DROP INDEX `visita_veterinaria_id_veterinario_fkey`;
 
-ALTER TABLE visita_veterinaria
+ALTER TABLE srf.visita_veterinaria
     CHANGE COLUMN `id_veterinario`
                   `id_responsavel`
                   INT NOT NULL;
 
-ALTER TABLE visita_veterinaria
+ALTER TABLE srf.visita_veterinaria
     ADD INDEX `visita_veterinaria_id_responsavel_fkey`
     (`id_responsavel`);
 
-ALTER TABLE visita_veterinaria
+ALTER TABLE srf.visita_veterinaria
     ADD CONSTRAINT `visita_veterinaria_id_responsavel_fkey`
     FOREIGN KEY (`id_responsavel`)
     REFERENCES `veterinario` (`id`);
     
-ALTER TABLE analise_ectoparasito_necropsia
+ALTER TABLE srf.analise_ectoparasito_necropsia
 	ADD COLUMN id_responsavel INT NOT NULL;
     
-ALTER TABLE analise_ectoparasito_necropsia
+ALTER TABLE srf.analise_ectoparasito_necropsia
 	ADD INDEX `analise_ectoparasito_necropsia_id_responsavel_fkey` (`id_responsavel`);
 
-ALTER TABLE analise_ectoparasito_necropsia
+ALTER TABLE srf.analise_ectoparasito_necropsia
 	ADD CONSTRAINT `fk_analise_ectoparasito_necropsia_responsavel`
     FOREIGN KEY (`id_responsavel`) REFERENCES `veterinario` (`id`);
 
 -- 12) concluído
 
--- 13[parcialmente]) verificar quais campos devem ser removidos
+-- 13) concluído
+alter table srf.resultado_exame
+drop column linfocitos,
+drop column segmentados,
+drop column monocitos,
+drop column eosinofilos,
+drop column basofilos;
 
 -- 14 & 18) concluído
 alter table srf.tutor
@@ -331,8 +337,12 @@ modify column ativo boolean not null default(false);;
 
 -- 17) a fazer, verificar quais campos incluir
 
--- 19) atualizar a parte de gps, separar pos fases: controle, castrado, vermifugado, castrado + vermifugado (não necessáriamente nessa ordem)
+-- 19) concluído
+
+-- atualizar a parte de gps, separar pos fases: controle, castrado, vermifugado, castrado + vermifugado (não necessáriamente nessa ordem)
 
 -- pensar sobre como vai funcionar a diferenciação de projetos no sistema
 
 */
+
+

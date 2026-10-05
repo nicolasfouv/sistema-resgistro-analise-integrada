@@ -43,15 +43,10 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
     const [platelets, setPlatelets] = useState<number | ''>(examResult?.platelets ?? '');
     const [whiteBloodCells, setWhiteBloodCells] = useState<number | ''>(examResult?.whiteBloodCells ?? '');
     const [bandCells, setBandCells] = useState<number | ''>(examResult?.bandCells ?? '');
-    const [segmentedCells, setSegmentedCells] = useState<number | ''>(examResult?.segmentedCells ?? '');
     const [segmentedCellsPercentage, setSegmentedCellsPercentage] = useState<number | ''>(examResult?.segmentedCellsPercentage ?? '');
-    const [lymphocytes, setLymphocytes] = useState<number | ''>(examResult?.lymphocytes ?? '');
     const [lymphocytesPercentage, setLymphocytesPercentage] = useState<number | ''>(examResult?.lymphocytesPercentage ?? '');
-    const [monocytes, setMonocytes] = useState<number | ''>(examResult?.monocytes ?? '');
     const [monocytesPercentage, setMonocytesPercentage] = useState<number | ''>(examResult?.monocytesPercentage ?? '');
-    const [eosinophils, setEosinophils] = useState<number | ''>(examResult?.eosinophils ?? '');
     const [eosinophilsPercentage, setEosinophilsPercentage] = useState<number | ''>(examResult?.eosinophilsPercentage ?? '');
-    const [basophils, setBasophils] = useState<number | ''>(examResult?.basophils ?? '');
     const [basophilsPercentage, setBasophilsPercentage] = useState<number | ''>(examResult?.basophilsPercentage ?? '');
 
     // Bioquímico
@@ -146,11 +141,11 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
                 hematocrit: Number(hematocrit), vcm: Number(vcm), hcm: Number(hcm),
                 chcm: Number(chcm), platelets: Number(platelets),
                 whiteBloodCells: Number(whiteBloodCells), bandCells: Number(bandCells),
-                segmentedCells: Number(segmentedCells), segmentedCellsPercentage: Number(segmentedCellsPercentage),
-                lymphocytes: Number(lymphocytes), lymphocytesPercentage: Number(lymphocytesPercentage),
-                monocytes: Number(monocytes), monocytesPercentage: Number(monocytesPercentage),
-                eosinophils: Number(eosinophils), eosinophilsPercentage: Number(eosinophilsPercentage),
-                basophils: Number(basophils), basophilsPercentage: Number(basophilsPercentage),
+                segmentedCellsPercentage: Number(segmentedCellsPercentage),
+                lymphocytesPercentage: Number(lymphocytesPercentage),
+                monocytesPercentage: Number(monocytesPercentage),
+                eosinophilsPercentage: Number(eosinophilsPercentage),
+                basophilsPercentage: Number(basophilsPercentage),
                 alt: Number(alt), creatinine: Number(creatinine),
                 alkalinePhosphatase: Number(alkalinePhosphatase),
                 totalProtein: Number(totalProtein), urea: Number(urea),
@@ -260,7 +255,7 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
                         {/* Hemograma */}
                         <fieldset className="border border-border rounded p-4">
                             <legend className="text-sm font-bold text-standard-blue px-2">Hemograma</legend>
-                            <div className="grid grid-cols-4 gap-4 mb-4">
+                            <div className="grid grid-cols-5 gap-4 mb-4">
                                 {numInput('Eritrócitos', erythrocytes, setErythrocytes)}
                                 {numInput('Hemoglobina', hemoglobin, setHemoglobin)}
                                 {numInput('Hematócrito', hematocrit, setHematocrit)}
@@ -268,27 +263,19 @@ export function ExamResultFormModal({ examResult, close, refresh }: ExamResultFo
                                 {numInput('HCM', hcm, setHcm, "HCM...")}
                                 {numInput('CHCM', chcm, setChcm, "CHCM...")}
                                 {numInput('Plaquetas', platelets, setPlatelets)}
-                            </div>
-
-                            <div className="grid grid-cols-4 gap-4">
-                                {numInput('Leucócitos Totais', whiteBloodCells, setWhiteBloodCells)}
+                                {numInput('Leucócitos Totais (10³/µL)', whiteBloodCells, setWhiteBloodCells)}
                                 {numInput('Bastonetes', bandCells, setBandCells)}
-                                {numInput('Segmentados', segmentedCells, setSegmentedCells)}
                                 {numInput('Segmentados (%)', segmentedCellsPercentage, setSegmentedCellsPercentage)}
-                                {numInput('Linfócitos', lymphocytes, setLymphocytes)}
                                 {numInput('Linfócitos (%)', lymphocytesPercentage, setLymphocytesPercentage)}
-                                {numInput('Monócitos', monocytes, setMonocytes)}
                                 {numInput('Monócitos (%)', monocytesPercentage, setMonocytesPercentage)}
-                                {numInput('Eosinófilos', eosinophils, setEosinophils)}
                                 {numInput('Eosinófilos (%)', eosinophilsPercentage, setEosinophilsPercentage)}
-                                {numInput('Basófilos', basophils, setBasophils)}
                                 {numInput('Basófilos (%)', basophilsPercentage, setBasophilsPercentage)}
                             </div>
                         </fieldset>
                         {/* Bioquímico */}
                         <fieldset className="border border-border rounded p-4">
                             <legend className="text-sm font-bold text-standard-blue px-2">Bioquímico</legend>
-                            <div className="grid grid-cols-4 gap-4">
+                            <div className="grid grid-cols-5 gap-4">
                                 {numInput('ALT (U/L)', alt, setAlt)}
                                 {numInput('Creatinina (mg/dL)', creatinine, setCreatinine)}
                                 {numInput('Fosfatase Alcalina (U/L)', alkalinePhosphatase, setAlkalinePhosphatase)}

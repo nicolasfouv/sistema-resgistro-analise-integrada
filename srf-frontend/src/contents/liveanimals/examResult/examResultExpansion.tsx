@@ -66,7 +66,7 @@ export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExam
             <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                 <h3 className="font-bold text-text-main uppercase">Hemograma</h3>
             </div>
-            <div className="gap-2 w-full text-sm grid grid-cols-4 mb-2">
+            <div className="gap-2 w-full text-sm grid grid-cols-5 mb-2">
                 <div key={"Eritrócitos"} className="flex flex-col w-full">
                     <label className="ml-1 font-bold">Eritrócitos</label>
                     <input type="text" disabled value={item.erythrocytes} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
@@ -113,15 +113,13 @@ export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExam
                     <label className="ml-1 font-bold">Plaquetas</label>
                     <input type="text" disabled value={item.platelets} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
-            </div>
-            <div className="gap-2 w-full text-sm grid grid-cols-4">
                 {[
-                    ['Leucócitos Totais', item.whiteBloodCells], ['Bastonetes', item.bandCells],
-                    ['Segmentados', item.segmentedCells], ['Segmentados (%)', item.segmentedCellsPercentage],
-                    ['Linfócitos', item.lymphocytes], ['Linfócitos (%)', item.lymphocytesPercentage],
-                    ['Monócitos', item.monocytes], ['Monócitos (%)', item.monocytesPercentage],
-                    ['Eosinófilos', item.eosinophils], ['Eosinófilos (%)', item.eosinophilsPercentage],
-                    ['Basófilos', item.basophils], ['Basófilos (%)', item.basophilsPercentage]
+                    ['Leucócitos Totais (10³/µL)', item.whiteBloodCells], ['Bastonetes', item.bandCells],
+                    ['Segmentados (%)', item.segmentedCellsPercentage],
+                    ['Linfócitos (%)', item.lymphocytesPercentage],
+                    ['Monócitos (%)', item.monocytesPercentage],
+                    ['Eosinófilos (%)', item.eosinophilsPercentage],
+                    ['Basófilos (%)', item.basophilsPercentage]
                 ].map(([label, value]) => (
                     <div key={String(label)} className="flex flex-col w-full">
                         <label className="ml-1 font-bold">{label}</label>

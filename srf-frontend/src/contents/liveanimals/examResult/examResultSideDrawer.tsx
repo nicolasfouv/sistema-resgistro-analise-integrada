@@ -110,19 +110,12 @@ export function ExamResultSideDrawer({ filters, onClose }: ExamResultSideDrawerP
                                     <Field key='hcm' label='HCM' value={String(result.hcm)} tooltip="HCM..." />
                                     <Field key='chcm' label='CHCM' value={String(result.chcm)} tooltip="CHCM..." />
                                     <Field key='platelets' label='Plaquetas' value={String(result.platelets)} />
-                                </div>
-                                <div className="gap-2 w-full text-sm grid grid-cols-2 mt-2">
-                                    <Field key='leukocytes' label='Leucócitos Totais' value={String(result.whiteBloodCells)} />
+                                    <Field key='leukocytes' label='Leucócitos Totais (10³/µL)' value={String(result.whiteBloodCells)} />
                                     <Field key='bandCells' label='Bastonetes' value={String(result.bandCells)} />
-                                    <Field key='segmentedCells' label='Segmentados' value={String(result.segmentedCells)} />
                                     <Field key='segmentedCellsPercentage' label='Segmentados (%)' value={String(result.segmentedCellsPercentage)} />
-                                    <Field key='lymphocytes' label='Linfócitos' value={String(result.lymphocytes)} />
                                     <Field key='lymphocytesPercentage' label='Linfócitos (%)' value={String(result.lymphocytesPercentage)} />
-                                    <Field key='monocytes' label='Monócitos' value={String(result.monocytes)} />
                                     <Field key='monocytesPercentage' label='Monócitos (%)' value={String(result.monocytesPercentage)} />
-                                    <Field key='eosinophils' label='Eosinófilos' value={String(result.eosinophils)} />
                                     <Field key='eosinophilsPercentage' label='Eosinófilos (%)' value={String(result.eosinophilsPercentage)} />
-                                    <Field key='basophils' label='Basófilos' value={String(result.basophils)} />
                                     <Field key='basophilsPercentage' label='Basófilos (%)' value={String(result.basophilsPercentage)} />
                                 </div>
 
