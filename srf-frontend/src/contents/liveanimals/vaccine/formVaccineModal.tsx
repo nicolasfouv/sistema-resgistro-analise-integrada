@@ -28,7 +28,7 @@ export function VaccineFormModal({ vaccine, close, refresh }: VaccineFormModalPr
 
     // Campos de seleção da visita associada (opcional)
     const [selectedDate, setSelectedDate] = useState<string>('');
-    const [selectedVeterinarianId, setSelectedVeterinarianId] = useState<number | ''>('');
+    const [selectedAssigneeId, setSelectedAssigneeId] = useState<number | ''>(vaccine?.assigneeId ?? '');
 
     // Campos do formulário
     const [vaccineId, setVaccineId] = useState<number | ''>(vaccine?.vaccineId || '');
@@ -51,9 +51,9 @@ export function VaccineFormModal({ vaccine, close, refresh }: VaccineFormModalPr
                         const matchingVisit = opts.veterinarianVisits.find(v => v.id === vaccine.veterinarianVisitId);
                         if (matchingVisit) {
                             setSelectedDate(matchingVisit.date);
-                            setSelectedVeterinarianId(matchingVisit.veterinarian.id);
                         }
                     }
+                    setSelectedAssigneeId(vaccine.assigneeId);
                 }
             } catch (error) {
                 console.error(error);
@@ -68,46 +68,29 @@ export function VaccineFormModal({ vaccine, close, refresh }: VaccineFormModalPr
         return options.veterinarianVisits.filter(v => v.liveAnimal.id === selectedAnimalId);
     }, [options, selectedAnimalId]);
 
-    // Datas disponíveis - filtradas pelo animal e veterinário se selecionados
+    // Datas disponíveis para o animal selecionado
     const filteredDates = useMemo(() => {
-        let visits = visitsForAnimal;
-        if (selectedVeterinarianId) visits = visits.filter(v => v.veterinarian.id === selectedVeterinarianId);
-
         const dateSet = new Map<string, string>();
-        visits.forEach(v => {
+        visitsForAnimal.forEach(v => {
             const dateKey = v.date;
             if (!dateSet.has(dateKey)) {
                 dateSet.set(dateKey, new Date(dateKey).toLocaleDateString('pt-BR'));
             }
         });
         return Array.from(dateSet.entries()).map(([iso, formatted]) => ({ iso: iso, formatted: formatted }));
-    }, [visitsForAnimal, selectedVeterinarianId]);
-
-    // Veterinários disponíveis - filtrados pelo animal e data se selecionados
-    const filteredVeterinarians = useMemo(() => {
-        let visits = visitsForAnimal;
-        if (selectedDate) visits = visits.filter(v => v.date === selectedDate);
-
-        const vetMap = new Map<number, string>();
-        visits.forEach(v => {
-            if (!vetMap.has(v.veterinarian.id)) {
-                vetMap.set(v.veterinarian.id, v.veterinarian.name);
-            }
-        });
-        return Array.from(vetMap.entries()).map(([id, name]) => ({ id: id, name: name }));
-    }, [visitsForAnimal, selectedDate]);
+    }, [visitsForAnimal]);
 
     // Verifica se algum campo de visita foi selecionado
-    const hasVisitSelected = !!(selectedDate || selectedVeterinarianId);
+    const hasVisitSelected = !!selectedDate;
 
     // Obter o id da visita veterinária
     const veterinarianVisitId = useMemo(() => {
-        if (!options || !selectedDate || !selectedAnimalId || !selectedVeterinarianId) return null;
+        if (!options || !selectedDate || !selectedAnimalId) return null;
         const visit = options.veterinarianVisits.find(
-            v => v.date === selectedDate && v.liveAnimal.id === selectedAnimalId && v.veterinarian.id === selectedVeterinarianId
+            v => v.date === selectedDate && v.liveAnimal.id === selectedAnimalId
         );
         return visit?.id ?? null;
-    }, [options, selectedDate, selectedAnimalId, selectedVeterinarianId]);
+    }, [options, selectedDate, selectedAnimalId]);
 
     // Data da visita selecionada formatada para YYYY-MM-DD
     const visitDateFormatted = useMemo(() => {
@@ -119,23 +102,11 @@ export function VaccineFormModal({ vaccine, close, refresh }: VaccineFormModalPr
         setSelectedAnimalId(value);
         // Ao trocar de animal, limpar seleção de visita associada pois as visitas são de outro animal
         setSelectedDate('');
-        setSelectedVeterinarianId('');
     }
 
     function handleDateChange(value: string) {
         setSelectedDate(value);
-        if (value) {
-            const matchingVisits = visitsForAnimal.filter(v => v.date === value);
-            if (selectedVeterinarianId && !matchingVisits.some(v => v.veterinarian.id === selectedVeterinarianId)) setSelectedVeterinarianId('');
-        }
-    }
-
-    function handleVeterinarianChange(value: number | '') {
-        setSelectedVeterinarianId(value);
-        if (value) {
-            const matchingVisits = visitsForAnimal.filter(v => v.veterinarian.id === value);
-            if (selectedDate && !matchingVisits.some(v => v.date === selectedDate)) setSelectedDate('');
-        }
+        setApplicationDate(new Date(value).toISOString().slice(0, 10));
     }
 
     async function handleSubmit(e: React.FormEvent) {
@@ -144,7 +115,7 @@ export function VaccineFormModal({ vaccine, close, refresh }: VaccineFormModalPr
         setLoading(true);
 
         if (hasVisitSelected && !veterinarianVisitId) {
-            setError('Selecione uma data e um veterinário para determinar a visita ou deixe em branco os campos de visita associada');
+            setError('Selecione a data da visita ou deixe o campo de visita associada em branco.');
             setLoading(false);
             return;
         }
@@ -164,7 +135,8 @@ export function VaccineFormModal({ vaccine, close, refresh }: VaccineFormModalPr
                 liveAnimalId: Number(selectedAnimalId),
                 vaccineTypeId: Number(vaccineTypeId),
                 applicationDate: finalApplicationDate,
-                veterinarianVisitId: Number(veterinarianVisitId) || undefined
+                veterinarianVisitId: Number(veterinarianVisitId) || undefined,
+                assigneeId: Number(selectedAssigneeId)
             }
             if (isEditing && vaccine) {
                 await updateVaccine(vaccine!.id, data);
@@ -210,19 +182,28 @@ export function VaccineFormModal({ vaccine, close, refresh }: VaccineFormModalPr
 
                     <form onSubmit={handleSubmit} className="w-full flex flex-col overflow-y-auto gap-4 mt-2 flex-1 min-h-0">
                         {/* Animal (obrigatório) */}
-                        <div className="flex flex-col">
-                            <label className="text-sm font-bold mb-1 text-left">Animal</label>
-                            <select
-                                value={selectedAnimalId}
-                                onChange={(e) => handleAnimalChange(e.target.value ? Number(e.target.value) : '')}
-                                className="border border-border rounded p-2 bg-white"
-                                required
-                            >
-                                <option value="">Selecione...</option>
-                                {options.liveAnimals.map(a => (
-                                    <option key={a.id} value={a.id}>{a.code}</option>
-                                ))}
-                            </select>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Animal</label>
+                                <select
+                                    value={selectedAnimalId}
+                                    onChange={(e) => handleAnimalChange(e.target.value ? Number(e.target.value) : '')}
+                                    className="border border-border rounded p-2 bg-white"
+                                    required
+                                >
+                                    <option value="">Selecione...</option>
+                                    {options.liveAnimals.map(a => (
+                                        <option key={a.id} value={a.id}>{a.code}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Responsável</label>
+                                <select value={selectedAssigneeId} onChange={(e) => setSelectedAssigneeId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white" required>
+                                    <option value="">Selecione...</option>
+                                    {options.assignees.map(assignee => (<option key={assignee.id} value={assignee.id}>{assignee.name}</option>))}
+                                </select>
+                            </div>
                         </div>
 
                         {/* Seleção da Visita Associada (opcional) */}
@@ -230,7 +211,7 @@ export function VaccineFormModal({ vaccine, close, refresh }: VaccineFormModalPr
                             <legend className="text-sm font-bold text-standard-blue px-2">Visita Associada (Opcional)</legend>
                             <div className="grid grid-cols-2 gap-4">
                                 {/* Data da Visita */}
-                                <div className="flex flex-col">
+                                <div className="flex flex-col col-span-2">
                                     <label className="text-sm font-bold mb-1 text-left">Data da Visita</label>
                                     <select
                                         value={selectedDate}
@@ -245,25 +226,24 @@ export function VaccineFormModal({ vaccine, close, refresh }: VaccineFormModalPr
                                     </select>
                                 </div>
 
-                                {/* Veterinário */}
-                                <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Veterinário</label>
-                                    <select
-                                        value={selectedVeterinarianId}
-                                        onChange={(e) => handleVeterinarianChange(e.target.value ? Number(e.target.value) : '')}
-                                        className={`border border-border rounded p-2 ${!selectedAnimalId ? 'bg-gray-100' : 'bg-white'}`}
-                                        disabled={!selectedAnimalId}
-                                    >
-                                        <option value="">Selecione...</option>
-                                        {filteredVeterinarians.map(v => (
-                                            <option key={v.id} value={v.id}>{v.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
                             </div>
                         </fieldset>
 
                         {/* Campos da Vacina */}
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="flex flex-col col-span-2">
+                                <label className="text-sm font-bold mb-1 text-left">Data da Aplicação</label>
+                                <input
+                                    type="date"
+                                    value={applicationDate}
+                                    onChange={(e) => setApplicationDate(e.target.value)}
+                                    className={`border border-border rounded p-2 ${hasVisitSelected ? 'bg-gray-100' : 'bg-white'
+                                        }`}
+                                    required={!hasVisitSelected}
+                                    disabled={hasVisitSelected}
+                                />
+                            </div>
+                        </div>
                         <div className="grid grid-cols-2 gap-4">
                             {/* Vacina */}
                             <div className="flex flex-col">
@@ -296,20 +276,6 @@ export function VaccineFormModal({ vaccine, close, refresh }: VaccineFormModalPr
                                     ))}
                                 </select>
                             </div>
-
-                            {/* Data de aplicação - oculto quando visita associada */}
-                            {!hasVisitSelected && (
-                                <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Data de aplicação</label>
-                                    <input
-                                        type="date"
-                                        value={applicationDate}
-                                        onChange={(e) => setApplicationDate(e.target.value)}
-                                        className="border border-border rounded p-2 bg-white"
-                                        required
-                                    />
-                                </div>
-                            )}
                         </div>
 
 

@@ -28,9 +28,9 @@ export const NecropsyEctoparasiteAnalysisContentDefinition = {
     columns: [
         { key: 'necropsyDateFormatted', label: 'Data da Necropsia', width: 'w-2/12' },
         { key: 'deadAnimalCode', label: 'Código do Animal', width: 'w-3/12' },
+        { key: 'assigneeName', label: 'Responsável', width: 'w-2/12' },
         { key: 'genusName', label: 'Gênero', width: 'w-2/12' },
         { key: 'specieName', label: 'Espécie', width: 'w-2/12' },
-        { key: 'subSpecieName', label: 'Subespécie', width: 'w-2/12' },
         // deixar w-1/12 sobrando para ações
     ],
     get filterFields() {

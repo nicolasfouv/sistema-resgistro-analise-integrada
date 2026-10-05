@@ -48,7 +48,7 @@ export function SorologyResultSideDrawer({ filters, onClose }: SorologyResultSid
             pageFilters.push({ field: 'veterinarianVisitDate', value: { type: 'date' as const, from: date, to: date } });
         }
         pageFilters.push({ field: 'liveAnimalCode', value: { type: 'text' as const, term: first.liveAnimalCode } });
-        pageFilters.push({ field: 'veterinarianName', value: { type: 'text' as const, term: first.veterinarianName } });
+        pageFilters.push({ field: 'assigneeName', value: { type: 'text' as const, term: first.assigneeName } });
     }
     const pageUrl = `/animaisvivos/exameseanalises/resultadosorologico?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
 
@@ -92,7 +92,7 @@ export function SorologyResultSideDrawer({ filters, onClose }: SorologyResultSid
                                 <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                     <Field label="Data da Visita" value={result.veterinarianVisitDateFormatted || ''} />
                                     <Field label="Código do Animal" value={result.liveAnimalCode} />
-                                    <Field label="Veterinário" value={result.veterinarianName} />
+                                    <Field label="Responsável" value={result.assigneeName} />
                                     <Field label="Teste" value={result.testName} />
                                     <Field label="Interpretação" value={result.interpretationName} />
                                     <Field label="Agente" value={result.agentName} />

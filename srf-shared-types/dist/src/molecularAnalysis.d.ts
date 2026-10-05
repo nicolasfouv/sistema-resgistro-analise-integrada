@@ -4,13 +4,16 @@ export declare const molecularAnalysisSchema: z.ZodObject<{
     stoolAnalysisId: z.ZodNumber;
     eggCystSpecieId: z.ZodNumber;
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    assigneeId: z.ZodNumber;
 }, z.z.core.$strip>;
 export declare const createMolecularAnalysisInputSchema: z.ZodObject<{
+    assigneeId: z.ZodNumber;
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     stoolAnalysisId: z.ZodNumber;
     eggCystSpecieId: z.ZodNumber;
 }, z.z.core.$strip>;
 export declare const updateMolecularAnalysisInputSchema: z.ZodObject<{
+    assigneeId: z.ZodNumber;
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     stoolAnalysisId: z.ZodNumber;
     eggCystSpecieId: z.ZodNumber;
@@ -27,8 +30,8 @@ export declare const getAllMolecularAnalysisOutputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
     liveAnimalId: z.ZodNumber;
     liveAnimalCode: z.ZodString;
-    veterinarianId: z.ZodNumber;
-    veterinarianName: z.ZodString;
+    assigneeId: z.ZodNumber;
+    assigneeName: z.ZodString;
     eggCystSpecieName: z.ZodString;
 }, z.z.core.$strip>;
 export declare const getFormOptionsMolecularAnalysisOutputSchema: z.ZodObject<{
@@ -41,13 +44,13 @@ export declare const getFormOptionsMolecularAnalysisOutputSchema: z.ZodObject<{
                 id: z.ZodNumber;
                 code: z.ZodString;
             }, z.z.core.$strip>;
-            veterinarian: z.ZodObject<{
-                id: z.ZodNumber;
-                name: z.ZodString;
-            }, z.z.core.$strip>;
         }, z.z.core.$strip>;
     }, z.z.core.$strip>>;
     eggCystSpecies: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.z.core.$strip>>;
+    assignees: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
     }, z.z.core.$strip>>;

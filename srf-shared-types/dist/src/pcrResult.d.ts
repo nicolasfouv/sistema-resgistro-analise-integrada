@@ -6,6 +6,8 @@ declare const getAllCPCRResultOutputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
     necropsyDate: z.ZodString;
     necropsyDateFormatted: z.ZodOptional<z.ZodString>;
+    assigneeId: z.ZodNumber;
+    assigneeName: z.ZodString;
     deadAnimalId: z.ZodNumber;
     deadAnimalCode: z.ZodString;
     sampleTypeId: z.ZodNumber;
@@ -33,6 +35,8 @@ declare const getAllQPCRResultOutputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
     necropsyDate: z.ZodString;
     necropsyDateFormatted: z.ZodOptional<z.ZodString>;
+    assigneeId: z.ZodNumber;
+    assigneeName: z.ZodString;
     deadAnimalId: z.ZodNumber;
     deadAnimalCode: z.ZodString;
     sampleTypeId: z.ZodNumber;
@@ -59,6 +63,8 @@ declare const getAllNecropsyExamResultOutputSchema: z.ZodObject<{
         necropsyId: z.ZodNumber;
         necropsyDate: z.ZodString;
         necropsyDateFormatted: z.ZodOptional<z.ZodString>;
+        assigneeId: z.ZodNumber;
+        assigneeName: z.ZodString;
         deadAnimalId: z.ZodNumber;
         deadAnimalCode: z.ZodString;
         sampleTypeId: z.ZodNumber;
@@ -85,6 +91,8 @@ declare const getAllNecropsyExamResultOutputSchema: z.ZodObject<{
         necropsyId: z.ZodNumber;
         necropsyDate: z.ZodString;
         necropsyDateFormatted: z.ZodOptional<z.ZodString>;
+        assigneeId: z.ZodNumber;
+        assigneeName: z.ZodString;
         deadAnimalId: z.ZodNumber;
         deadAnimalCode: z.ZodString;
         sampleTypeId: z.ZodNumber;
@@ -135,6 +143,10 @@ declare const getFormOptionsPCRResultOutputSchema: z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
     }, z.core.$strip>>;
+    assignees: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
 }, z.core.$strip>;
 declare const getFormOptionsQPCRResultOutputSchema: z.ZodObject<{
     necropsies: z.ZodArray<z.ZodObject<{
@@ -162,6 +174,10 @@ declare const getFormOptionsQPCRResultOutputSchema: z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
     }, z.core.$strip>>;
+    assignees: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
 }, z.core.$strip>;
 declare const createCPCRResultInputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
@@ -175,6 +191,7 @@ declare const createCPCRResultInputSchema: z.ZodObject<{
     cpcrMethodId: z.ZodNumber;
     cpcrStatusId: z.ZodNumber;
     control: z.ZodString;
+    assigneeId: z.ZodNumber;
 }, z.core.$strip>;
 declare const updateCPCRResultInputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
@@ -188,6 +205,7 @@ declare const updateCPCRResultInputSchema: z.ZodObject<{
     cpcrMethodId: z.ZodNumber;
     cpcrStatusId: z.ZodNumber;
     control: z.ZodString;
+    assigneeId: z.ZodNumber;
 }, z.core.$strip>;
 declare const createQPCRResultInputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
@@ -199,6 +217,7 @@ declare const createQPCRResultInputSchema: z.ZodObject<{
     estimatedCopies: z.ZodNumber;
     qpcrStatusId: z.ZodNumber;
     control: z.ZodString;
+    assigneeId: z.ZodNumber;
 }, z.core.$strip>;
 declare const updateQPCRResultInputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
@@ -210,6 +229,7 @@ declare const updateQPCRResultInputSchema: z.ZodObject<{
     estimatedCopies: z.ZodNumber;
     qpcrStatusId: z.ZodNumber;
     control: z.ZodString;
+    assigneeId: z.ZodNumber;
 }, z.core.$strip>;
 export type GetAllCPCRResultOutput = z.infer<typeof getAllCPCRResultOutputSchema>;
 export type GetAllQPCRResultOutput = z.infer<typeof getAllQPCRResultOutputSchema>;

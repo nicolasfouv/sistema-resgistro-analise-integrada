@@ -20,9 +20,9 @@ export class VaccineService {
                     select: {
                         id: true,
                         date: true,
-                        veterinarian: { select: { id: true, name: true } }
                     }
                 },
+                assignee: { select: { id: true, name: true } },
                 vaccine: { select: { id: true, name: true } },
                 vaccineType: { select: { id: true, name: true } },
                 date: true
@@ -63,8 +63,8 @@ export class VaccineService {
                     vaccineName: v.vaccine.name,
                     veterinarianVisitId: v.veterinarianVisit?.id || undefined,
                     veterinarianVisitDate: v.veterinarianVisit?.date.toISOString() || undefined,
-                    veterinarianId: v.veterinarianVisit?.veterinarian.id || undefined,
-                    veterinarianName: v.veterinarianVisit?.veterinarian.name || undefined,
+                    assigneeId: v.assignee.id,
+                    assigneeName: v.assignee.name,
                     applicationDate: v.date.toISOString(),
                     vaccineTypeId: v.vaccineType.id,
                     vaccineTypeName: v.vaccineType.name
@@ -77,7 +77,7 @@ export class VaccineService {
 
     async getFormOptions(): Promise<GetFormOptionsVaccineOutput> {
 
-        const [liveAnimals, veterinarianVisits, vaccines, vaccineTypes] = await Promise.all([
+        const [liveAnimals, veterinarianVisits, assignees, vaccines, vaccineTypes] = await Promise.all([
             prisma.liveAnimal.findMany({
                 select: { id: true, code: true },
                 where: { active: true },
@@ -87,11 +87,19 @@ export class VaccineService {
                 select: {
                     id: true,
                     date: true,
-                    liveAnimal: { select: { id: true, code: true } },
-                    veterinarian: { select: { id: true, name: true } }
+                    liveAnimal: { select: { id: true, code: true } }
                 },
                 orderBy: {
                     date: 'desc'
+                }
+            }),
+            prisma.veterinarian.findMany({
+                select: {
+                    id: true,
+                    name: true
+                },
+                orderBy: {
+                    name: 'asc'
                 }
             }),
             prisma.vaccine.findMany({
@@ -125,11 +133,11 @@ export class VaccineService {
                 liveAnimal: {
                     id: v.liveAnimal.id,
                     code: v.liveAnimal.code
-                },
-                veterinarian: {
-                    id: v.veterinarian.id,
-                    name: v.veterinarian.name
                 }
+            })),
+            assignees: assignees.map(a => ({
+                id: a.id,
+                name: a.name
             })),
             vaccines: vaccines.map(v => ({
                 id: v.id,
@@ -190,6 +198,7 @@ export class VaccineService {
             // Cria a aplicação da vacina
             const vaccineApplication = await tx.vaccineApplication.create({
                 data: {
+                    assigneeId: data.assigneeId,
                     liveAnimalId: data.liveAnimalId,
                     vaccineId: data.vaccineId,
                     date: new Date(data.applicationDate + 'T12:00:00'),
@@ -277,6 +286,7 @@ export class VaccineService {
             const vaccineApplication = await tx.vaccineApplication.update({
                 where: { id: recordId },
                 data: {
+                    assigneeId: data.assigneeId,
                     liveAnimalId: data.liveAnimalId,
                     vaccineId: data.vaccineId,
                     date: new Date(data.applicationDate + 'T12:00:00'),

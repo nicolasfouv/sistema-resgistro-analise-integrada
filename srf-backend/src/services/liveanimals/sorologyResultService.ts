@@ -18,10 +18,10 @@ export class SorologyResultService {
                 veterinarianVisit: {
                     select: {
                         id: true, date: true,
-                        liveAnimal: { select: { id: true, code: true } },
-                        veterinarian: { select: { id: true, name: true } }
+                        liveAnimal: { select: { id: true, code: true } }
                     }
                 },
+                assignee: { select: { id: true, name: true } },
                 sorologyTestId: true,
                 sorologyTest: { select: { name: true } },
                 sorologyAgentId: true,
@@ -71,8 +71,8 @@ export class SorologyResultService {
                     veterinarianVisitDate: r.veterinarianVisit.date.toISOString(),
                     liveAnimalId: r.veterinarianVisit.liveAnimal.id,
                     liveAnimalCode: r.veterinarianVisit.liveAnimal.code,
-                    veterinarianId: r.veterinarianVisit.veterinarian.id,
-                    veterinarianName: r.veterinarianVisit.veterinarian.name,
+                    assigneeId: r.assignee.id,
+                    assigneeName: r.assignee.name,
                     sorologyTestId: r.sorologyTestId,
                     testName: r.sorologyTest.name,
                     sorologyAgentId: r.sorologyAgentId,
@@ -92,16 +92,24 @@ export class SorologyResultService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsSorologyResultOutput> {
-        const [veterinarianVisits, sorologyTests, sorologyAgents, resultTypes, interpretations] = await Promise.all([
+        const [veterinarianVisits, assignees, sorologyTests, sorologyAgents, resultTypes, interpretations] = await Promise.all([
             prisma.veterinarianVisit.findMany({
                 select: {
                     id: true,
                     date: true,
-                    liveAnimal: { select: { id: true, code: true } },
-                    veterinarian: { select: { id: true, name: true } }
+                    liveAnimal: { select: { id: true, code: true } }
                 },
                 orderBy: {
                     date: 'desc'
+                }
+            }),
+            prisma.veterinarian.findMany({
+                select: {
+                    id: true,
+                    name: true
+                },
+                orderBy: {
+                    name: 'asc'
                 }
             }),
             prisma.sorologyTest.findMany({
@@ -126,13 +134,13 @@ export class SorologyResultService {
             veterinarianVisits: veterinarianVisits.map(v => ({
                 id: v.id,
                 date: v.date.toISOString(),
-                liveAnimal: { id: v.liveAnimal.id, code: v.liveAnimal.code },
-                veterinarian: v.veterinarian
+                liveAnimal: { id: v.liveAnimal.id, code: v.liveAnimal.code }
             })),
-            sorologyTests,
-            sorologyAgents,
-            resultTypes,
-            interpretations
+            assignees: assignees,
+            sorologyTests: sorologyTests,
+            sorologyAgents: sorologyAgents,
+            resultTypes: resultTypes,
+            interpretations: interpretations
         };
     }
 
@@ -150,6 +158,7 @@ export class SorologyResultService {
             const result = await tx.sorologyAnalysis.create({
                 data: {
                     veterinarianVisitId: data.veterinarianVisitId,
+                    assigneeId: data.assigneeId,
                     sorologyTestId: data.sorologyTestId,
                     sorologyAgentId: data.sorologyAgentId,
                     cuttingPointSymbol: data.cuttingPointSymbol,
@@ -199,6 +208,7 @@ export class SorologyResultService {
                 },
                 data: {
                     veterinarianVisitId: data.veterinarianVisitId,
+                    assigneeId: data.assigneeId,
                     sorologyTestId: data.sorologyTestId,
                     sorologyAgentId: data.sorologyAgentId,
                     cuttingPointSymbol: data.cuttingPointSymbol,

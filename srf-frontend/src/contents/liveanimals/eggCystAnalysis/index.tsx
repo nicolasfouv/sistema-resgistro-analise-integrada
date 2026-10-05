@@ -24,7 +24,7 @@ export const EggCystAnalysisContentDefinition = {
     columns: [
         { key: 'liveAnimalCode', label: 'Código do Animal', width: 'w-3/12' },
         { key: 'veterinarianVisitDateFormatted', label: 'Data da Visita', width: 'w-2/12' },
-        { key: 'veterinarianName', label: 'Veterinário', width: 'w-3/12' },
+        { key: 'assigneeName', label: 'Responsável', width: 'w-3/12' },
         { key: 'eggCystSpecieName', label: 'Espécie', width: 'w-3/12' }
         // deixar w-1/12 sobrando para ações
     ],
@@ -33,7 +33,7 @@ export const EggCystAnalysisContentDefinition = {
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'liveAnimalCode', label: 'Código do Animal', type: 'text' },
             { key: 'veterinarianVisitDate', label: 'Data da Visita', type: 'date' },
-            { key: 'veterinarianName', label: 'Veterinário', type: 'text' },
+            { key: 'assigneeName', label: 'Responsável', type: 'text' },
             { key: 'eggCystSpecieName', label: 'Espécie', type: 'enum', options: specieOptions },
         ];
     },

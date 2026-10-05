@@ -15,6 +15,7 @@ export const molecularAnalysisSchema = z.object({
     stoolAnalysisId: z.number().int({ error: 'ID da análise de fezes inválido' }),
     eggCystSpecieId: z.number().int({ error: 'ID da espécie de ovo/cisto inválido' }),
     note: z.string().nullable().optional(),
+    assigneeId: z.number().int()
 });
 export const createMolecularAnalysisInputSchema = molecularAnalysisSchema.omit({
     id: true,
@@ -30,8 +31,8 @@ export const getAllMolecularAnalysisOutputSchema = molecularAnalysisSchema.exten
     veterinarianVisitId: z.number().int(),
     liveAnimalId: z.number().int(),
     liveAnimalCode: z.string().nonempty(),
-    veterinarianId: z.number().int(),
-    veterinarianName: z.string().nonempty(),
+    assigneeId: z.number().int(),
+    assigneeName: z.string().nonempty(),
     eggCystSpecieName: z.string().nonempty(),
 });
 export const getFormOptionsMolecularAnalysisOutputSchema = z.object({
@@ -43,15 +44,15 @@ export const getFormOptionsMolecularAnalysisOutputSchema = z.object({
             liveAnimal: z.object({
                 id: z.number().int(),
                 code: z.string().nonempty(),
-            }),
-            veterinarian: z.object({
-                id: z.number().int(),
-                name: z.string().nonempty(),
-            }),
-        }),
+            })
+        })
     })),
     eggCystSpecies: z.array(z.object({
         id: z.number().int(),
         name: z.string().nonempty(),
     })),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty(),
+    }))
 });

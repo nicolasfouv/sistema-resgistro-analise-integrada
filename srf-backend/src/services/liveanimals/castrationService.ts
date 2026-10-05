@@ -20,9 +20,9 @@ export class CastrationService {
                     select: {
                         id: true,
                         date: true,
-                        veterinarian: { select: { id: true, name: true } }
                     }
                 },
+                assignee: { select: { id: true, name: true } },
                 date: true,
                 note: true
             },
@@ -60,7 +60,8 @@ export class CastrationService {
                     liveAnimalCode: c.liveAnimal.code,
                     veterinarianVisitId: c.veterinarianVisit?.id || undefined,
                     veterinarianVisitDate: c.veterinarianVisit?.date.toISOString() || undefined,
-                    veterinarianName: c.veterinarianVisit?.veterinarian.name || undefined,
+                    assigneeId: c.assignee?.id || undefined,
+                    assigneeName: c.assignee?.name || undefined,
                     date: c.date.toISOString(),
                     note: c.note || undefined,
                     hasVeterinarianVisit: !!c.veterinarianVisit
@@ -72,18 +73,21 @@ export class CastrationService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsCastrationOutput> {
-        const [liveAnimals, veterinarianVisits] = await Promise.all([
+        const [liveAnimals, assignees, veterinarianVisits] = await Promise.all([
             prisma.liveAnimal.findMany({
                 select: { id: true, code: true },
                 where: { active: true },
                 orderBy: { code: 'asc' }
             }),
+            prisma.veterinarian.findMany({
+                select: { id: true, name: true },
+                orderBy: { name: 'asc' }
+            }),
             prisma.veterinarianVisit.findMany({
                 select: {
                     id: true,
                     date: true,
-                    liveAnimal: { select: { id: true, code: true } },
-                    veterinarian: { select: { id: true, name: true } }
+                    liveAnimal: { select: { id: true, code: true } }
                 },
                 orderBy: {
                     date: 'desc'
@@ -92,23 +96,16 @@ export class CastrationService {
         ]);
 
         return {
-            liveAnimals: liveAnimals.map(a => ({
-                id: a.id,
-                code: a.code
+            liveAnimals: liveAnimals,
+            veterinarianVisits: veterinarianVisits.map(v => ({
+                id: v.id,
+                date: v.date.toISOString(),
+                liveAnimal: {
+                    id: v.liveAnimal.id,
+                    code: v.liveAnimal.code
+                }
             })),
-            veterinarianVisits: veterinarianVisits
-                .map(v => ({
-                    id: v.id,
-                    date: v.date.toISOString(),
-                    liveAnimal: {
-                        id: v.liveAnimal.id,
-                        code: v.liveAnimal.code
-                    },
-                    veterinarian: {
-                        id: v.veterinarian.id,
-                        name: v.veterinarian.name
-                    }
-                }))
+            assignees: assignees
         };
     }
 
@@ -155,6 +152,7 @@ export class CastrationService {
             const castration = await tx.castration.create({
                 data: {
                     liveAnimalId: data.liveAnimalId,
+                    assigneeId: data.assigneeId || null,
                     veterinarianVisitId: data.veterinarianVisitId || null,
                     date: new Date(data.date + 'T12:00:00'),
                     note: data.note || null
@@ -231,6 +229,7 @@ export class CastrationService {
                 where: { id: recordId },
                 data: {
                     liveAnimalId: data.liveAnimalId,
+                    assigneeId: data.assigneeId || null,
                     veterinarianVisitId: data.veterinarianVisitId || null,
                     date: new Date(data.date + 'T12:00:00'),
                     note: data.note || null

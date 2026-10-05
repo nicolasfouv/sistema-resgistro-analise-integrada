@@ -13,10 +13,11 @@ import z from 'zod';
 // }
 
 export const castrationSchema = z.object({
-    id: z.number().int({ error: 'ID da castração inválido' }),
-    liveAnimalId: z.number().int({ error: 'ID do animal vivo inválido' }),
-    veterinarianVisitId: z.number().int({ error: 'ID da visita veterinária inválido' }).optional(),
-    date: z.string().nonempty({ error: 'Data da castração é obrigatória' }),
+    id: z.number().int(),
+    liveAnimalId: z.number().int(),
+    veterinarianVisitId: z.number().int().optional(),
+    assigneeId: z.number().int().optional(),
+    date: z.string().nonempty(),
     note: z.string().optional()
 });
 
@@ -35,7 +36,7 @@ export const getAllCastrationOutputSchema = castrationSchema.extend({
     veterinarianVisitId: z.number().int().optional(),
     veterinarianVisitDate: z.string().optional(),
     veterinarianVisitDateFormatted: z.string().optional(),
-    veterinarianName: z.string().optional(),
+    assigneeName: z.string().optional(),
     dateFormatted: z.string().optional(),
     hasVeterinarianVisit: z.boolean()
 });
@@ -51,11 +52,11 @@ export const getFormOptionsCastrationOutputSchema = z.object({
         liveAnimal: z.object({
             id: z.number().int(),
             code: z.string().nonempty()
-        }),
-        veterinarian: z.object({
-            id: z.number().int(),
-            name: z.string().nonempty()
         })
+    })),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty()
     }))
 });
 

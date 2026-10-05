@@ -19,6 +19,7 @@ export class NecropsyExamResultService {
         const cpcrResults = await prisma.cpcrResult.findMany({
             select: {
                 id: true,
+                assignee: { select: { id: true, name: true } },
                 performedDate: true,
                 primer: true,
                 pb: true,
@@ -42,6 +43,7 @@ export class NecropsyExamResultService {
         const qpcrResults = await prisma.qpcrResult.findMany({
             select: {
                 id: true,
+                assignee: { select: { id: true, name: true } },
                 performedDate: true,
                 meanCt: true,
                 estimatedCopies: true,
@@ -106,6 +108,8 @@ export class NecropsyExamResultService {
                 type: 'cpcr',
                 canEdit: permission.canEdit,
                 createdByMe: cpcrCreatorMap.get(String(cr.id)) === userId,
+                assigneeId: cr.assignee.id,
+                assigneeName: cr.assignee.name,
                 performedDate: cr.performedDate.toISOString(),
                 primer: cr.primer,
                 pb: cr.pb,
@@ -136,6 +140,8 @@ export class NecropsyExamResultService {
                 type: 'qpcr',
                 canEdit: permission.canEdit,
                 createdByMe: qpcrCreatorMap.get(String(qr.id)) === userId,
+                assigneeId: qr.assignee.id,
+                assigneeName: qr.assignee.name,
                 performedDate: qr.performedDate.toISOString(),
                 meanCt: qr.meanCt,
                 estimatedCopies: qr.estimatedCopies,
@@ -169,7 +175,7 @@ export class NecropsyExamResultService {
     // CPCR
 
     async getCPCRFormOptions(): Promise<GetFormOptionsCPCRResultOutput> {
-        const [necropsies, sampleTypes, extractionTypes, targetGenes, suspiciousAgents, cpcrMethods, cpcrStatuses] = await Promise.all([
+        const [necropsies, assignees, sampleTypes, extractionTypes, targetGenes, suspiciousAgents, cpcrMethods, cpcrStatuses] = await Promise.all([
             prisma.necropsy.findMany({
                 select: {
                     id: true,
@@ -177,6 +183,10 @@ export class NecropsyExamResultService {
                     deadAnimal: { select: { id: true, code: true } }
                 },
                 orderBy: { performedDate: 'desc' }
+            }),
+            prisma.veterinarian.findMany({
+                select: { id: true, name: true },
+                orderBy: { name: 'asc' }
             }),
             prisma.cpcrSampleType.findMany({
                 select: { id: true, description: true },
@@ -210,12 +220,13 @@ export class NecropsyExamResultService {
                 performedDate: n.performedDate.toISOString(),
                 deadAnimal: { id: n.deadAnimal.id, code: n.deadAnimal.code }
             })),
+            assignees: assignees,
             sampleTypes: sampleTypes.map(s => ({ id: s.id, name: (s as any).description || (s as any).name })),
-            extractionTypes,
-            targetGenes,
-            suspiciousAgents,
-            cpcrMethods,
-            cpcrStatuses
+            extractionTypes: extractionTypes,
+            targetGenes: targetGenes,
+            suspiciousAgents: suspiciousAgents,
+            cpcrMethods: cpcrMethods,
+            cpcrStatuses: cpcrStatuses
         };
     }
 
@@ -239,6 +250,7 @@ export class NecropsyExamResultService {
             const result = await tx.cpcrResult.create({
                 data: {
                     necropsyId: data.necropsyId,
+                    assigneeId: data.assigneeId,
                     sampleTypeId: data.sampleTypeId,
                     performedDate: new Date(data.performedDate + 'T12:00:00Z'),
                     extractionTypeId: data.extractionTypeId,
@@ -266,7 +278,7 @@ export class NecropsyExamResultService {
 
     async updateCPCR(recordId: number, data: UpdateCPCRResultInput, requesterId: string) {
         return prisma.$transaction(async (tx) => {
-            const existingCPCR = await tx.cpcrResult.findUnique({ 
+            const existingCPCR = await tx.cpcrResult.findUnique({
                 where: { id: recordId },
                 include: { necropsy: true }
             });
@@ -288,6 +300,7 @@ export class NecropsyExamResultService {
                 where: { id: recordId },
                 data: {
                     necropsyId: data.necropsyId,
+                    assigneeId: data.assigneeId,
                     sampleTypeId: data.sampleTypeId,
                     performedDate: new Date(data.performedDate + 'T12:00:00Z'),
                     extractionTypeId: data.extractionTypeId,
@@ -336,14 +349,18 @@ export class NecropsyExamResultService {
     // QPCR
 
     async getQPCRFormOptions(): Promise<GetFormOptionsQPCRResultOutput> {
-        const [necropsies, sampleTypes, targetGenes, suspiciousAgents, qpcrStatuses] = await Promise.all([
+        const [necropsies, assignees, sampleTypes, targetGenes, suspiciousAgents, qpcrStatuses] = await Promise.all([
             prisma.necropsy.findMany({
                 select: {
                     id: true,
                     performedDate: true,
-                        deadAnimal: { select: { id: true, code: true } }
+                    deadAnimal: { select: { id: true, code: true } }
                 },
                 orderBy: { performedDate: 'desc' }
+            }),
+            prisma.veterinarian.findMany({
+                select: { id: true, name: true },
+                orderBy: { name: 'asc' }
             }),
             prisma.qpcrSampleType.findMany({
                 select: { id: true, description: true },
@@ -369,10 +386,11 @@ export class NecropsyExamResultService {
                 performedDate: n.performedDate.toISOString(),
                 deadAnimal: { id: n.deadAnimal.id, code: n.deadAnimal.code }
             })),
+            assignees: assignees,
             sampleTypes: sampleTypes.map(s => ({ id: s.id, name: (s as any).description || (s as any).name })),
-            targetGenes,
-            suspiciousAgents,
-            qpcrStatuses
+            targetGenes: targetGenes,
+            suspiciousAgents: suspiciousAgents,
+            qpcrStatuses: qpcrStatuses
         };
     }
 
@@ -396,6 +414,7 @@ export class NecropsyExamResultService {
             const result = await tx.qpcrResult.create({
                 data: {
                     necropsyId: data.necropsyId,
+                    assigneeId: data.assigneeId,
                     sampleTypeId: data.sampleTypeId,
                     performedDate: new Date(data.performedDate + 'T12:00:00Z'),
                     targetGeneId: data.targetGeneId,
@@ -421,7 +440,7 @@ export class NecropsyExamResultService {
 
     async updateQPCR(recordId: number, data: UpdateQPCRResultInput, requesterId: string) {
         return prisma.$transaction(async (tx) => {
-            const existingQPCR = await tx.qpcrResult.findUnique({ 
+            const existingQPCR = await tx.qpcrResult.findUnique({
                 where: { id: recordId },
                 include: { necropsy: true }
             });
@@ -443,6 +462,7 @@ export class NecropsyExamResultService {
                 where: { id: recordId },
                 data: {
                     necropsyId: data.necropsyId,
+                    assigneeId: data.assigneeId,
                     sampleTypeId: data.sampleTypeId,
                     performedDate: new Date(data.performedDate + 'T12:00:00Z'),
                     targetGeneId: data.targetGeneId,

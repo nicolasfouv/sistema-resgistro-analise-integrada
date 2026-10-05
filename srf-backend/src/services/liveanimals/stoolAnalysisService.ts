@@ -18,10 +18,10 @@ export class StoolAnalysisService {
                 veterinarianVisit: {
                     select: {
                         id: true, date: true,
-                        liveAnimal: { select: { id: true, code: true } },
-                        veterinarian: { select: { id: true, name: true } }
+                        liveAnimal: { select: { id: true, code: true } }
                     }
                 },
+                assignee: { select: { id: true, name: true } },
                 weight: true,
                 processingTechnologyId: true,
                 processingTechnology: { select: { name: true } },
@@ -66,8 +66,8 @@ export class StoolAnalysisService {
                     veterinarianVisitDate: r.veterinarianVisit.date.toISOString(),
                     liveAnimalId: r.veterinarianVisit.liveAnimal.id,
                     liveAnimalCode: r.veterinarianVisit.liveAnimal.code,
-                    veterinarianId: r.veterinarianVisit.veterinarian.id,
-                    veterinarianName: r.veterinarianVisit.veterinarian.name,
+                    assigneeId: r.assignee.id,
+                    assigneeName: r.assignee.name,
                     weight: r.weight,
                     processingTechnologyId: r.processingTechnologyId,
                     processingTechnologyName: r.processingTechnology.name,
@@ -82,16 +82,24 @@ export class StoolAnalysisService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsStoolAnalysisOutput> {
-        const [veterinarianVisits, processingTechnologies] = await Promise.all([
+        const [veterinarianVisits, assignees, processingTechnologies] = await Promise.all([
             prisma.veterinarianVisit.findMany({
                 select: {
                     id: true,
                     date: true,
-                    liveAnimal: { select: { id: true, code: true } },
-                    veterinarian: { select: { id: true, name: true } }
+                    liveAnimal: { select: { id: true, code: true } }
                 },
                 orderBy: {
                     date: 'desc'
+                }
+            }),
+            prisma.veterinarian.findMany({
+                select: {
+                    id: true,
+                    name: true
+                },
+                orderBy: {
+                    name: 'asc'
                 }
             }),
             prisma.processingTechnology.findMany({
@@ -104,10 +112,10 @@ export class StoolAnalysisService {
             veterinarianVisits: veterinarianVisits.map(v => ({
                 id: v.id,
                 date: v.date.toISOString(),
-                liveAnimal: { id: v.liveAnimal.id, code: v.liveAnimal.code },
-                veterinarian: v.veterinarian
+                liveAnimal: { id: v.liveAnimal.id, code: v.liveAnimal.code }
             })),
-            processingTechnologies
+            assignees: assignees,
+            processingTechnologies: processingTechnologies
         };
     }
 
@@ -117,6 +125,7 @@ export class StoolAnalysisService {
             const result = await tx.stoolAnalysis.create({
                 data: {
                     veterinarianVisitId: data.veterinarianVisitId,
+                    assigneeId: data.assigneeId,
                     weight: data.weight,
                     processingTechnologyId: data.processingTechnologyId,
                     note: data.note || null
@@ -151,6 +160,7 @@ export class StoolAnalysisService {
                 where: { id: existingResult.id },
                 data: {
                     veterinarianVisitId: data.veterinarianVisitId,
+                    assigneeId: data.assigneeId,
                     weight: data.weight,
                     processingTechnologyId: data.processingTechnologyId,
                     note: data.note || null

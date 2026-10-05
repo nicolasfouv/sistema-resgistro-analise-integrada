@@ -27,6 +27,8 @@ const getAllNecropsyEctoparasiteAnalysisOutputSchema = z.object({
     necropsyId: z.number().int(),
     necropsyDate: z.string().nonempty(),
     necropsyDateFormatted: z.string().optional(),
+    assigneeId: z.number().int(),
+    assigneeName: z.string().nonempty(),
     deadAnimalId: z.number().int(),
     deadAnimalCode: z.string().nonempty(),
     ectoparasiteGenusId: z.number().int(),
@@ -59,6 +61,10 @@ const getFormOptionsNecropsyEctoparasiteAnalysisOutputSchema = z.object({
         id: z.number().int(),
         name: z.string().nonempty(),
     })),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty(),
+    }))
 });
 // Inputs
 const createNecropsyEctoparasiteAnalysisInputSchema = z.object({
@@ -72,5 +78,6 @@ const createNecropsyEctoparasiteAnalysisInputSchema = z.object({
     larvaeQuantity: z.number().int(),
     eggQuantity: z.number().int(),
     note: z.string().optional(),
+    assigneeId: z.number().int()
 });
 const updateNecropsyEctoparasiteAnalysisInputSchema = createNecropsyEctoparasiteAnalysisInputSchema;

@@ -3,6 +3,8 @@ declare const getAllHelminthAnalysisOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     createdByMe: z.ZodBoolean;
     canEdit: z.ZodBoolean;
+    assigneeId: z.ZodNumber;
+    assigneeName: z.ZodString;
     necropsyId: z.ZodNumber;
     necropsyDate: z.ZodString;
     necropsyDateFormatted: z.ZodOptional<z.ZodString>;
@@ -36,6 +38,10 @@ declare const getFormOptionsHelminthAnalysisOutputSchema: z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
     }, z.core.$strip>>;
+    assignees: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
 }, z.core.$strip>;
 declare const createHelminthAnalysisInputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
@@ -47,6 +53,7 @@ declare const createHelminthAnalysisInputSchema: z.ZodObject<{
     femaleQuantity: z.ZodNumber;
     totalQuantity: z.ZodNumber;
     note: z.ZodOptional<z.ZodString>;
+    assigneeId: z.ZodNumber;
 }, z.core.$strip>;
 declare const updateHelminthAnalysisInputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
@@ -58,6 +65,7 @@ declare const updateHelminthAnalysisInputSchema: z.ZodObject<{
     femaleQuantity: z.ZodNumber;
     totalQuantity: z.ZodNumber;
     note: z.ZodOptional<z.ZodString>;
+    assigneeId: z.ZodNumber;
 }, z.core.$strip>;
 export type GetAllHelminthAnalysisOutput = z.infer<typeof getAllHelminthAnalysisOutputSchema>;
 export type GetFormOptionsHelminthAnalysisOutput = z.infer<typeof getFormOptionsHelminthAnalysisOutputSchema>;

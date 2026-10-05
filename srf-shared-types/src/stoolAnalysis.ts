@@ -16,10 +16,11 @@ import z from 'zod';
 // }
 
 export const stoolAnalysisSchema = z.object({
-    id: z.number().int({ error: 'ID da análise de fezes inválido' }),
-    veterinarianVisitId: z.number().int({ error: 'ID da visita veterinária inválido' }),
-    weight: z.number({ error: 'Peso deve ser um número' }),
-    processingTechnologyId: z.number().int({ error: 'ID da tecnologia de processamento inválido' }),
+    id: z.number().int(),
+    veterinarianVisitId: z.number().int(),
+    assigneeId: z.number().int(),
+    weight: z.number(),
+    processingTechnologyId: z.number().int(),
     note: z.string().nullable().optional(),
 });
 
@@ -38,8 +39,7 @@ export const getAllStoolAnalysisOutputSchema = stoolAnalysisSchema.extend({
     veterinarianVisitDateFormatted: z.string().optional(),
     liveAnimalId: z.number().int(),
     liveAnimalCode: z.string().nonempty(),
-    veterinarianId: z.number().int(),
-    veterinarianName: z.string().nonempty(),
+    assigneeName: z.string().nonempty(),
     processingTechnologyName: z.string().nonempty(),
     hasEggCystAnalysis: z.boolean(),
     hasMolecularAnalysis: z.boolean(),
@@ -52,11 +52,11 @@ export const getFormOptionsStoolAnalysisOutputSchema = z.object({
         liveAnimal: z.object({
             id: z.number().int(),
             code: z.string().nonempty(),
-        }),
-        veterinarian: z.object({
-            id: z.number().int(),
-            name: z.string().nonempty(),
-        }),
+        })
+    })),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty(),
     })),
     processingTechnologies: z.array(z.object({
         id: z.number().int(),

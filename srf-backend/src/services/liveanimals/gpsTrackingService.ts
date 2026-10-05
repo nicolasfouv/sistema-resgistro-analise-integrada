@@ -15,6 +15,7 @@ export class GpsTrackingService {
         const results = await prisma.gpsTracking.findMany({
             select: {
                 id: true,
+                assignee: { select: { id: true, name: true } },
                 liveAnimalId: true,
                 liveAnimal: { select: { id: true, code: true } },
                 trackingDeviceId: true,
@@ -76,6 +77,8 @@ export class GpsTrackingService {
                     id: r.id,
                     canEdit: permission.canEdit,
                     createdByMe: creatorMap.get(String(r.id)) === requesterId,
+                    assigneeId: r.assignee.id,
+                    assigneeName: r.assignee.name,
                     liveAnimalId: r.liveAnimal.id,
                     liveAnimalCode: r.liveAnimal.code,
                     trackingDeviceId: r.trackingDevice.id,
@@ -117,7 +120,12 @@ export class GpsTrackingService {
             orderBy: { description: 'asc' }
         });
 
-        return { liveAnimals, trackingDevices, monitoringMethods };
+        const assignees = await prisma.veterinarian.findMany({
+            select: { id: true, name: true },
+            orderBy: { name: 'asc' }
+        });
+
+        return { liveAnimals, trackingDevices, monitoringMethods, assignees };
     }
 
     async create(data: CreateGpsTrackingInput, requesterId: string) {
@@ -133,6 +141,7 @@ export class GpsTrackingService {
             // Cria o registro de rastreio GPS
             const result = await tx.gpsTracking.create({
                 data: {
+                    assigneeId: data.assigneeId,
                     liveAnimalId: data.liveAnimalId,
                     trackingDeviceId: data.trackingDeviceId,
                     startDate: new Date(data.startDate),
@@ -187,6 +196,7 @@ export class GpsTrackingService {
                     id: existingResult.id
                 },
                 data: {
+                    assigneeId: data.assigneeId,
                     liveAnimalId: data.liveAnimalId,
                     trackingDeviceId: data.trackingDeviceId,
                     startDate: new Date(data.startDate),

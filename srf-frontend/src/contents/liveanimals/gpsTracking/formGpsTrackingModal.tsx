@@ -25,6 +25,7 @@ export function GpsTrackingFormModal({ gpsTracking, close, refresh }: GpsTrackin
 
     // Campos do formulário
     const [liveAnimalId, setLiveAnimalId] = useState<number | ''>(gpsTracking?.liveAnimalId ?? '');
+    const [assigneeId, setAssigneeId] = useState<number | ''>(gpsTracking?.assigneeId ?? '');
     const [trackingDeviceId, setTrackingDeviceId] = useState<number | ''>(gpsTracking?.trackingDeviceId ?? '');
     const [startDate, setStartDate] = useState<string>(gpsTracking?.startDate ? gpsTracking.startDate.split('T')[0] : '');
     const [endDate, setEndDate] = useState<string>(gpsTracking?.endDate ? gpsTracking.endDate.split('T')[0] : '');
@@ -56,7 +57,7 @@ export function GpsTrackingFormModal({ gpsTracking, close, refresh }: GpsTrackin
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        if (!liveAnimalId || !trackingDeviceId || !monitoringMethodId) {
+        if (!liveAnimalId || !assigneeId || !trackingDeviceId || !monitoringMethodId) {
             setError('Preencha todos os campos obrigatórios.');
             return;
         }
@@ -65,6 +66,7 @@ export function GpsTrackingFormModal({ gpsTracking, close, refresh }: GpsTrackin
         try {
             const data = {
                 liveAnimalId: Number(liveAnimalId),
+                assigneeId: Number(assigneeId),
                 trackingDeviceId: Number(trackingDeviceId),
                 startDate: new Date(startDate + 'T00:00:00').toISOString(),
                 endDate: endDate ? new Date(endDate + 'T00:00:00').toISOString() : null,
@@ -121,6 +123,13 @@ export function GpsTrackingFormModal({ gpsTracking, close, refresh }: GpsTrackin
                                     <select value={liveAnimalId} onChange={(e) => setLiveAnimalId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
                                         <option value="">Selecione...</option>
                                         {options.liveAnimals.map(a => (<option key={a.id} value={a.id}>{a.code}</option>))}
+                                    </select>
+                                </div>
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-bold mb-1 text-left">Responsável</label>
+                                    <select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
+                                        <option value="">Selecione...</option>
+                                        {options.assignees.map(assignee => (<option key={assignee.id} value={assignee.id}>{assignee.name}</option>))}
                                     </select>
                                 </div>
                                 <div className="flex flex-col">

@@ -20,15 +20,16 @@ import z from 'zod';
 // }
 
 export const sorologyResultSchema = z.object({
-    id: z.number().int({ error: 'ID da sorologia inválido' }),
-    veterinarianVisitId: z.number().int({ error: 'ID da visita veterinária inválido' }),
-    sorologyTestId: z.number().int({ error: 'ID do teste sorológico inválido' }),
-    sorologyAgentId: z.number().int({ error: 'ID do agente sorológico inválido' }),
-    cuttingPointSymbol: z.string({ error: 'Símbolo do ponto de corte inválido' }),
-    cuttingPointValue: z.string({ error: 'Valor do ponto de corte inválido' }),
-    resultTypeId: z.number().int({ error: 'ID do tipo de resultado inválido' }),
-    result: z.number({ error: 'Resultado deve ser um número' }),
-    interpretationId: z.number().int({ error: 'ID da interpretação inválido' }),
+    id: z.number().int(),
+    veterinarianVisitId: z.number().int(),
+    assigneeId: z.number().int(),
+    sorologyTestId: z.number().int(),
+    sorologyAgentId: z.number().int(),
+    cuttingPointSymbol: z.string(),
+    cuttingPointValue: z.string(),
+    resultTypeId: z.number().int(),
+    result: z.number(),
+    interpretationId: z.number().int(),
 });
 
 export const createSorologyResultInputSchema = sorologyResultSchema.omit({
@@ -46,8 +47,7 @@ export const getAllSorologyResultOutputSchema = sorologyResultSchema.extend({
     veterinarianVisitDateFormatted: z.string().optional(),
     liveAnimalId: z.number().int(),
     liveAnimalCode: z.string().nonempty(),
-    veterinarianId: z.number().int(),
-    veterinarianName: z.string().nonempty(),
+    assigneeName: z.string().nonempty(),
     testName: z.string().nonempty(),
     agentName: z.string().nonempty(),
     resultTypeName: z.string().nonempty(),
@@ -61,11 +61,11 @@ export const getFormOptionsSorologyResultOutputSchema = z.object({
         liveAnimal: z.object({
             id: z.number().int(),
             code: z.string().nonempty(),
-        }),
-        veterinarian: z.object({
-            id: z.number().int(),
-            name: z.string().nonempty(),
-        }),
+        })
+    })),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty(),
     })),
     sorologyTests: z.array(z.object({
         id: z.number().int(),

@@ -14,7 +14,7 @@ export class VeterinarianVisitService {
             select: {
                 id: true,
                 liveAnimal: { select: { id: true, name: true, code: true } },
-                veterinarian: { select: { id: true, name: true } },
+                assignee: { select: { id: true, name: true } },
                 date: true,
                 animalPicture: true,
                 note: true,
@@ -162,11 +162,11 @@ export class VeterinarianVisitService {
                 hasCastration: visitIdsWithCastration.has(v.id),
                 liveAnimalId: v.liveAnimal.id,
                 liveAnimalCode: v.liveAnimal.code,
-                veterinarianId: v.veterinarian.id,
-                veterinarianName: v.veterinarian.name,
+                assigneeId: v.assignee.id,
+                assigneeName: v.assignee.name,
                 date: v.date,
-                note: v.note,
                 animalPicture: v.animalPicture,
+                note: v.note,
                 bodyMeasurements: v.bodyMeasurement.map(bm => ({
                     id: bm.id,
                     bodyMeasurementTypeId: bm.bodyMeasurementType.id,
@@ -179,7 +179,7 @@ export class VeterinarianVisitService {
     }
 
     async getFormOptions() {
-        const [liveAnimals, veterinarians, bodyMeasurementTypes] = await Promise.all([
+        const [liveAnimals, assignees, bodyMeasurementTypes] = await Promise.all([
             prisma.liveAnimal.findMany({
                 select: { id: true, code: true },
                 where: { active: true },
@@ -199,7 +199,7 @@ export class VeterinarianVisitService {
                 id: a.id,
                 code: a.code
             })),
-            veterinarians,
+            assignees,
             bodyMeasurementTypes
         };
     }
@@ -222,8 +222,8 @@ export class VeterinarianVisitService {
             // Create veterinarian visit
             const visit = await tx.veterinarianVisit.create({
                 data: {
+                    assigneeId: data.assigneeId,
                     liveAnimalId: data.liveAnimalId,
-                    veterinarianId: data.veterinarianId,
                     date: new Date(data.date + 'T12:00:00Z'),
                     animalPicture: data.animalPicture || null,
                     note: data.note || null,
@@ -319,8 +319,8 @@ export class VeterinarianVisitService {
             const updatedVisit = await tx.veterinarianVisit.update({
                 where: { id: visitId },
                 data: {
+                    assigneeId: data.assigneeId,
                     liveAnimalId: data.liveAnimalId,
-                    veterinarianId: data.veterinarianId,
                     date: new Date(data.date + 'T12:00:00Z'),
                     animalPicture: data.animalPicture || null,
                     note: data.note || null,

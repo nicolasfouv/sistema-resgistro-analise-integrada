@@ -1,14 +1,14 @@
 import z from 'zod';
 // Inputs
 export const createVeterinarianVisitInputSchema = z.object({
-    liveAnimalId: z.number().int().positive({ error: 'ID do animal inválido' }),
-    veterinarianId: z.number().int().positive({ error: 'ID do veterinário inválido' }),
-    date: z.string().nonempty({ error: 'Data inválida' }),
+    liveAnimalId: z.number().int().positive(),
+    assigneeId: z.number().int().positive(),
+    date: z.string().nonempty(),
     animalPicture: z.string().optional(),
     note: z.string().optional(),
     bodyMeasurements: z.array(z.object({
-        bodyMeasurementTypeId: z.number().int().positive({ error: 'ID do tipo de medida corporal inválido' }),
-        value: z.number().positive({ error: 'Valor inválido' }),
+        bodyMeasurementTypeId: z.number().int().positive(),
+        value: z.number().positive(),
     })).optional(),
 });
 export const updateVeterinarianVisitInputSchema = createVeterinarianVisitInputSchema;
@@ -27,8 +27,8 @@ export const getAllVeterinarianVisitOutputSchema = z.object({
     hasCastration: z.boolean(),
     liveAnimalId: z.number().int(),
     liveAnimalCode: z.string().nonempty(),
-    veterinarianId: z.number().int(),
-    veterinarianName: z.string().nonempty(),
+    assigneeId: z.number().int(),
+    assigneeName: z.string().nonempty(),
     date: z.string().nonempty(),
     dateFormatted: z.string().optional(),
     animalPicture: z.string().optional(),
@@ -46,7 +46,7 @@ export const getFormOptionsVeterinarianVisitOutputSchema = z.object({
         id: z.number().int(),
         code: z.string().nonempty(),
     })),
-    veterinarians: z.array(z.object({
+    assignees: z.array(z.object({
         id: z.number().int(),
         name: z.string().nonempty(),
     })),

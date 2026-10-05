@@ -21,12 +21,12 @@ export class MolecularAnalysisService {
                         veterinarianVisit: {
                             select: {
                                 id: true, date: true,
-                                liveAnimal: { select: { id: true, code: true } },
-                                veterinarian: { select: { id: true, name: true } }
+                                liveAnimal: { select: { id: true, code: true } }
                             }
                         }
                     }
                 },
+                assignee: { select: { id: true, name: true } },
                 eggCystSpecieId: true,
                 eggCystSpecie: { select: { name: true } },
                 note: true
@@ -71,8 +71,8 @@ export class MolecularAnalysisService {
                     veterinarianVisitDate: r.stoolAnalysis.veterinarianVisit.date.toISOString(),
                     liveAnimalId: r.stoolAnalysis.veterinarianVisit.liveAnimal.id,
                     liveAnimalCode: r.stoolAnalysis.veterinarianVisit.liveAnimal.code,
-                    veterinarianId: r.stoolAnalysis.veterinarianVisit.veterinarian.id,
-                    veterinarianName: r.stoolAnalysis.veterinarianVisit.veterinarian.name,
+                    assigneeId: r.assignee.id,
+                    assigneeName: r.assignee.name,
                     eggCystSpecieId: r.eggCystSpecieId,
                     eggCystSpecieName: r.eggCystSpecie.name,
                     note: r.note
@@ -84,7 +84,7 @@ export class MolecularAnalysisService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsMolecularAnalysisOutput> {
-        const [stoolAnalyses, eggCystSpecies] = await Promise.all([
+        const [stoolAnalyses, assignees, eggCystSpecies] = await Promise.all([
             prisma.stoolAnalysis.findMany({
                 select: {
                     id: true,
@@ -92,8 +92,7 @@ export class MolecularAnalysisService {
                         select: {
                             id: true,
                             date: true,
-                            liveAnimal: { select: { id: true, code: true } },
-                            veterinarian: { select: { id: true, name: true } }
+                            liveAnimal: { select: { id: true, code: true } }
                         }
                     }
                 },
@@ -102,6 +101,10 @@ export class MolecularAnalysisService {
                         date: 'desc'
                     }
                 }
+            }),
+            prisma.veterinarian.findMany({
+                select: { id: true, name: true },
+                orderBy: { name: 'asc' }
             }),
             prisma.eggCystSpecie.findMany({
                 select: { id: true, name: true },
@@ -115,11 +118,11 @@ export class MolecularAnalysisService {
                 veterinarianVisit: {
                     id: s.veterinarianVisit.id,
                     date: s.veterinarianVisit.date.toISOString(),
-                    liveAnimal: { id: s.veterinarianVisit.liveAnimal.id, code: s.veterinarianVisit.liveAnimal.code },
-                    veterinarian: s.veterinarianVisit.veterinarian
+                    liveAnimal: { id: s.veterinarianVisit.liveAnimal.id, code: s.veterinarianVisit.liveAnimal.code }
                 }
             })),
-            eggCystSpecies
+            assignees: assignees,
+            eggCystSpecies: eggCystSpecies
         };
     }
 
@@ -136,6 +139,7 @@ export class MolecularAnalysisService {
             const result = await tx.molecularAnalysis.create({
                 data: {
                     stoolAnalysisId: data.stoolAnalysisId,
+                    assigneeId: data.assigneeId,
                     eggCystSpecieId: data.eggCystSpecieId,
                     note: data.note || null
                 }
@@ -176,6 +180,7 @@ export class MolecularAnalysisService {
                 where: { id: existingResult.id },
                 data: {
                     stoolAnalysisId: data.stoolAnalysisId,
+                    assigneeId: data.assigneeId,
                     eggCystSpecieId: data.eggCystSpecieId,
                     note: data.note || null
                 }

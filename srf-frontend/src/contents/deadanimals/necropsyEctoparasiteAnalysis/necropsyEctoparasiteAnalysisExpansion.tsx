@@ -50,6 +50,10 @@ export function NecropsyEctoparasiteAnalysisExpansion({ item, close, refresh }: 
                         <input type="text" disabled value={item.deadAnimalCode} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     <div className="flex flex-col w-2/12">
+                        <label className="ml-1 font-bold">Responsável</label>
+                        <input type="text" disabled value={item.assigneeName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                    <div className="flex flex-col w-2/12">
                         <label className="ml-1 font-bold">Gênero</label>
                         <input type="text" disabled value={item.genusName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
@@ -57,40 +61,40 @@ export function NecropsyEctoparasiteAnalysisExpansion({ item, close, refresh }: 
                         <label className="ml-1 font-bold">Espécie</label>
                         <input type="text" disabled value={item.specieName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    <div className="flex flex-col w-2/12">
-                        <label className="ml-1 font-bold">Subespécie</label>
-                        <input type="text" disabled value={item.subSpecieName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                    </div>
+
                 </div>
             </div>
             <hr className="border-gray-200" />
 
             {/* CORPO DA EXPANSÃO */}
-            <div className="gap-2 w-full text-sm grid grid-cols-5 mb-2">
-
+            <div className="gap-2 w-full text-sm grid grid-cols-6 mb-2">
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Qtde de Machos</label>
+                    <label className="ml-1 font-bold">Subespécie</label>
+                    <input type="text" disabled value={item.subSpecieName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Quantidade de Machos</label>
                     <input type="text" disabled value={String(item.maleQuantity)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Qtde de Fêmeas</label>
+                    <label className="ml-1 font-bold">Quantidade de Fêmeas</label>
                     <input type="text" disabled value={String(item.femaleQuantity)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Qtde de Ninfas</label>
+                    <label className="ml-1 font-bold">Quantidade de Ninfas</label>
                     <input type="text" disabled value={String(item.nymphQuantity)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Qtde de Larvas</label>
+                    <label className="ml-1 font-bold">Quantidade de Larvas</label>
                     <input type="text" disabled value={String(item.larvaeQuantity)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div className="flex flex-col w-full">
-                    <label className="ml-1 font-bold">Qtde de Ovos</label>
+                    <label className="ml-1 font-bold">Quantidade de Ovos</label>
                     <input type="text" disabled value={String(item.eggQuantity)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
-                <div className="flex flex-col w-full col-span-5">
+                <div className="flex flex-col w-full col-span-6">
                     <label className="ml-1 font-bold">Observações</label>
-                    <input type="text" disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <textarea rows={3} disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input resize-none" />
                 </div>
             </div>
 

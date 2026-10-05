@@ -30,6 +30,7 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
     const [maleQuantity, setMaleQuantity] = useState<number | ''>(helminthAnalysis?.maleQuantity ?? '');
     const [femaleQuantity, setFemaleQuantity] = useState<number | ''>(helminthAnalysis?.femaleQuantity ?? '');
     const [totalQuantity, setTotalQuantity] = useState<number | ''>(helminthAnalysis?.totalQuantity ?? '');
+    const [assigneeId, setAssigneeId] = useState<number | ''>(helminthAnalysis?.assigneeId ?? '');
     const [note, setNote] = useState<string>(helminthAnalysis?.note ?? '');
 
     useEffect(() => {
@@ -70,6 +71,7 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
                 maleQuantity: Number(maleQuantity),
                 femaleQuantity: Number(femaleQuantity),
                 totalQuantity: Number(totalQuantity),
+                assigneeId: Number(assigneeId),
                 note: note || undefined
             };
             if (isEditing && helminthAnalysis) {
@@ -129,7 +131,14 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
                         </fieldset>
 
                         {/* Campos da Análise */}
-                        <div className="grid grid-cols-4 gap-4">
+                        <div className="grid grid-cols-5 gap-4">
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Responsável</label>
+                                <select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
+                                    <option value="">Selecione...</option>
+                                    {options.assignees.map(assignee => (<option key={assignee.id} value={assignee.id}>{assignee.name}</option>))}
+                                </select>
+                            </div>
                             {/* <div className="flex flex-col col-span-4">
                                 <label className="text-sm font-bold mb-1 text-left">Localização</label>
                                 <select value={locationId} onChange={(e) => setLocationId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
@@ -159,9 +168,9 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
                                 <input type="number" step="1" min="0" value={totalQuantity} onChange={(e) => setTotalQuantity(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
-                            <div className="flex flex-col col-span-4">
+                            <div className="flex flex-col col-span-5">
                                 <label className="text-sm font-bold mb-1 text-left">Localização</label>
-                                <div className="grid grid-cols-5 gap-4">
+                                <div className="grid grid-cols-4 gap-4">
                                     {locations && locations.map(l => (
                                         <div className="relative">
                                             <input key={l} type="text" value={options?.locations.find(loc => loc.id === l)?.name} className="border border-border rounded p-2 bg-white h-10 w-full" disabled />
@@ -193,7 +202,7 @@ export function FormHelminthAnalysisModal({ helminthAnalysis, close, refresh }: 
                                     )}
                                 </div>
                             </div>
-                            <div className="flex flex-col col-span-4">
+                            <div className="flex flex-col col-span-5">
                                 <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
                                 <textarea
                                     value={note}

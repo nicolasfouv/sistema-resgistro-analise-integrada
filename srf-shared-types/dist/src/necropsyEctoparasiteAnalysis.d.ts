@@ -6,6 +6,8 @@ declare const getAllNecropsyEctoparasiteAnalysisOutputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
     necropsyDate: z.ZodString;
     necropsyDateFormatted: z.ZodOptional<z.ZodString>;
+    assigneeId: z.ZodNumber;
+    assigneeName: z.ZodString;
     deadAnimalId: z.ZodNumber;
     deadAnimalCode: z.ZodString;
     ectoparasiteGenusId: z.ZodNumber;
@@ -38,6 +40,10 @@ declare const getFormOptionsNecropsyEctoparasiteAnalysisOutputSchema: z.ZodObjec
         id: z.ZodNumber;
         name: z.ZodString;
     }, z.core.$strip>>;
+    assignees: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.core.$strip>>;
 }, z.core.$strip>;
 declare const createNecropsyEctoparasiteAnalysisInputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
@@ -50,6 +56,7 @@ declare const createNecropsyEctoparasiteAnalysisInputSchema: z.ZodObject<{
     larvaeQuantity: z.ZodNumber;
     eggQuantity: z.ZodNumber;
     note: z.ZodOptional<z.ZodString>;
+    assigneeId: z.ZodNumber;
 }, z.core.$strip>;
 declare const updateNecropsyEctoparasiteAnalysisInputSchema: z.ZodObject<{
     necropsyId: z.ZodNumber;
@@ -62,6 +69,7 @@ declare const updateNecropsyEctoparasiteAnalysisInputSchema: z.ZodObject<{
     larvaeQuantity: z.ZodNumber;
     eggQuantity: z.ZodNumber;
     note: z.ZodOptional<z.ZodString>;
+    assigneeId: z.ZodNumber;
 }, z.core.$strip>;
 export type GetAllNecropsyEctoparasiteAnalysisOutput = z.infer<typeof getAllNecropsyEctoparasiteAnalysisOutputSchema>;
 export type GetFormOptionsNecropsyEctoparasiteAnalysisOutput = z.infer<typeof getFormOptionsNecropsyEctoparasiteAnalysisOutputSchema>;

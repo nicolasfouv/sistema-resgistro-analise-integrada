@@ -26,7 +26,7 @@ export function EggCystAnalysisFormModal({ eggCystAnalysis, close, refresh }: Eg
     // Campos de seleção da análise de fezes (via visita)
     const [selectedDate, setSelectedDate] = useState<string>('');
     const [selectedAnimalId, setSelectedAnimalId] = useState<number | ''>('');
-    const [selectedVeterinarianId, setSelectedVeterinarianId] = useState<number | ''>('');
+    const [selectedAssigneeId, setSelectedAssigneeId] = useState<number | ''>(eggCystAnalysis?.assigneeId ?? '');
 
     // Campos da análise
     const [eggCystSpecieId, setEggCystSpecieId] = useState<number | ''>(eggCystAnalysis?.eggCystSpecieId ?? '');
@@ -43,8 +43,8 @@ export function EggCystAnalysisFormModal({ eggCystAnalysis, close, refresh }: Eg
                     if (matchingStool) {
                         setSelectedDate(matchingStool.veterinarianVisit.date);
                         setSelectedAnimalId(matchingStool.veterinarianVisit.liveAnimal.id);
-                        setSelectedVeterinarianId(matchingStool.veterinarianVisit.veterinarian.id);
                     }
+                    setSelectedAssigneeId(eggCystAnalysis.assigneeId);
                 }
             } catch (error) {
                 console.error(error);
@@ -57,48 +57,35 @@ export function EggCystAnalysisFormModal({ eggCystAnalysis, close, refresh }: Eg
         if (!options) return [];
         let stools = options.stoolAnalyses;
         if (selectedAnimalId) stools = stools.filter(s => s.veterinarianVisit.liveAnimal.id === selectedAnimalId);
-        if (selectedVeterinarianId) stools = stools.filter(s => s.veterinarianVisit.veterinarian.id === selectedVeterinarianId);
         const dateSet = new Map<string, string>();
         stools.forEach(s => {
             if (!dateSet.has(s.veterinarianVisit.date)) dateSet.set(s.veterinarianVisit.date, new Date(s.veterinarianVisit.date).toLocaleDateString('pt-BR'));
         });
         return Array.from(dateSet.entries()).map(([iso, formatted]) => ({ iso, formatted }));
-    }, [options, selectedAnimalId, selectedVeterinarianId]);
+    }, [options, selectedAnimalId]);
 
     const filteredAnimals = useMemo(() => {
         if (!options) return [];
         let stools = options.stoolAnalyses;
         if (selectedDate) stools = stools.filter(s => s.veterinarianVisit.date === selectedDate);
-        if (selectedVeterinarianId) stools = stools.filter(s => s.veterinarianVisit.veterinarian.id === selectedVeterinarianId);
         const map = new Map<number, string>();
         stools.forEach(s => { if (!map.has(s.veterinarianVisit.liveAnimal.id)) map.set(s.veterinarianVisit.liveAnimal.id, s.veterinarianVisit.liveAnimal.code); });
         return Array.from(map.entries()).map(([id, code]) => ({ id, code }));
-    }, [options, selectedDate, selectedVeterinarianId]);
-
-    const filteredVeterinarians = useMemo(() => {
-        if (!options) return [];
-        let stools = options.stoolAnalyses;
-        if (selectedDate) stools = stools.filter(s => s.veterinarianVisit.date === selectedDate);
-        if (selectedAnimalId) stools = stools.filter(s => s.veterinarianVisit.liveAnimal.id === selectedAnimalId);
-        const map = new Map<number, string>();
-        stools.forEach(s => { if (!map.has(s.veterinarianVisit.veterinarian.id)) map.set(s.veterinarianVisit.veterinarian.id, s.veterinarianVisit.veterinarian.name); });
-        return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
-    }, [options, selectedDate, selectedAnimalId]);
+    }, [options, selectedDate]);
 
     const stoolAnalysisId = useMemo(() => {
-        if (!options || !selectedDate || !selectedAnimalId || !selectedVeterinarianId) return null;
+        if (!options || !selectedDate || !selectedAnimalId) return null;
         const stool = options.stoolAnalyses.find(
-            s => s.veterinarianVisit.date === selectedDate && s.veterinarianVisit.liveAnimal.id === selectedAnimalId && s.veterinarianVisit.veterinarian.id === selectedVeterinarianId
+            s => s.veterinarianVisit.date === selectedDate && s.veterinarianVisit.liveAnimal.id === selectedAnimalId
         );
         return stool?.id ?? null;
-    }, [options, selectedDate, selectedAnimalId, selectedVeterinarianId]);
+    }, [options, selectedDate, selectedAnimalId]);
 
     function handleDateChange(value: string) {
         setSelectedDate(value);
         if (value) {
             const mv = options?.stoolAnalyses.filter(s => s.veterinarianVisit.date === value) || [];
             if (selectedAnimalId && !mv.some(s => s.veterinarianVisit.liveAnimal.id === selectedAnimalId)) setSelectedAnimalId('');
-            if (selectedVeterinarianId && !mv.some(s => s.veterinarianVisit.veterinarian.id === selectedVeterinarianId)) setSelectedVeterinarianId('');
         }
     }
 
@@ -107,23 +94,13 @@ export function EggCystAnalysisFormModal({ eggCystAnalysis, close, refresh }: Eg
         if (value) {
             const mv = options?.stoolAnalyses.filter(s => s.veterinarianVisit.liveAnimal.id === value) || [];
             if (selectedDate && !mv.some(s => s.veterinarianVisit.date === selectedDate)) setSelectedDate('');
-            if (selectedVeterinarianId && !mv.some(s => s.veterinarianVisit.veterinarian.id === selectedVeterinarianId)) setSelectedVeterinarianId('');
-        }
-    }
-
-    function handleVeterinarianChange(value: number | '') {
-        setSelectedVeterinarianId(value);
-        if (value) {
-            const mv = options?.stoolAnalyses.filter(s => s.veterinarianVisit.veterinarian.id === value) || [];
-            if (selectedDate && !mv.some(s => s.veterinarianVisit.date === selectedDate)) setSelectedDate('');
-            if (selectedAnimalId && !mv.some(s => s.veterinarianVisit.liveAnimal.id === selectedAnimalId)) setSelectedAnimalId('');
         }
     }
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         if (!stoolAnalysisId) {
-            setError('Selecione uma data, um animal e um veterinário para determinar a análise de fezes.');
+            setError('Selecione uma data e um animal para determinar a análise de fezes.');
             return;
         }
         setLoading(true);
@@ -131,9 +108,10 @@ export function EggCystAnalysisFormModal({ eggCystAnalysis, close, refresh }: Eg
         try {
             const data = {
                 stoolAnalysisId: Number(stoolAnalysisId),
+                assigneeId: Number(selectedAssigneeId),
                 eggCystSpecieId: Number(eggCystSpecieId),
                 quantity: Number(quantity),
-                note: note || null
+                note: note || undefined
             };
             if (isEditing && eggCystAnalysis) {
                 await updateEggCystAnalysis(eggCystAnalysis.id, data);
@@ -172,7 +150,7 @@ export function EggCystAnalysisFormModal({ eggCystAnalysis, close, refresh }: Eg
                         {/* Análise de Fezes Associada */}
                         <fieldset className="border border-border rounded p-4">
                             <legend className="text-sm font-bold text-standard-blue px-2">Análise de Fezes Associada</legend>
-                            <div className="grid grid-cols-3 gap-4">
+                            <div className="grid grid-cols-2 gap-4">
                                 <div className="flex flex-col">
                                     <label className="text-sm font-bold mb-1 text-left">Código do Animal</label>
                                     <select value={selectedAnimalId} onChange={(e) => handleAnimalChange(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white" required>
@@ -187,18 +165,18 @@ export function EggCystAnalysisFormModal({ eggCystAnalysis, close, refresh }: Eg
                                         {filteredDates.map(d => (<option key={d.iso} value={d.iso}>{d.formatted}</option>))}
                                     </select>
                                 </div>
-                                <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Veterinário</label>
-                                    <select value={selectedVeterinarianId} onChange={(e) => handleVeterinarianChange(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white" required>
-                                        <option value="">Selecione...</option>
-                                        {filteredVeterinarians.map(v => (<option key={v.id} value={v.id}>{v.name}</option>))}
-                                    </select>
-                                </div>
                             </div>
                         </fieldset>
 
                         {/* Campos da análise */}
                         <div className="grid grid-cols-3 gap-4">
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Responsável</label>
+                                <select value={selectedAssigneeId} onChange={(e) => setSelectedAssigneeId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white" required>
+                                    <option value="">Selecione...</option>
+                                    {options.assignees.map(assignee => (<option key={assignee.id} value={assignee.id}>{assignee.name}</option>))}
+                                </select>
+                            </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Espécie</label>
                                 <select value={eggCystSpecieId} onChange={(e) => setEggCystSpecieId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>

@@ -24,6 +24,7 @@ export function NecropsyFormModal({ necropsy, close, refresh }: NecropsyFormModa
     const [options, setOptions] = useState<GetFormOptionsNecropsyOutput | null>(null);
 
     const [deadAnimalId, setDeadAnimalId] = useState<number | ''>(necropsy?.deadAnimalId || '');
+    const [assigneeId, setAssigneeId] = useState<number | ''>(necropsy?.assigneeId || '');
     const [identifiedGenderId, setIdentifiedGenderId] = useState<number | ''>(necropsy?.identifiedGenderId || '');
     const [performedDate, setPerformedDate] = useState(necropsy?.performedDate ? new Date(necropsy.performedDate).toISOString().slice(0, 10) : '');
     const [bodyConditionId, setBodyConditionId] = useState<number | ''>(necropsy?.bodyConditionId || '');
@@ -57,6 +58,7 @@ export function NecropsyFormModal({ necropsy, close, refresh }: NecropsyFormModa
         try {
             const data = {
                 deadAnimalId: Number(deadAnimalId),
+                assigneeId: Number(assigneeId),
                 identifiedGenderId: Number(identifiedGenderId),
                 performedDate: performedDate,
                 bodyConditionId: Number(bodyConditionId),
@@ -159,6 +161,14 @@ export function NecropsyFormModal({ necropsy, close, refresh }: NecropsyFormModa
                                     className="border border-border rounded p-2"
                                     required
                                 />
+                            </div>
+
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Responsável</label>
+                                <select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white" required>
+                                    <option value="">Selecione...</option>
+                                    {options.assignees.map(assignee => (<option key={assignee.id} value={assignee.id}>{assignee.name}</option>))}
+                                </select>
                             </div>
 
                             <div className="flex flex-col">

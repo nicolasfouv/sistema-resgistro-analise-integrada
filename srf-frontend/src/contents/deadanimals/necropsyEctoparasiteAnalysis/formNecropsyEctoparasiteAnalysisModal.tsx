@@ -26,6 +26,7 @@ export function NecropsyEctoparasiteAnalysisFormModal({ necropsyEctoparasiteAnal
 
     // Campos do ectoparasito
     const [selectedNecropsyId, setSelectedNecropsyId] = useState<number | ''>(necropsyEctoparasiteAnalysis?.necropsyId ?? '');
+    const [assigneeId, setAssigneeId] = useState<number | ''>(necropsyEctoparasiteAnalysis?.assigneeId ?? '');
     const [ectoparasiteGenusId, setEctoparasiteGenusId] = useState<number | ''>(necropsyEctoparasiteAnalysis?.ectoparasiteGenusId ?? '');
     const [ectoparasiteSpecieId, setEctoparasiteSpecieId] = useState<number | ''>(necropsyEctoparasiteAnalysis?.ectoparasiteSpecieId ?? '');
     const [ectoparasiteSubSpecieId, setEctoparasiteSubSpecieId] = useState<number | ''>(necropsyEctoparasiteAnalysis?.ectoparasiteSubSpecieId ?? '');
@@ -59,6 +60,7 @@ export function NecropsyEctoparasiteAnalysisFormModal({ necropsyEctoparasiteAnal
         try {
             const data = {
                 necropsyId: Number(selectedNecropsyId),
+                assigneeId: Number(assigneeId),
                 ectoparasiteGenusId: Number(ectoparasiteGenusId),
                 ectoparasiteSpecieId: Number(ectoparasiteSpecieId),
                 ectoparasiteSubSpecieId: Number(ectoparasiteSubSpecieId),
@@ -129,6 +131,13 @@ export function NecropsyEctoparasiteAnalysisFormModal({ necropsyEctoparasiteAnal
                         {/* Campos do Ectoparasito */}
                         <div className="grid grid-cols-3 gap-4">
                             <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Responsável</label>
+                                <select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
+                                    <option value="">Selecione...</option>
+                                    {options.assignees.map(assignee => (<option key={assignee.id} value={assignee.id}>{assignee.name}</option>))}
+                                </select>
+                            </div>
+                            <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Gênero</label>
                                 <select value={ectoparasiteGenusId} onChange={(e) => setEctoparasiteGenusId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
                                     <option value="">Selecione...</option>
@@ -150,34 +159,39 @@ export function NecropsyEctoparasiteAnalysisFormModal({ necropsyEctoparasiteAnal
                                 </select>
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Qtde de Machos</label>
+                                <label className="text-sm font-bold mb-1 text-left">Quantidade de Machos</label>
                                 <input type="number" step="1" min="0" value={maleQuantity} onChange={(e) => setMaleQuantity(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Qtde de Fêmeas</label>
+                                <label className="text-sm font-bold mb-1 text-left">Quantidade de Fêmeas</label>
                                 <input type="number" step="1" min="0" value={femaleQuantity} onChange={(e) => setFemaleQuantity(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Qtde de Ninfas</label>
+                                <label className="text-sm font-bold mb-1 text-left">Quantidade de Ninfas</label>
                                 <input type="number" step="1" min="0" value={nymphQuantity} onChange={(e) => setNymphQuantity(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Qtde de Larvas</label>
+                                <label className="text-sm font-bold mb-1 text-left">Quantidade de Larvas</label>
                                 <input type="number" step="1" min="0" value={larvaeQuantity} onChange={(e) => setLarvaeQuantity(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Qtde de Ovos</label>
+                                <label className="text-sm font-bold mb-1 text-left">Quantidade de Ovos</label>
                                 <input type="number" step="1" min="0" value={eggQuantity} onChange={(e) => setEggQuantity(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2 bg-white h-10" placeholder="Ex: 0" required />
                             </div>
                             <div className="flex flex-col col-span-3">
                                 <label className="text-sm font-bold mb-1 text-left">Observações (Opcional)</label>
-                                <input type="text" value={note} onChange={(e) => setNote(e.target.value)}
-                                    className="border border-border rounded p-2 bg-white h-10" placeholder="Digite observações..." />
+                                <textarea
+                                    value={note}
+                                    onChange={(e) => setNote(e.target.value)}
+                                    className="border border-border rounded p-2 bg-white resize-none"
+                                    rows={3}
+                                    placeholder="Digite as observações..."
+                                />
                             </div>
                         </div>
 

@@ -80,7 +80,11 @@ export function NecropsyExamResultExpansion({ item, close, refresh }: { item: Ge
             <hr className="border-gray-200" />
 
             {/* Corpo Geral */}
-            <div className="gap-2 w-full text-sm grid grid-cols-2 mb-2">
+            <div className="gap-2 w-full text-sm grid grid-cols-3 mb-2">
+                <div className="flex flex-col w-full">
+                    <label className="ml-1 font-bold">Responsável</label>
+                    <input type="text" disabled value={result.assigneeName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
                 <div className="flex flex-col w-full">
                     <label className="ml-1 font-bold">Gene Alvo</label>
                     <input type="text" disabled value={result.targetGeneName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
@@ -114,7 +118,7 @@ export function NecropsyExamResultExpansion({ item, close, refresh }: { item: Ge
                         <label className="ml-1 font-bold">Status CPCR</label>
                         <input type="text" disabled value={(result as any).cpcrStatusName || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    <div className="flex flex-col w-full">
+                    <div className="flex flex-col w-full col-span-3">
                         <label className="ml-1 font-bold">Controle</label>
                         <input type="text" disabled value={result.control} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
@@ -136,7 +140,7 @@ export function NecropsyExamResultExpansion({ item, close, refresh }: { item: Ge
                         <label className="ml-1 font-bold">Status QPCR</label>
                         <input type="text" disabled value={(result as any).qpcrStatusName || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    <div className="flex flex-col w-full">
+                    <div className="flex flex-col w-full col-span-3">
                         <label className="ml-1 font-bold">Controle</label>
                         <input type="text" disabled value={result.control} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>

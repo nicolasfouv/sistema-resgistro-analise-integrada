@@ -23,6 +23,7 @@ export class NecropsyEctoparasiteAnalysisService {
                         deadAnimal: { select: { id: true, code: true } }
                     }
                 },
+                assignee: { select: { id: true, name: true } },
                 ectoparasiteGenusId: true,
                 ectoparasiteGenus: { select: { name: true } },
                 ectoparasiteSpecieId: true,
@@ -71,6 +72,8 @@ export class NecropsyEctoparasiteAnalysisService {
                     createdByMe: creatorMap.get(String(r.id)) === requesterId,
                     necropsyId: r.necropsy.id,
                     necropsyDate: r.necropsy.performedDate.toISOString(),
+                    assigneeId: r.assignee.id,
+                    assigneeName: r.assignee.name,
                     deadAnimalId: r.necropsy.deadAnimal.id,
                     deadAnimalCode: r.necropsy.deadAnimal.code,
                     ectoparasiteGenusId: r.ectoparasiteGenusId,
@@ -93,7 +96,7 @@ export class NecropsyEctoparasiteAnalysisService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsNecropsyEctoparasiteAnalysisOutput> {
-        const [necropsies, genuses, species] = await Promise.all([
+        const [necropsies, assignees, genuses, species] = await Promise.all([
             prisma.necropsy.findMany({
                 select: {
                     id: true,
@@ -103,6 +106,10 @@ export class NecropsyEctoparasiteAnalysisService {
                 orderBy: {
                     performedDate: 'desc'
                 }
+            }),
+            prisma.veterinarian.findMany({
+                select: { id: true, name: true },
+                orderBy: { name: 'asc' }
             }),
             prisma.ectoparasiteGenus.findMany({
                 select: { id: true, name: true },
@@ -123,8 +130,9 @@ export class NecropsyEctoparasiteAnalysisService {
                     code: n.deadAnimal.code
                 },
             })),
-            genuses,
-            species
+            assignees: assignees,
+            genuses: genuses,
+            species: species
         };
     }
 
@@ -148,6 +156,7 @@ export class NecropsyEctoparasiteAnalysisService {
             const result = await tx.ectoparasiteAnalysisNecropsy.create({
                 data: {
                     necropsyId: data.necropsyId,
+                    assigneeId: data.assigneeId,
                     ectoparasiteGenusId: data.ectoparasiteGenusId,
                     ectoparasiteSpecieId: data.ectoparasiteSpecieId,
                     ectoparasiteSubSpecieId: data.ectoparasiteSubSpecieId,
@@ -202,6 +211,7 @@ export class NecropsyEctoparasiteAnalysisService {
                 },
                 data: {
                     necropsyId: data.necropsyId,
+                    assigneeId: data.assigneeId,
                     ectoparasiteGenusId: data.ectoparasiteGenusId,
                     ectoparasiteSpecieId: data.ectoparasiteSpecieId,
                     ectoparasiteSubSpecieId: data.ectoparasiteSubSpecieId,

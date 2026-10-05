@@ -5,11 +5,13 @@ export declare const vaccineSchema: z.ZodObject<{
     vaccineId: z.ZodNumber;
     applicationDate: z.ZodString;
     veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
+    assigneeId: z.ZodNumber;
     vaccineTypeId: z.ZodNumber;
 }, z.z.core.$strip>;
 export declare const createVaccineInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
     veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
+    assigneeId: z.ZodNumber;
     vaccineId: z.ZodNumber;
     applicationDate: z.ZodString;
     vaccineTypeId: z.ZodNumber;
@@ -17,6 +19,7 @@ export declare const createVaccineInputSchema: z.ZodObject<{
 export declare const updateVaccineInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
     veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
+    assigneeId: z.ZodNumber;
     vaccineId: z.ZodNumber;
     applicationDate: z.ZodString;
     vaccineTypeId: z.ZodNumber;
@@ -26,6 +29,7 @@ export declare const getAllVaccineOutputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
     vaccineId: z.ZodNumber;
     applicationDate: z.ZodString;
+    assigneeId: z.ZodNumber;
     vaccineTypeId: z.ZodNumber;
     canEdit: z.ZodBoolean;
     createdByMe: z.ZodBoolean;
@@ -33,7 +37,7 @@ export declare const getAllVaccineOutputSchema: z.ZodObject<{
     vaccineName: z.ZodString;
     vaccineTypeName: z.ZodString;
     veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
-    veterinarianName: z.ZodOptional<z.ZodString>;
+    assigneeName: z.ZodOptional<z.ZodString>;
     veterinarianVisitDate: z.ZodOptional<z.ZodString>;
     veterinarianVisitDateFormatted: z.ZodOptional<z.ZodString>;
     applicationDateFormatted: z.ZodOptional<z.ZodString>;
@@ -50,10 +54,10 @@ export declare const getFormOptionsVaccineOutputSchema: z.ZodObject<{
             id: z.ZodNumber;
             code: z.ZodString;
         }, z.z.core.$strip>;
-        veterinarian: z.ZodObject<{
-            id: z.ZodNumber;
-            name: z.ZodString;
-        }, z.z.core.$strip>;
+    }, z.z.core.$strip>>;
+    assignees: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
     }, z.z.core.$strip>>;
     vaccines: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;

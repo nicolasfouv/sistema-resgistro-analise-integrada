@@ -22,19 +22,21 @@ export const GpsTrackingContentDefinition = {
     id: 'rastreiogps',
     label: 'Rastreio de GPS',
     columns: [
-        { key: 'liveAnimalCode', label: 'Código do Animal', width: 'w-5/12' },
-        { key: 'trackingDeviceBrandSerialNumber', label: 'Dispositivo de Rastreamento', width: 'w-6/12' },
+        { key: 'liveAnimalCode', label: 'Código do Animal', width: 'w-3/12' },
+        { key: 'assigneeName', label: 'Responsável', width: 'w-3/12' },
+        { key: 'trackingDeviceBrandSerialNumber', label: 'Dispositivo de Rastreamento', width: 'w-5/12' }
         // deixar w-1/12 sobrando para ações
     ],
     get filterFields() {
         return [
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'liveAnimalCode', label: 'Código do Animal', type: 'text' },
+            { key: 'assigneeName', label: 'Responsável', type: 'text' },
             { key: 'trackingDeviceId', label: 'Dispositivo de Rastreamento', type: 'enum', options: trackingDeviceOptions },
             { key: 'startDate', label: 'Data de Instalação', type: 'date' },
             { key: 'withdrawn', label: 'Retirada', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'endDate', label: 'Data de Retirada', type: 'date' },
-            { key: 'lastUpdateDate', label: 'Última Atualização', type: 'date' },
+            { key: 'lastUpdateDate', label: 'Última Atualização', type: 'date' }
         ];
     },
     rowIdField: 'id',

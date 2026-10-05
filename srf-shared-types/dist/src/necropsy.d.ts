@@ -3,6 +3,8 @@ export declare const getAllNecropsyOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     createdByMe: z.ZodBoolean;
     canEdit: z.ZodBoolean;
+    assigneeId: z.ZodNumber;
+    assigneeName: z.ZodString;
     deadAnimalId: z.ZodNumber;
     deadAnimalCode: z.ZodString;
     identifiedGenderId: z.ZodNumber;
@@ -68,6 +70,10 @@ export declare const getFormOptionsNecropsyOutputSchema: z.ZodObject<{
         description: z.ZodString;
         unit: z.ZodString;
     }, z.z.core.$strip>>;
+    assignees: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.z.core.$strip>>;
 }, z.z.core.$strip>;
 export declare const createNecropsyInputSchema: z.ZodObject<{
     deadAnimalId: z.ZodNumber;
@@ -84,6 +90,7 @@ export declare const createNecropsyInputSchema: z.ZodObject<{
         bodyMeasurementTypeId: z.ZodNumber;
         value: z.ZodNumber;
     }, z.z.core.$strip>>>;
+    assigneeId: z.ZodNumber;
 }, z.z.core.$strip>;
 export declare const updateNecropsyInputSchema: z.ZodObject<{
     deadAnimalId: z.ZodNumber;
@@ -100,6 +107,7 @@ export declare const updateNecropsyInputSchema: z.ZodObject<{
         bodyMeasurementTypeId: z.ZodNumber;
         value: z.ZodNumber;
     }, z.z.core.$strip>>>;
+    assigneeId: z.ZodNumber;
 }, z.z.core.$strip>;
 export type GetAllNecropsyOutput = z.infer<typeof getAllNecropsyOutputSchema>;
 export type GetFormOptionsNecropsyOutput = z.infer<typeof getFormOptionsNecropsyOutputSchema>;

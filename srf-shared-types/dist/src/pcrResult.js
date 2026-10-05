@@ -48,6 +48,8 @@ const getAllCPCRResultOutputSchema = z.object({
     necropsyId: z.number().int(),
     necropsyDate: z.string().nonempty(),
     necropsyDateFormatted: z.string().optional(),
+    assigneeId: z.number().int(),
+    assigneeName: z.string().nonempty(),
     deadAnimalId: z.number().int(),
     deadAnimalCode: z.string().nonempty(),
     sampleTypeId: z.number().int(),
@@ -75,6 +77,8 @@ const getAllQPCRResultOutputSchema = z.object({
     necropsyId: z.number().int(),
     necropsyDate: z.string().nonempty(),
     necropsyDateFormatted: z.string().optional(),
+    assigneeId: z.number().int(),
+    assigneeName: z.string().nonempty(),
     deadAnimalId: z.number().int(),
     deadAnimalCode: z.string().nonempty(),
     sampleTypeId: z.number().int(),
@@ -128,6 +132,10 @@ const getFormOptionsPCRResultOutputSchema = z.object({
     cpcrStatuses: z.array(z.object({
         id: z.number().int(),
         name: z.string().nonempty()
+    })),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty()
     }))
 });
 const getFormOptionsQPCRResultOutputSchema = z.object({
@@ -155,6 +163,10 @@ const getFormOptionsQPCRResultOutputSchema = z.object({
     qpcrStatuses: z.array(z.object({
         id: z.number().int(),
         name: z.string().nonempty()
+    })),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty()
     }))
 });
 // Inputs
@@ -169,7 +181,8 @@ const createCPCRResultInputSchema = z.object({
     suspiciousAgentId: z.number().int(),
     cpcrMethodId: z.number().int(),
     cpcrStatusId: z.number().int(),
-    control: z.string().nonempty()
+    control: z.string().nonempty(),
+    assigneeId: z.number().int()
 });
 const updateCPCRResultInputSchema = createCPCRResultInputSchema;
 const createQPCRResultInputSchema = z.object({
@@ -181,6 +194,7 @@ const createQPCRResultInputSchema = z.object({
     meanCt: z.number(),
     estimatedCopies: z.number(),
     qpcrStatusId: z.number().int(),
-    control: z.string().nonempty()
+    control: z.string().nonempty(),
+    assigneeId: z.number().int()
 });
 const updateQPCRResultInputSchema = createQPCRResultInputSchema;

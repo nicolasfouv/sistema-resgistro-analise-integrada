@@ -17,6 +17,7 @@ export class NecropsyService {
         const necropsies = await prisma.necropsy.findMany({
             select: {
                 id: true,
+                assignee: { select: { id: true, name: true } },
                 deadAnimalId: true,
                 deadAnimal: { select: { id: true, code: true } },
                 identifiedGender: { select: { id: true, name: true } },
@@ -46,7 +47,7 @@ export class NecropsyService {
             orderBy: { performedDate: 'desc' }
         });
 
-        // Permissions
+        // Permissões
         const necropsyIds = necropsies.map(n => n.id);
 
         const createLogs = await prisma.changeLog.findMany({
@@ -73,6 +74,8 @@ export class NecropsyService {
                 id: n.id,
                 canEdit: permission.canEdit,
                 createdByMe: creatorMap.get(String(n.id)) === userId,
+                assigneeId: n.assignee.id,
+                assigneeName: n.assignee.name,
                 deadAnimalId: n.deadAnimalId,
                 deadAnimalCode: n.deadAnimal.code,
                 identifiedGenderId: n.identifiedGender.id,
@@ -110,10 +113,14 @@ export class NecropsyService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsNecropsyOutput> {
-        const [deadAnimals, identifiedGenders, bodyConditions, clinicalConditions, tutors, reproductiveConditions, ages, bodyMeasurementTypes] = await Promise.all([
+        const [deadAnimals, assignees, identifiedGenders, bodyConditions, clinicalConditions, tutors, reproductiveConditions, ages, bodyMeasurementTypes] = await Promise.all([
             prisma.deadAnimal.findMany({
                 select: { id: true, code: true },
                 orderBy: { code: 'asc' }
+            }),
+            prisma.veterinarian.findMany({
+                select: { id: true, name: true },
+                orderBy: { name: 'asc' }
             }),
             prisma.enumAnimalGender.findMany({
                 select: { id: true, name: true },
@@ -146,8 +153,15 @@ export class NecropsyService {
         ]);
 
         return {
-            deadAnimals,
-            identifiedGenders, bodyConditions, clinicalConditions, tutors, reproductiveConditions, ages, bodyMeasurementTypes
+            deadAnimals: deadAnimals,
+            assignees: assignees,
+            identifiedGenders: identifiedGenders,
+            bodyConditions: bodyConditions,
+            clinicalConditions: clinicalConditions,
+            tutors: tutors,
+            reproductiveConditions: reproductiveConditions,
+            ages: ages,
+            bodyMeasurementTypes: bodyMeasurementTypes
         };
     }
 
@@ -186,6 +200,7 @@ export class NecropsyService {
             // Cria a necrópsia
             const necropsy = await tx.necropsy.create({
                 data: {
+                    assigneeId: data.assigneeId,
                     deadAnimalId: data.deadAnimalId,
                     identifiedGenderId: data.identifiedGenderId,
                     tutorId: data.tutorId || null,
@@ -277,6 +292,7 @@ export class NecropsyService {
             const updatedNecropsy = await tx.necropsy.update({
                 where: { id: recordId },
                 data: {
+                    assigneeId: data.assigneeId,
                     deadAnimalId: data.deadAnimalId,
                     identifiedGenderId: data.identifiedGenderId,
                     tutorId: data.tutorId || null,

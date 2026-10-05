@@ -1,7 +1,7 @@
 import z from 'zod';
 export declare const createVeterinarianVisitInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
-    veterinarianId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     date: z.ZodString;
     animalPicture: z.ZodOptional<z.ZodString>;
     note: z.ZodOptional<z.ZodString>;
@@ -12,7 +12,7 @@ export declare const createVeterinarianVisitInputSchema: z.ZodObject<{
 }, z.z.core.$strip>;
 export declare const updateVeterinarianVisitInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
-    veterinarianId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     date: z.ZodString;
     animalPicture: z.ZodOptional<z.ZodString>;
     note: z.ZodOptional<z.ZodString>;
@@ -35,8 +35,8 @@ export declare const getAllVeterinarianVisitOutputSchema: z.ZodObject<{
     hasCastration: z.ZodBoolean;
     liveAnimalId: z.ZodNumber;
     liveAnimalCode: z.ZodString;
-    veterinarianId: z.ZodNumber;
-    veterinarianName: z.ZodString;
+    assigneeId: z.ZodNumber;
+    assigneeName: z.ZodString;
     date: z.ZodString;
     dateFormatted: z.ZodOptional<z.ZodString>;
     animalPicture: z.ZodOptional<z.ZodString>;
@@ -54,7 +54,7 @@ export declare const getFormOptionsVeterinarianVisitOutputSchema: z.ZodObject<{
         id: z.ZodNumber;
         code: z.ZodString;
     }, z.z.core.$strip>>;
-    veterinarians: z.ZodArray<z.ZodObject<{
+    assignees: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
     }, z.z.core.$strip>>;

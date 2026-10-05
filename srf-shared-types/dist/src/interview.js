@@ -15,6 +15,8 @@ export const getAllInterviewOutputSchema = z.object({
     id: z.number().int(),
     canEdit: z.boolean(),
     createdByMe: z.boolean(),
+    assigneeId: z.number().int(),
+    assigneeName: z.string().nonempty(),
     tutorId: z.number().int(),
     tutorName: z.string(),
     date: z.string(),
@@ -46,7 +48,11 @@ export const getFormOptionsInterviewOutputSchema = z.object({
         code: z.string(),
         tutorId: z.number().int(),
     })),
-    animalQuestions: z.array(questionFormSchema)
+    animalQuestions: z.array(questionFormSchema),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty(),
+    }))
 });
 // Inputs
 export const interviewAnswerInputSchema = z.object({
@@ -63,12 +69,14 @@ export const createInterviewInputSchema = z.object({
     date: z.string({ error: 'Data inválida' }),
     notes: z.string().optional(),
     answers: z.array(interviewAnswerInputSchema),
-    animalInterviews: z.array(animalInterviewInputSchema)
+    animalInterviews: z.array(animalInterviewInputSchema),
+    assigneeId: z.number().int()
 });
 export const updateInterviewInputSchema = z.object({
     tutorId: z.number().int({ error: 'ID do tutor inválido' }),
     date: z.string({ error: 'Data inválida' }),
     notes: z.string().optional(),
     answers: z.array(interviewAnswerInputSchema),
-    animalInterviews: z.array(animalInterviewInputSchema)
+    animalInterviews: z.array(animalInterviewInputSchema),
+    assigneeId: z.number().int()
 });

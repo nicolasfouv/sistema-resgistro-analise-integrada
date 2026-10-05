@@ -20,6 +20,8 @@ export const getAllNecropsyOutputSchema = z.object({
     id: z.number().int(),
     createdByMe: z.boolean(),
     canEdit: z.boolean(),
+    assigneeId: z.number().int(),
+    assigneeName: z.string().nonempty(),
     deadAnimalId: z.number().int(),
     deadAnimalCode: z.string().nonempty(),
     identifiedGenderId: z.number().int(),
@@ -85,6 +87,10 @@ export const getFormOptionsNecropsyOutputSchema = z.object({
         description: z.string().nonempty(),
         unit: z.string().nonempty(),
     })),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty(),
+    }))
 });
 // Inputs
 export const createNecropsyInputSchema = z.object({
@@ -102,5 +108,6 @@ export const createNecropsyInputSchema = z.object({
         bodyMeasurementTypeId: z.number().int(),
         value: z.number(),
     })).optional(),
+    assigneeId: z.number().int()
 });
 export const updateNecropsyInputSchema = createNecropsyInputSchema;

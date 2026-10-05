@@ -44,7 +44,7 @@ export const LiveAnimalContentDefinition = {
             { key: 'hasGpsTracking', label: 'Possui GPS?', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'hasCastration', label: 'Possui Castração?', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'hasAnimalInterview', label: 'Possui Entrevista?', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
-            { key: 'hasVeterinarianVisit', label: 'Possui Visita ao Veterinário?', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
+            { key: 'hasVeterinarianVisit', label: 'Possui Visita ao Responsável?', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'hasVaccineApplication', label: 'Possui Vacinação?', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' }
         ];
     },

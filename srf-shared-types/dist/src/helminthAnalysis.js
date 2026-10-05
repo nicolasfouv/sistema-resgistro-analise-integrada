@@ -18,6 +18,8 @@ const getAllHelminthAnalysisOutputSchema = z.object({
     id: z.number().int(),
     createdByMe: z.boolean(),
     canEdit: z.boolean(),
+    assigneeId: z.number().int(),
+    assigneeName: z.string().nonempty(),
     necropsyId: z.number().int(),
     necropsyDate: z.string().nonempty(),
     necropsyDateFormatted: z.string().optional(),
@@ -50,6 +52,10 @@ const getFormOptionsHelminthAnalysisOutputSchema = z.object({
     locations: z.array(z.object({
         id: z.number().int(),
         name: z.string().nonempty()
+    })),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty(),
     }))
 });
 // Inputs
@@ -62,6 +68,7 @@ const createHelminthAnalysisInputSchema = z.object({
     maleQuantity: z.number().int(),
     femaleQuantity: z.number().int(),
     totalQuantity: z.number().int(),
-    note: z.string().optional()
+    note: z.string().optional(),
+    assigneeId: z.number().int()
 });
 const updateHelminthAnalysisInputSchema = createHelminthAnalysisInputSchema;

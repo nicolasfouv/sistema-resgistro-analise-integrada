@@ -129,7 +129,7 @@ export function CastrationSideDrawer({ filters, onClose }: CastrationSideDrawerP
                                                 </h4>
                                                 <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                                     <Field label="Data da Visita" value={castration.veterinarianVisitDateFormatted!} />
-                                                    <Field label="Veterinário" value={castration.veterinarianName!} />
+                                                    <Field label="Responsável" value={castration.assigneeName!} />
                                                 </div>
                                             </div>
                                         )}

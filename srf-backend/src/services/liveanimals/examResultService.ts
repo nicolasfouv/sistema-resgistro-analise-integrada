@@ -18,10 +18,10 @@ export class ExamResultService {
                 veterinarianVisit: {
                     select: {
                         id: true, date: true,
-                        liveAnimal: { select: { id: true, code: true } },
-                        veterinarian: { select: { id: true, name: true } }
+                        liveAnimal: { select: { id: true, code: true } }
                     }
                 },
+                assignee: { select: { id: true, name: true } },
                 interpretation: { select: { id: true, name: true } },
                 erythrocytes: true,
                 hemoglobin: true,
@@ -88,8 +88,8 @@ export class ExamResultService {
                     interpretationName: r.interpretation.name,
                     liveAnimalId: r.veterinarianVisit.liveAnimal.id,
                     liveAnimalCode: r.veterinarianVisit.liveAnimal.code,
-                    veterinarianId: r.veterinarianVisit.veterinarian.id,
-                    veterinarianName: r.veterinarianVisit.veterinarian.name,
+                    assigneeId: r.assignee.id,
+                    assigneeName: r.assignee.name,
                     erythrocytes: r.erythrocytes,
                     hemoglobin: r.hemoglobin,
                     hematocrit: r.hematocrit,
@@ -127,8 +127,7 @@ export class ExamResultService {
             select: {
                 id: true,
                 date: true,
-                liveAnimal: { select: { id: true, code: true } },
-                veterinarian: { select: { id: true, name: true } }
+                liveAnimal: { select: { id: true, code: true } }
             },
             orderBy: {
                 date: 'desc'
@@ -145,14 +144,19 @@ export class ExamResultService {
             }
         });
 
+        const assignees = await prisma.veterinarian.findMany({
+            select: { id: true, name: true },
+            orderBy: { name: 'asc' }
+        });
+
         return {
             veterinarianVisits: veterinarianVisits.map(v => ({
                 id: v.id,
                 date: v.date.toISOString(),
                 liveAnimal: { id: v.liveAnimal.id, code: v.liveAnimal.code },
-                veterinarian: v.veterinarian
             })),
-            interpretations
+            assignees: assignees,
+            interpretations: interpretations
         };
     }
 
@@ -170,6 +174,7 @@ export class ExamResultService {
             const result = await tx.examResult.create({
                 data: {
                     veterinarianVisitId: data.veterinarianVisitId,
+                    assigneeId: data.assigneeId,
                     interpretationId: data.interpretationId,
                     erythrocytes: data.erythrocytes,
                     hemoglobin: data.hemoglobin,
@@ -238,6 +243,7 @@ export class ExamResultService {
                 },
                 data: {
                     veterinarianVisitId: data.veterinarianVisitId,
+                    assigneeId: data.assigneeId,
                     interpretationId: data.interpretationId,
                     erythrocytes: data.erythrocytes,
                     hemoglobin: data.hemoglobin,

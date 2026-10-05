@@ -26,7 +26,7 @@ const sharedTypes: TypeConfig[] = [
 
 // Tipos exclusivos de Animais Vivos
 const liveAnimalOnlyTypes: TypeConfig[] = [
-    { label: 'Veterinário', prismaModel: 'veterinarian', valueField: 'name', valueFieldLabel: 'Nome' },
+    { label: 'Responsável', prismaModel: 'veterinarian', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Tipo da Vacina', prismaModel: 'vaccine', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Tipo de Aplicação da Vacina', prismaModel: 'enumVaccineType', valueField: 'name', valueFieldLabel: 'Nome' },
     { label: 'Interpretação do Exame', prismaModel: 'enumExamInterpretation', valueField: 'name', valueFieldLabel: 'Nome' },
@@ -43,7 +43,7 @@ const liveAnimalOnlyTypes: TypeConfig[] = [
     { label: 'Dispositivo de Rastreio', prismaModel: 'trackingDevice', valueField: 'brand', valueFieldLabel: 'Marca', secondaryField: 'serialNumber', secondaryFieldLabel: 'Número de Série' },
     { label: 'Tipo de Amostra Veterinária', prismaModel: 'veterinarianSampleType', valueField: 'description', valueFieldLabel: 'Descrição' },
     { label: 'Método de Monitoramento', prismaModel: 'monitoringMethod', valueField: 'description', valueFieldLabel: 'Descrição' },
-    { label: 'Medida Corporal (Veterinário)', prismaModel: 'bodyMeasurementTypeVeterinarian', valueField: 'description', valueFieldLabel: 'Descrição', secondaryField: 'unit', secondaryFieldLabel: 'Unidade' }
+    { label: 'Medida Corporal (Responsável)', prismaModel: 'bodyMeasurementTypeVeterinarian', valueField: 'description', valueFieldLabel: 'Descrição', secondaryField: 'unit', secondaryFieldLabel: 'Unidade' }
 
 ];
 

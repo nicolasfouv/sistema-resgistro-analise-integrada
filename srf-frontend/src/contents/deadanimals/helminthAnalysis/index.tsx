@@ -26,12 +26,14 @@ export const HelminthAnalysisContentDefinition = {
     columns: [
         { key: 'necropsyDateFormatted', label: 'Data da Necropsia', width: 'w-3/12' },
         { key: 'deadAnimalCode', label: 'Código do Animal', width: 'w-3/12' },
-        { key: 'helminthSpecieName', label: 'Espécie do Helminto', width: 'w-5/12' },
+        { key: 'assigneeName', label: 'Responsável', width: 'w-2/12' },
+        { key: 'helminthSpecieName', label: 'Espécie do Helminto', width: 'w-3/12' },
         // deixar w-1/12 sobrando para ações
     ],
     get filterFields() {
         return [
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
+            { key: 'assigneeName', label: 'Responsável', type: 'text' },
             { key: 'necropsyDate', label: 'Data da Necropsia', type: 'date' },
             { key: 'deadAnimalCode', label: 'Código do Animal', type: 'text' },
             { key: 'helminthSpecieName', label: 'Espécie do Helminto', type: 'enum', options: specieOptions },

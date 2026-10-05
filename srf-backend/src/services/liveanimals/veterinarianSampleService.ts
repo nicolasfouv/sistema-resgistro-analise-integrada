@@ -20,7 +20,7 @@ export class VeterinarianSampleService {
                     select: {
                         id: true, date: true,
                         liveAnimal: { select: { id: true, code: true } },
-                        veterinarian: { select: { id: true, name: true } },
+                        assignee: { select: { id: true, name: true } },
                         stoolAnalysis: { select: { id: true } }
                     }
                 },
@@ -77,8 +77,7 @@ export class VeterinarianSampleService {
                     veterinarianVisitDate: s.veterinarianVisit.date.toISOString(),
                     liveAnimalId: s.veterinarianVisit.liveAnimal.id,
                     liveAnimalCode: s.veterinarianVisit.liveAnimal.code,
-                    veterinarianId: s.veterinarianVisit.veterinarian.id,
-                    veterinarianName: s.veterinarianVisit.veterinarian.name,
+                    veterinarianVisitAssigneeName: s.veterinarianVisit.assignee.name,
                     sampleTypeId: s.sampleType.id,
                     sampleTypeDescription: s.sampleType.description,
                     statusId: s.status.id,
@@ -112,8 +111,7 @@ export class VeterinarianSampleService {
                 select: {
                     id: true,
                     date: true,
-                    liveAnimal: { select: { id: true, code: true } },
-                    veterinarian: { select: { id: true, name: true } }
+                    liveAnimal: { select: { id: true, code: true } }
                 },
                 orderBy: { date: 'desc' }
             }),
@@ -140,7 +138,6 @@ export class VeterinarianSampleService {
                 id: v.id,
                 date: v.date.toISOString(),
                 liveAnimal: { id: v.liveAnimal.id, code: v.liveAnimal.code },
-                veterinarian: v.veterinarian
             })),
             sampleTypes, status, storages, destinations
         };

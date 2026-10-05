@@ -18,10 +18,10 @@ export class PhysicalExamService {
                 veterinarianVisit: {
                     select: {
                         id: true, date: true,
-                        liveAnimal: { select: { id: true, code: true } },
-                        veterinarian: { select: { id: true, name: true } }
+                        liveAnimal: { select: { id: true, code: true } }
                     }
                 },
+                assignee: { select: { id: true, name: true } },
                 generalCondition: { select: { id: true, name: true } },
                 fr: true,
                 fc: true,
@@ -72,8 +72,8 @@ export class PhysicalExamService {
                     veterinarianVisitDate: e.veterinarianVisit.date.toISOString(),
                     liveAnimalId: e.veterinarianVisit.liveAnimal.id,
                     liveAnimalCode: e.veterinarianVisit.liveAnimal.code,
-                    veterinarianId: e.veterinarianVisit.veterinarian.id,
-                    veterinarianName: e.veterinarianVisit.veterinarian.name,
+                    assigneeId: e.assignee.id,
+                    assigneeName: e.assignee.name,
                     generalConditionId: e.generalCondition.id,
                     generalConditionName: e.generalCondition.name,
                     fr: e.fr,
@@ -97,16 +97,24 @@ export class PhysicalExamService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsPhysicalExamOutput> {
-        const [veterinarianVisits, generalConditions, mucous, hydrations] = await Promise.all([
+        const [veterinarianVisits, assignees, generalConditions, mucous, hydrations] = await Promise.all([
             prisma.veterinarianVisit.findMany({
                 select: {
                     id: true,
                     date: true,
-                    liveAnimal: { select: { id: true, code: true } },
-                    veterinarian: { select: { id: true, name: true } }
+                    liveAnimal: { select: { id: true, code: true } }
                 },
                 orderBy: {
                     date: 'desc'
+                }
+            }),
+            prisma.veterinarian.findMany({
+                select: {
+                    id: true,
+                    name: true
+                },
+                orderBy: {
+                    name: 'asc'
                 }
             }),
             prisma.enumPhysicalExamGeneralCondition.findMany({
@@ -141,12 +149,12 @@ export class PhysicalExamService {
             veterinarianVisits: veterinarianVisits.map(v => ({
                 id: v.id,
                 date: v.date.toISOString(),
-                liveAnimal: { id: v.liveAnimal.id, code: v.liveAnimal.code },
-                veterinarian: v.veterinarian
+                liveAnimal: { id: v.liveAnimal.id, code: v.liveAnimal.code }
             })),
-            generalConditions,
-            mucous,
-            hydrations
+            assignees: assignees,
+            generalConditions: generalConditions,
+            mucous: mucous,
+            hydrations: hydrations
         };
     }
 
@@ -164,6 +172,7 @@ export class PhysicalExamService {
             const exam = await tx.physicalExam.create({
                 data: {
                     veterinarianVisitId: data.veterinarianVisitId,
+                    assigneeId: data.assigneeId,
                     generalConditionId: data.generalConditionId,
                     fr: data.fr,
                     fc: data.fc,
@@ -218,6 +227,7 @@ export class PhysicalExamService {
                 },
                 data: {
                     veterinarianVisitId: data.veterinarianVisitId,
+                    assigneeId: data.assigneeId,
                     generalConditionId: data.generalConditionId,
                     fr: data.fr,
                     fc: data.fc,

@@ -49,7 +49,11 @@ export function HelminthAnalysisExpansion({ item, close, refresh }: { item: GetA
                         <label className="ml-1 font-bold">Código do Animal</label>
                         <input type="text" disabled value={item.deadAnimalCode} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    <div className="flex flex-col w-5/12">
+                    <div className="flex flex-col w-3/12">
+                        <label className="ml-1 font-bold">Responsável</label>
+                        <input type="text" disabled value={item.assigneeName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                    <div className="flex flex-col w-3/12">
                         <label className="ml-1 font-bold">Espécie do Helminto</label>
                         <input type="text" disabled value={item.helminthSpecieName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
@@ -59,10 +63,6 @@ export function HelminthAnalysisExpansion({ item, close, refresh }: { item: GetA
 
             {/* CORPO DA EXPANSÃO */}
             <div className="gap-2 w-full text-sm grid grid-cols-3 mb-2">
-                <div className="flex flex-col w-full col-span-3">
-                    <label className="ml-1 font-bold">Localização</label>
-                    <input type="text" disabled value={item.locations.map(l => l.locationName).join(' - ')} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                </div>
                 <div className="flex flex-col w-full">
                     <label className="ml-1 font-bold">Quantidade de Machos</label>
                     <input type="text" disabled value={String(item.maleQuantity)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
@@ -74,6 +74,10 @@ export function HelminthAnalysisExpansion({ item, close, refresh }: { item: GetA
                 <div className="flex flex-col w-full">
                     <label className="ml-1 font-bold">Quantidade Total</label>
                     <input type="text" disabled value={String(item.totalQuantity)} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                </div>
+                <div className="flex flex-col w-full col-span-3">
+                    <label className="ml-1 font-bold">Localização</label>
+                    <input type="text" disabled value={item.locations ? item.locations.map(l => l.locationName).join(' - ') : ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                 </div>
                 <div className="flex flex-col w-full col-span-3">
                     <label className="ml-1 font-bold">Observações</label>

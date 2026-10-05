@@ -14,11 +14,12 @@ import z from 'zod';
 // }
 
 export const eggCystAnalysisSchema = z.object({
-    id: z.number().int({ error: 'ID da análise de ovos/cistos inválido' }),
-    stoolAnalysisId: z.number().int({ error: 'ID da análise de fezes inválido' }),
-    eggCystSpecieId: z.number().int({ error: 'ID da espécie de ovo/cisto inválido' }),
-    quantity: z.number().int({ error: 'Quantidade deve ser um número inteiro' }),
-    note: z.string().nullable().optional(),
+    id: z.number().int(),
+    stoolAnalysisId: z.number().int(),
+    eggCystSpecieId: z.number().int(),
+    quantity: z.number().int(),
+    note: z.string().optional(),
+    assigneeId: z.number().int()
 });
 
 export const createEggCystAnalysisInputSchema = eggCystAnalysisSchema.omit({
@@ -37,9 +38,8 @@ export const getAllEggCystAnalysisOutputSchema = eggCystAnalysisSchema.extend({
     veterinarianVisitId: z.number().int(),
     liveAnimalId: z.number().int(),
     liveAnimalCode: z.string().nonempty(),
-    veterinarianId: z.number().int(),
-    veterinarianName: z.string().nonempty(),
     eggCystSpecieName: z.string().nonempty(),
+    assigneeName: z.string().nonempty()
 });
 
 export const getFormOptionsEggCystAnalysisOutputSchema = z.object({
@@ -50,18 +50,18 @@ export const getFormOptionsEggCystAnalysisOutputSchema = z.object({
             date: z.string().nonempty(),
             liveAnimal: z.object({
                 id: z.number().int(),
-                code: z.string().nonempty(),
-            }),
-            veterinarian: z.object({
-                id: z.number().int(),
-                name: z.string().nonempty(),
-            }),
-        }),
+                code: z.string().nonempty()
+            })
+        })
     })),
     eggCystSpecies: z.array(z.object({
         id: z.number().int(),
-        name: z.string().nonempty(),
+        name: z.string().nonempty()
     })),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty()
+    }))
 });
 
 export type EggCystAnalysis = z.infer<typeof eggCystAnalysisSchema>;

@@ -89,7 +89,7 @@ export function VeterinarianVisitSideDrawer({ filters, onClose }: VeterinarianVi
                                     className="w-full flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-hover-bg transition-colors"
                                 >
                                     <div className="flex flex-col items-start gap-0.5">
-                                        <span className="text-sm font-bold text-text-main">{visit.veterinarianName}</span>
+                                        <span className="text-sm font-bold text-text-main">{visit.assigneeName}</span>
                                         <span className="text-xs text-text-light-gray">
                                             {visit.dateFormatted} · {visit.liveAnimalCode}
                                         </span>
@@ -108,7 +108,7 @@ export function VeterinarianVisitSideDrawer({ filters, onClose }: VeterinarianVi
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                             <Field label="Data da Realização" value={visit.dateFormatted || ''} />
                                             <Field label="Código do Animal" value={visit.liveAnimalCode} />
-                                            <Field label="Veterinário" value={visit.veterinarianName} />
+                                            <Field label="Responsável" value={visit.assigneeName} />
                                             <Field label="Observações" value={visit.note || 'Nenhuma observação informada'} fullWidth />
                                         </div>
 

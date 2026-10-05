@@ -75,7 +75,7 @@ export function NecropsyExpansion({ item, close, refresh }: { item: GetAllNecrop
                     </div>
                 </div>
                 <div className="flex gap-2 w-full text-sm">
-                    <div className="flex flex-col w-4/12">
+                    <div className="flex flex-col w-3/12">
                         <label className="ml-1 font-bold">Código do Animal</label>
                         <input type="text" disabled value={item.deadAnimalCode || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
@@ -83,11 +83,14 @@ export function NecropsyExpansion({ item, close, refresh }: { item: GetAllNecrop
                         <label className="ml-1 font-bold">Data da Realização</label>
                         <input type="text" disabled value={performedDateFormatted} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    <div className="flex flex-col w-4/12">
+                    <div className="flex flex-col w-2/12">
                         <label className="ml-1 font-bold">Gênero Identificado</label>
                         <input type="text" disabled value={item.identifiedGenderName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-
+                    <div className="flex flex-col w-3/12">
+                        <label className="ml-1 font-bold">Responsável</label>
+                        <input type="text" disabled value={item.assigneeName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
                 </div>
             </div>
             <hr className="border-gray-200" />

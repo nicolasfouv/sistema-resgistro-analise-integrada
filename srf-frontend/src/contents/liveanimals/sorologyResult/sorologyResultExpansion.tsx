@@ -42,8 +42,8 @@ export function SorologyResultExpansion({ item, close, refresh }: { item: GetAll
                         <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     <div className="flex flex-col w-3/12">
-                        <label className="ml-1 font-bold">Veterinário</label>
-                        <input type="text" disabled value={item.veterinarianName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <label className="ml-1 font-bold">Responsável</label>
+                        <input type="text" disabled value={item.assigneeName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     <div className="flex flex-col w-2/12">
                         <label className="ml-1 font-bold">Teste</label>

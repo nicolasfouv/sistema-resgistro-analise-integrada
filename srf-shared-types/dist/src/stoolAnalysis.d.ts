@@ -2,18 +2,21 @@ import z from 'zod';
 export declare const stoolAnalysisSchema: z.ZodObject<{
     id: z.ZodNumber;
     veterinarianVisitId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     weight: z.ZodNumber;
     processingTechnologyId: z.ZodNumber;
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
 }, z.z.core.$strip>;
 export declare const createStoolAnalysisInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     weight: z.ZodNumber;
     processingTechnologyId: z.ZodNumber;
 }, z.z.core.$strip>;
 export declare const updateStoolAnalysisInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     weight: z.ZodNumber;
     processingTechnologyId: z.ZodNumber;
@@ -21,6 +24,7 @@ export declare const updateStoolAnalysisInputSchema: z.ZodObject<{
 export declare const getAllStoolAnalysisOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     veterinarianVisitId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     weight: z.ZodNumber;
     processingTechnologyId: z.ZodNumber;
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
@@ -30,8 +34,7 @@ export declare const getAllStoolAnalysisOutputSchema: z.ZodObject<{
     veterinarianVisitDateFormatted: z.ZodOptional<z.ZodString>;
     liveAnimalId: z.ZodNumber;
     liveAnimalCode: z.ZodString;
-    veterinarianId: z.ZodNumber;
-    veterinarianName: z.ZodString;
+    assigneeName: z.ZodString;
     processingTechnologyName: z.ZodString;
     hasEggCystAnalysis: z.ZodBoolean;
     hasMolecularAnalysis: z.ZodBoolean;
@@ -44,10 +47,10 @@ export declare const getFormOptionsStoolAnalysisOutputSchema: z.ZodObject<{
             id: z.ZodNumber;
             code: z.ZodString;
         }, z.z.core.$strip>;
-        veterinarian: z.ZodObject<{
-            id: z.ZodNumber;
-            name: z.ZodString;
-        }, z.z.core.$strip>;
+    }, z.z.core.$strip>>;
+    assignees: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
     }, z.z.core.$strip>>;
     processingTechnologies: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;

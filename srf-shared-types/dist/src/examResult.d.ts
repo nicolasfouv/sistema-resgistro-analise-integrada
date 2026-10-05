@@ -2,6 +2,7 @@ import z from 'zod';
 export declare const examResultSchema: z.ZodObject<{
     id: z.ZodNumber;
     veterinarianVisitId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     interpretationId: z.ZodNumber;
     erythrocytes: z.ZodNumber;
     hemoglobin: z.ZodNumber;
@@ -31,6 +32,7 @@ export declare const examResultSchema: z.ZodObject<{
 }, z.z.core.$strip>;
 export declare const createExamResultInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     note: z.ZodOptional<z.ZodString>;
     interpretationId: z.ZodNumber;
     erythrocytes: z.ZodNumber;
@@ -60,6 +62,7 @@ export declare const createExamResultInputSchema: z.ZodObject<{
 }, z.z.core.$strip>;
 export declare const updateExamResultInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     note: z.ZodOptional<z.ZodString>;
     interpretationId: z.ZodNumber;
     erythrocytes: z.ZodNumber;
@@ -90,6 +93,7 @@ export declare const updateExamResultInputSchema: z.ZodObject<{
 export declare const getAllExamResultOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     veterinarianVisitId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     erythrocytes: z.ZodNumber;
     hemoglobin: z.ZodNumber;
     hematocrit: z.ZodNumber;
@@ -123,8 +127,7 @@ export declare const getAllExamResultOutputSchema: z.ZodObject<{
     interpretationName: z.ZodString;
     liveAnimalId: z.ZodNumber;
     liveAnimalCode: z.ZodString;
-    veterinarianId: z.ZodNumber;
-    veterinarianName: z.ZodString;
+    assigneeName: z.ZodString;
 }, z.z.core.$strip>;
 export declare const getFormOptionsExamResultOutputSchema: z.ZodObject<{
     veterinarianVisits: z.ZodArray<z.ZodObject<{
@@ -134,10 +137,10 @@ export declare const getFormOptionsExamResultOutputSchema: z.ZodObject<{
             id: z.ZodNumber;
             code: z.ZodString;
         }, z.z.core.$strip>;
-        veterinarian: z.ZodObject<{
-            id: z.ZodNumber;
-            name: z.ZodString;
-        }, z.z.core.$strip>;
+    }, z.z.core.$strip>>;
+    assignees: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
     }, z.z.core.$strip>>;
     interpretations: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;

@@ -115,8 +115,8 @@ export function VisitExpansion({ item, close, refresh }: { item: GetAllVeterinar
                         <input type="text" disabled value={item.liveAnimalCode} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     <div className="flex flex-col w-5/12">
-                        <label htmlFor="date" className="ml-1 font-bold">Veterinário</label>
-                        <input type="text" disabled value={item.veterinarianName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <label htmlFor="date" className="ml-1 font-bold">Responsável</label>
+                        <input type="text" disabled value={item.assigneeName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                 </div>
                 <hr className="border-gray-200" />

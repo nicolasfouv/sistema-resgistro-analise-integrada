@@ -51,8 +51,8 @@ export function StoolAnalysisExpansion({ item, close, refresh }: { item: GetAllS
                         <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     <div className="flex flex-col w-4/12">
-                        <label className="ml-1 font-bold">Veterinário</label>
-                        <input type="text" disabled value={item.veterinarianName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <label className="ml-1 font-bold">Responsável</label>
+                        <input type="text" disabled value={item.assigneeName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@ export function StoolAnalysisExpansion({ item, close, refresh }: { item: GetAllS
                 </div>
                 <div className="flex flex-col w-full col-span-3">
                     <label className="ml-1 font-bold">Observações</label>
-                    <input type="text" disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <textarea rows={3} disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input resize-none" />
                 </div>
             </div>
 

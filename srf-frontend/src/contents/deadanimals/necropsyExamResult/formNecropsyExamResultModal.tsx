@@ -37,6 +37,7 @@ export function NecropsyExamResultFormModal({ necropsyExamResult, close, refresh
     const [targetGeneId, setTargetGeneId] = useState<number | ''>(necropsyExamResult?.result.targetGeneId ?? '');
     const [suspiciousAgentId, setSuspiciousAgentId] = useState<number | ''>(necropsyExamResult?.result.suspiciousAgentId ?? '');
     const [control, setControl] = useState<string>(necropsyExamResult?.result.control ?? '');
+    const [assigneeId, setAssigneeId] = useState<number | ''>(necropsyExamResult?.result.assigneeId ?? '');
 
     // Campos apenas CPCR
     const [extractionTypeId, setExtractionTypeId] = useState<number | ''>();
@@ -103,7 +104,8 @@ export function NecropsyExamResultFormModal({ necropsyExamResult, close, refresh
                     suspiciousAgentId: Number(suspiciousAgentId),
                     cpcrMethodId: Number(cpcrMethodId),
                     cpcrStatusId: Number(cpcrStatusId),
-                    control: control
+                    control: control,
+                    assigneeId: Number(assigneeId)
                 };
                 if (isEditing) {
                     await updateCPCRResult(necropsyExamResult.result.id, data);
@@ -120,7 +122,8 @@ export function NecropsyExamResultFormModal({ necropsyExamResult, close, refresh
                     meanCt: Number(meanCt),
                     estimatedCopies: Number(estimatedCopies),
                     qpcrStatusId: Number(qpcrStatusId),
-                    control: control
+                    control: control,
+                    assigneeId: Number(assigneeId)
                 };
                 if (isEditing) {
                     await updateQPCRResult(necropsyExamResult.result.id, data);
@@ -200,6 +203,14 @@ export function NecropsyExamResultFormModal({ necropsyExamResult, close, refresh
                                 <fieldset className="border border-border rounded p-4">
                                     <legend className="text-sm font-bold text-standard-blue px-2">Dados</legend>
                                     <div className="grid grid-cols-3 gap-4">
+                                        <div className="flex flex-col">
+                                            <label className="text-sm font-bold mb-1 text-left">Responsável</label>
+                                            <select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value ? Number(e.target.value) : '')}
+                                                className="border border-border rounded p-2 bg-white h-10" required>
+                                                <option value="">Selecione...</option>
+                                                {cpcrOptions.assignees.map(assignee => (<option key={assignee.id} value={assignee.id}>{assignee.name}</option>))}
+                                            </select>
+                                        </div>
                                         <div className="flex flex-col">
                                             <label className="text-sm font-bold mb-1 text-left">Data de Realização</label>
                                             <input type="date" value={performedDate} onChange={(e) => setPerformedDate(e.target.value)}
@@ -303,6 +314,14 @@ export function NecropsyExamResultFormModal({ necropsyExamResult, close, refresh
                                 <fieldset className="border border-border rounded p-4">
                                     <legend className="text-sm font-bold text-standard-blue px-2">Dados</legend>
                                     <div className="grid grid-cols-3 gap-4">
+                                        <div className="flex flex-col">
+                                            <label className="text-sm font-bold mb-1 text-left">Responsável</label>
+                                            <select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value ? Number(e.target.value) : '')}
+                                                className="border border-border rounded p-2 bg-white h-10" required>
+                                                <option value="">Selecione...</option>
+                                                {qpcrOptions.assignees.map(assignee => (<option key={assignee.id} value={assignee.id}>{assignee.name}</option>))}
+                                            </select>
+                                        </div>
                                         <div className="flex flex-col">
                                             <label className="text-sm font-bold mb-1 text-left">Data de Realização</label>
                                             <input type="date" value={performedDate} onChange={(e) => setPerformedDate(e.target.value)}

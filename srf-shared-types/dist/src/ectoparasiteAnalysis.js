@@ -19,17 +19,18 @@ import z from 'zod';
 //   @@map("analise_ectoparasito_veterinario")
 // }
 export const ectoparasiteAnalysisSchema = z.object({
-    id: z.number().int({ error: 'ID da análise de ectoparasito inválido' }),
-    veterinarianVisitId: z.number().int({ error: 'ID da visita veterinária inválido' }),
-    ectoparasiteGenusId: z.number().int({ error: 'ID do gênero de ectoparasito inválido' }),
-    ectoparasiteSpecieId: z.number().int({ error: 'ID da espécie de ectoparasito inválido' }),
-    ectoparasiteSubSpecieId: z.number().int({ error: 'ID da subespécie de ectoparasito inválido' }),
-    maleQuantity: z.number().int({ error: 'Quantidade de machos inválida' }),
-    femaleQuantity: z.number().int({ error: 'Quantidade de fêmeas inválida' }),
-    nymphQuantity: z.number().int({ error: 'Quantidade de ninfas inválida' }),
-    larvaeQuantity: z.number().int({ error: 'Quantidade de larvas inválida' }),
-    eggQuantity: z.number().int({ error: 'Quantidade de ovos inválida' }),
-    note: z.string().nullable().optional(),
+    id: z.number().int(),
+    veterinarianVisitId: z.number().int(),
+    assigneeId: z.number().int(),
+    ectoparasiteGenusId: z.number().int(),
+    ectoparasiteSpecieId: z.number().int(),
+    ectoparasiteSubSpecieId: z.number().int(),
+    maleQuantity: z.number().int(),
+    femaleQuantity: z.number().int(),
+    nymphQuantity: z.number().int(),
+    larvaeQuantity: z.number().int(),
+    eggQuantity: z.number().int(),
+    note: z.string().optional(),
 });
 export const createEctoparasiteAnalysisInputSchema = ectoparasiteAnalysisSchema.omit({
     id: true,
@@ -44,11 +45,10 @@ export const getAllEctoparasiteAnalysisOutputSchema = ectoparasiteAnalysisSchema
     veterinarianVisitDateFormatted: z.string().optional(),
     liveAnimalId: z.number().int(),
     liveAnimalCode: z.string().nonempty(),
-    veterinarianId: z.number().int(),
-    veterinarianName: z.string().nonempty(),
+    assigneeName: z.string().nonempty(),
     genusName: z.string().nonempty(),
     specieName: z.string().nonempty(),
-    subSpecieName: z.string().nonempty(),
+    subSpecieName: z.string().nonempty()
 });
 export const getFormOptionsEctoparasiteAnalysisOutputSchema = z.object({
     veterinarianVisits: z.array(z.object({
@@ -56,12 +56,12 @@ export const getFormOptionsEctoparasiteAnalysisOutputSchema = z.object({
         date: z.string().nonempty(),
         liveAnimal: z.object({
             id: z.number().int(),
-            code: z.string().nonempty(),
-        }),
-        veterinarian: z.object({
-            id: z.number().int(),
-            name: z.string().nonempty(),
-        }),
+            code: z.string().nonempty()
+        })
+    })),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty(),
     })),
     genuses: z.array(z.object({
         id: z.number().int(),
@@ -70,5 +70,5 @@ export const getFormOptionsEctoparasiteAnalysisOutputSchema = z.object({
     species: z.array(z.object({
         id: z.number().int(),
         name: z.string().nonempty(),
-    })),
+    }))
 });

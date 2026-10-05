@@ -49,7 +49,7 @@ export function MolecularAnalysisSideDrawer({ filters, onClose }: MolecularAnaly
             pageFilters.push({ field: 'veterinarianVisitDate', value: { type: 'date' as const, from: date, to: date } });
         }
         pageFilters.push({ field: 'liveAnimalCode', value: { type: 'text' as const, term: first.liveAnimalCode } });
-        pageFilters.push({ field: 'veterinarianName', value: { type: 'text' as const, term: first.veterinarianName } });
+        pageFilters.push({ field: 'assigneeName', value: { type: 'text' as const, term: first.assigneeName } });
     }
     const pageUrl = `/animaisvivos/exameseanalises/analisemolecular?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
 
@@ -110,7 +110,7 @@ export function MolecularAnalysisSideDrawer({ filters, onClose }: MolecularAnaly
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                             <Field label="Código do Animal" value={result.liveAnimalCode} />
                                             <Field label="Data da Visita" value={result.veterinarianVisitDateFormatted || ''} />
-                                            <Field label="Veterinário" value={result.veterinarianName} />
+                                            <Field label="Responsável" value={result.assigneeName} />
                                             <Field label="Espécie" value={result.eggCystSpecieName} />
                                             <Field label="Observações" value={result.note || 'Nenhuma observação informada'} fullWidth />
                                         </div>

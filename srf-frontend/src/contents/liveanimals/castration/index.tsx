@@ -8,8 +8,9 @@ export const CastrationContentDefinition = {
     id: 'castracao',
     label: 'Castrações',
     columns: [
-        { key: 'liveAnimalCode', label: 'Código do Animal', width: 'w-5/12' },
-        { key: 'dateFormatted', label: 'Data', width: 'w-5/12' },
+        { key: 'liveAnimalCode', label: 'Código do Animal', width: 'w-4/12' },
+        { key: 'dateFormatted', label: 'Data', width: 'w-3/12' },
+        { key: 'assigneeName', label: 'Responsável', width: 'w-4/12' }
         // deixar w-2/12 sobrando para ações
     ],
     filterFields: [

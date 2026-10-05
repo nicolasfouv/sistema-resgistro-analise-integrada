@@ -18,10 +18,10 @@ export class EctoparasiteAnalysisService {
                 veterinarianVisit: {
                     select: {
                         id: true, date: true,
-                        liveAnimal: { select: { id: true, code: true } },
-                        veterinarian: { select: { id: true, name: true } }
+                        liveAnimal: { select: { id: true, code: true } }
                     }
                 },
+                assignee: { select: { id: true, name: true } },
                 ectoparasiteGenusId: true,
                 ectoparasiteGenus: { select: { name: true } },
                 ectoparasiteSpecieId: true,
@@ -72,8 +72,8 @@ export class EctoparasiteAnalysisService {
                     veterinarianVisitDate: r.veterinarianVisit.date.toISOString(),
                     liveAnimalId: r.veterinarianVisit.liveAnimal.id,
                     liveAnimalCode: r.veterinarianVisit.liveAnimal.code,
-                    veterinarianId: r.veterinarianVisit.veterinarian.id,
-                    veterinarianName: r.veterinarianVisit.veterinarian.name,
+                    assigneeId: r.assignee.id,
+                    assigneeName: r.assignee.name,
                     ectoparasiteGenusId: r.ectoparasiteGenusId,
                     genusName: r.ectoparasiteGenus.name,
                     ectoparasiteSpecieId: r.ectoparasiteSpecieId,
@@ -85,7 +85,7 @@ export class EctoparasiteAnalysisService {
                     nymphQuantity: r.nymphQuantity,
                     larvaeQuantity: r.larvaeQuantity,
                     eggQuantity: r.eggQuantity,
-                    note: r.note
+                    note: r.note || undefined
                 };
             })
         );
@@ -94,16 +94,24 @@ export class EctoparasiteAnalysisService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsEctoparasiteAnalysisOutput> {
-        const [veterinarianVisits, genuses, species] = await Promise.all([
+        const [veterinarianVisits, assignees, genuses, species] = await Promise.all([
             prisma.veterinarianVisit.findMany({
                 select: {
                     id: true,
                     date: true,
-                    liveAnimal: { select: { id: true, code: true } },
-                    veterinarian: { select: { id: true, name: true } }
+                    liveAnimal: { select: { id: true, code: true } }
                 },
                 orderBy: {
                     date: 'desc'
+                }
+            }),
+            prisma.veterinarian.findMany({
+                select: {
+                    id: true,
+                    name: true
+                },
+                orderBy: {
+                    name: 'asc'
                 }
             }),
             prisma.ectoparasiteGenus.findMany({
@@ -120,11 +128,11 @@ export class EctoparasiteAnalysisService {
             veterinarianVisits: veterinarianVisits.map(v => ({
                 id: v.id,
                 date: v.date.toISOString(),
-                liveAnimal: { id: v.liveAnimal.id, code: v.liveAnimal.code },
-                veterinarian: v.veterinarian
+                liveAnimal: { id: v.liveAnimal.id, code: v.liveAnimal.code }
             })),
-            genuses,
-            species
+            assignees: assignees,
+            genuses: genuses,
+            species: species
         };
     }
 
@@ -148,6 +156,7 @@ export class EctoparasiteAnalysisService {
             const result = await tx.ectoparasiteAnalysisVeterinarian.create({
                 data: {
                     veterinarianVisitId: data.veterinarianVisitId,
+                    assigneeId: data.assigneeId,
                     ectoparasiteGenusId: data.ectoparasiteGenusId,
                     ectoparasiteSpecieId: data.ectoparasiteSpecieId,
                     ectoparasiteSubSpecieId: data.ectoparasiteSubSpecieId,
@@ -202,6 +211,7 @@ export class EctoparasiteAnalysisService {
                 },
                 data: {
                     veterinarianVisitId: data.veterinarianVisitId,
+                    assigneeId: data.assigneeId,
                     ectoparasiteGenusId: data.ectoparasiteGenusId,
                     ectoparasiteSpecieId: data.ectoparasiteSpecieId,
                     ectoparasiteSubSpecieId: data.ectoparasiteSubSpecieId,

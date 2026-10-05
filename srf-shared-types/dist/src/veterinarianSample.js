@@ -1,19 +1,19 @@
 import z from 'zod';
 export const sendVeterinarianSampleSchema = z.object({
-    id: z.number().int({ error: 'ID do envio de amostra veterinária inválido' }),
-    destinationId: z.number().int({ error: 'ID do local de armazenamento inválido' }),
-    statusId: z.number().int({ error: 'ID do status inválido' }),
+    id: z.number().int(),
+    destinationId: z.number().int(),
+    statusId: z.number().int(),
     sendDate: z.string().nonempty(),
-    quantity: z.number().int({ error: 'Valor deve ser inteiro' }).positive({ error: 'Valor deve ser positivo' }),
+    quantity: z.number().int().positive(),
     note: z.string().optional()
 });
 export const veterinarianSampleSchema = z.object({
-    id: z.number().int({ error: 'ID da amostra veterinária inválida' }),
-    veterinarianVisitId: z.number().int({ error: 'ID da visita veterinária inválida' }),
-    sampleTypeId: z.number().int({ error: 'ID do tipo da amostra inválido' }),
-    storageId: z.number().int({ error: 'ID do local de armazenamento inválido' }),
-    statusId: z.number().int({ error: 'ID do status inválido' }),
-    quantity: z.number().int({ error: 'Valor deve ser inteiro' }).positive({ error: 'Valor deve ser positivo' }),
+    id: z.number().int(),
+    veterinarianVisitId: z.number().int(),
+    sampleTypeId: z.number().int(),
+    storageId: z.number().int(),
+    statusId: z.number().int(),
+    quantity: z.number().int().positive(),
     imageLink: z.string().optional(),
     note: z.string().optional(),
     sendSamples: z.array(sendVeterinarianSampleSchema).optional()
@@ -31,11 +31,10 @@ export const getAllVeterinarianSampleOutputSchema = veterinarianSampleSchema.omi
     createdByMe: z.boolean(),
     veterinarianVisitDate: z.string().nonempty(),
     veterinarianVisitDateFormatted: z.string().optional(),
+    veterinarianVisitAssigneeName: z.string().nonempty(),
     sampleTypeDescription: z.string().nonempty(),
     liveAnimalId: z.number().int(),
     liveAnimalCode: z.string().nonempty(),
-    veterinarianId: z.number().int(),
-    veterinarianName: z.string().nonempty(),
     storageName: z.string().nonempty(),
     statusName: z.string().nonempty(),
     sendSamples: z.array(z.object({
@@ -58,10 +57,6 @@ export const getFormOptionsVeterinarianSampleOutputSchema = z.object({
         liveAnimal: z.object({
             id: z.number().int(),
             code: z.string().nonempty()
-        }),
-        veterinarian: z.object({
-            id: z.number().int(),
-            name: z.string().nonempty()
         })
     })),
     sampleTypes: z.array(z.object({

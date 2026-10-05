@@ -26,9 +26,9 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
     // Campo principal: Animal (obrigatório)
     const [selectedAnimalId, setSelectedAnimalId] = useState<number | ''>(castration?.liveAnimalId || '');
 
-    // Campos de seleção da visita associada (opcional)
+    // Campos da visita associada (opcional)
     const [selectedDate, setSelectedDate] = useState<string>('');
-    const [selectedVeterinarianId, setSelectedVeterinarianId] = useState<number | ''>('');
+    const [selectedAssigneeId, setSelectedAssigneeId] = useState<number | ''>(castration?.assigneeId || '');
 
     // Campos do formulário
     const [castrationDate, setCastrationDate] = useState(castration?.date ? new Date(castration.date).toISOString().slice(0, 10) : '');
@@ -49,7 +49,6 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                         if (matchingVisit) {
                             setSelectedDate(matchingVisit.date);
                             setCastrationDate(new Date(matchingVisit.date).toISOString().slice(0, 10));
-                            setSelectedVeterinarianId(matchingVisit.veterinarian.id);
                         }
                     }
                 }
@@ -66,46 +65,28 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
         return options.veterinarianVisits.filter(v => v.liveAnimal.id === selectedAnimalId);
     }, [options, selectedAnimalId]);
 
-    // Datas disponíveis - filtradas pelo animal e veterinário se selecionados
+    // Datas disponíveis para o animal selecionado
     const filteredDates = useMemo(() => {
-        let visits = visitsForAnimal;
-        if (selectedVeterinarianId) visits = visits.filter(v => v.veterinarian.id === selectedVeterinarianId);
-
         const dateSet = new Map<string, string>();
-        visits.forEach(v => {
+        visitsForAnimal.forEach(v => {
             const dateKey = v.date;
             if (!dateSet.has(dateKey)) {
                 dateSet.set(dateKey, new Date(dateKey).toLocaleDateString('pt-BR'));
             }
         });
         return Array.from(dateSet.entries()).map(([iso, formatted]) => ({ iso: iso, formatted: formatted }));
-    }, [visitsForAnimal, selectedVeterinarianId]);
+    }, [visitsForAnimal]);
 
-    // Veterinários disponíveis - filtrados pelo animal e data se selecionados
-    const filteredVeterinarians = useMemo(() => {
-        let visits = visitsForAnimal;
-        if (selectedDate) visits = visits.filter(v => v.date === selectedDate);
-
-        const vetMap = new Map<number, string>();
-        visits.forEach(v => {
-            if (!vetMap.has(v.veterinarian.id)) {
-                vetMap.set(v.veterinarian.id, v.veterinarian.name);
-            }
-        });
-        return Array.from(vetMap.entries()).map(([id, name]) => ({ id: id, name: name }));
-    }, [visitsForAnimal, selectedDate]);
-
-    // Verifica se algum campo de visita foi selecionado
-    const hasVisitSelected = !!(selectedDate || selectedVeterinarianId);
+    const hasVisitSelected = !!selectedDate;
 
     // Obter o id da visita veterinária
     const veterinarianVisitId = useMemo(() => {
-        if (!options || !selectedDate || !selectedAnimalId || !selectedVeterinarianId) return null;
+        if (!options || !selectedDate || !selectedAnimalId) return null;
         const visit = options.veterinarianVisits.find(
-            v => v.date === selectedDate && v.liveAnimal.id === selectedAnimalId && v.veterinarian.id === selectedVeterinarianId
+            v => v.date === selectedDate && v.liveAnimal.id === selectedAnimalId
         );
         return visit?.id ?? null;
-    }, [options, selectedDate, selectedAnimalId, selectedVeterinarianId]);
+    }, [options, selectedDate, selectedAnimalId]);
 
     // Data da visita selecionada formatada para YYYY-MM-DD
     const visitDateFormatted = useMemo(() => {
@@ -116,29 +97,15 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
     function handleAnimalChange(value: number | '') {
         setSelectedAnimalId(value);
         setSelectedDate('');
-        setSelectedVeterinarianId('');
     }
 
     function handleDateChange(value: string) {
         setSelectedDate(value);
         setCastrationDate(new Date(value).toISOString().slice(0, 10));
-        if (value) {
-            const matchingVisits = visitsForAnimal.filter(v => v.date === value);
-            if (selectedVeterinarianId && !matchingVisits.some(v => v.veterinarian.id === selectedVeterinarianId)) setSelectedVeterinarianId('');
-        }
-    }
-
-    function handleVeterinarianChange(value: number | '') {
-        setSelectedVeterinarianId(value);
-        if (value) {
-            const matchingVisits = visitsForAnimal.filter(v => v.veterinarian.id === value);
-            if (selectedDate && !matchingVisits.some(v => v.date === selectedDate)) setSelectedDate('');
-        }
     }
 
     function handleClearVisit() {
         setSelectedDate('');
-        setSelectedVeterinarianId('');
     }
 
     async function handleSubmit(e: React.FormEvent) {
@@ -147,7 +114,7 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
         setLoading(true);
 
         if (hasVisitSelected && !veterinarianVisitId) {
-            setError('Selecione uma data e um veterinário para determinar a visita ou deixe em branco os campos de visita associada');
+            setError('Selecione a data da visita ou deixe o campo de visita associada em branco.');
             setLoading(false);
             return;
         }
@@ -166,6 +133,7 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                 liveAnimalId: Number(selectedAnimalId),
                 date: finalDate,
                 veterinarianVisitId: Number(veterinarianVisitId) || undefined,
+                assigneeId: Number(selectedAssigneeId) || undefined,
                 note: note || undefined
             };
             if (isEditing && castration) {
@@ -227,6 +195,19 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                                     ))}
                                 </select>
                             </div>
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Responsável</label>
+                                <select
+                                    value={selectedAssigneeId}
+                                    onChange={(e) => setSelectedAssigneeId(e.target.value ? Number(e.target.value) : '')}
+                                    className="border border-border rounded p-2 bg-white"
+                                >
+                                    <option value="">Selecione...</option>
+                                    {options.assignees.map(assignee => (
+                                        <option key={assignee.id} value={assignee.id}>{assignee.name}</option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
 
                         {/* Seleção da Visita Associada (opcional) */}
@@ -246,7 +227,7 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                                     </button>
                                 </div>
                             )}
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                 {/* Data da Visita */}
                                 <div className="flex flex-col">
                                     <label className="text-sm font-bold mb-1 text-left">Data da Visita</label>
@@ -254,7 +235,6 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                                         value={selectedDate}
                                         onChange={(e) => handleDateChange(e.target.value)}
                                         className={`border border-border rounded p-2 ${!selectedAnimalId ? 'bg-gray-100' : 'bg-white'}`}
-                                        required={!!selectedVeterinarianId}
                                         disabled={!selectedAnimalId}
                                     >
                                         <option value="">Selecione...</option>
@@ -264,28 +244,12 @@ export function CastrationFormModal({ castration, close, refresh }: CastrationFo
                                     </select>
                                 </div>
 
-                                {/* Veterinário */}
-                                <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Veterinário</label>
-                                    <select
-                                        value={selectedVeterinarianId}
-                                        onChange={(e) => handleVeterinarianChange(e.target.value ? Number(e.target.value) : '')}
-                                        className={`border border-border rounded p-2 ${!selectedAnimalId ? 'bg-gray-100' : 'bg-white'}`}
-                                        required={!!selectedDate}
-                                        disabled={!selectedAnimalId}
-                                    >
-                                        <option value="">Selecione...</option>
-                                        {filteredVeterinarians.map(v => (
-                                            <option key={v.id} value={v.id}>{v.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
                             </div>
                         </fieldset>
 
                         {/* Data da Castração */}
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="flex flex-col">
+                            <div className="flex flex-col col-span-2">
                                 <label className="text-sm font-bold mb-1 text-left">Data da Castração</label>
                                 <input
                                     type="date"

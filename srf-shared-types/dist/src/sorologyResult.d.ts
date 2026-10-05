@@ -2,6 +2,7 @@ import z from 'zod';
 export declare const sorologyResultSchema: z.ZodObject<{
     id: z.ZodNumber;
     veterinarianVisitId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     sorologyTestId: z.ZodNumber;
     sorologyAgentId: z.ZodNumber;
     cuttingPointSymbol: z.ZodString;
@@ -12,6 +13,7 @@ export declare const sorologyResultSchema: z.ZodObject<{
 }, z.z.core.$strip>;
 export declare const createSorologyResultInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     interpretationId: z.ZodNumber;
     sorologyTestId: z.ZodNumber;
     sorologyAgentId: z.ZodNumber;
@@ -22,6 +24,7 @@ export declare const createSorologyResultInputSchema: z.ZodObject<{
 }, z.z.core.$strip>;
 export declare const updateSorologyResultInputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     interpretationId: z.ZodNumber;
     sorologyTestId: z.ZodNumber;
     sorologyAgentId: z.ZodNumber;
@@ -33,6 +36,7 @@ export declare const updateSorologyResultInputSchema: z.ZodObject<{
 export declare const getAllSorologyResultOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     veterinarianVisitId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     sorologyTestId: z.ZodNumber;
     sorologyAgentId: z.ZodNumber;
     cuttingPointSymbol: z.ZodString;
@@ -46,8 +50,7 @@ export declare const getAllSorologyResultOutputSchema: z.ZodObject<{
     veterinarianVisitDateFormatted: z.ZodOptional<z.ZodString>;
     liveAnimalId: z.ZodNumber;
     liveAnimalCode: z.ZodString;
-    veterinarianId: z.ZodNumber;
-    veterinarianName: z.ZodString;
+    assigneeName: z.ZodString;
     testName: z.ZodString;
     agentName: z.ZodString;
     resultTypeName: z.ZodString;
@@ -61,10 +64,10 @@ export declare const getFormOptionsSorologyResultOutputSchema: z.ZodObject<{
             id: z.ZodNumber;
             code: z.ZodString;
         }, z.z.core.$strip>;
-        veterinarian: z.ZodObject<{
-            id: z.ZodNumber;
-            name: z.ZodString;
-        }, z.z.core.$strip>;
+    }, z.z.core.$strip>>;
+    assignees: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
     }, z.z.core.$strip>>;
     sorologyTests: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;

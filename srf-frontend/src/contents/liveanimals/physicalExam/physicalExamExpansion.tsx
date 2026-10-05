@@ -60,10 +60,10 @@ export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPh
                         <label htmlFor="date" className="ml-1 font-bold">Data da Visita</label>
                         <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    {/* Veterinário */}
+                    {/* Responsável */}
                     <div className="flex flex-col w-2/12">
-                        <label className="ml-1 font-bold">Veterinário</label>
-                        <input type="text" disabled value={item.veterinarianName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <label className="ml-1 font-bold">Responsável</label>
+                        <input type="text" disabled value={item.assigneeName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     {/* Estado Geral */}
                     <div className="flex flex-col w-5/12">
@@ -166,18 +166,18 @@ export function PhysicalExamExpansion({ item, close, refresh }: { item: GetAllPh
                 </div>
                 {/* Observações da Coleta de Sangue */}
                 <div className="flex flex-col w-full col-span-3">
-                    <label htmlFor="email" className="ml-1 font-bold">Observações da Coleta de Sangue</label>
-                    <input type="text" disabled value={item.bloodCollectionNote || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <label className="ml-1 font-bold">Observações da Coleta de Sangue</label>
+                    <textarea rows={3} disabled value={item.bloodCollectionNote || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input resize-none" />
                 </div>
                 {/* Observações do Exame Físico */}
                 <div className="flex flex-col w-full col-span-3">
-                    <label htmlFor="email" className="ml-1 font-bold">Observações do Exame Físico</label>
-                    <input type="text" disabled value={item.physicalExamNote || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <label className="ml-1 font-bold">Observações do Exame Físico</label>
+                    <textarea rows={3} disabled value={item.physicalExamNote || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input resize-none" />
                 </div>
                 {/* Observações Gerais */}
                 <div className="flex flex-col w-full col-span-3">
-                    <label htmlFor="email" className="ml-1 font-bold">Observações Gerais</label>
-                    <input type="text" disabled value={item.generalNote || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <label className="ml-1 font-bold">Observações Gerais</label>
+                    <textarea rows={3} disabled value={item.generalNote || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input resize-none" />
                 </div>
             </div>
 

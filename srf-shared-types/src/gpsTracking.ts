@@ -23,20 +23,21 @@ import z from 'zod';
 // }
 
 export const gpsTrackingSchema = z.object({
-    id: z.number().int({ error: 'ID do rastreio GPS inválido' }),
-    liveAnimalId: z.number().int({ error: 'ID do animal inválido' }),
-    trackingDeviceId: z.number().int({ error: 'ID do dispositivo de rastreamento inválido' }),
-    startDate: z.string().nonempty({ error: 'Data de instalação é obrigatória' }),
+    id: z.number().int(),
+    assigneeId: z.number().int(),
+    liveAnimalId: z.number().int(),
+    trackingDeviceId: z.number().int(),
+    startDate: z.string().nonempty(),
     endDate: z.string().nullable().optional(),
     note: z.string().nullable().optional(),
-    monitoredDays: z.number().int({ error: 'Número de dias monitorados deve ser um inteiro' }),
-    locationPoints: z.number().int({ error: 'Número de pontos de localização deve ser um inteiro' }),
-    livingArea: z.number({ error: 'Área de vida deve ser um número' }),
-    monitoringMethodId: z.number().int({ error: 'ID do método de monitoramento inválido' }),
+    monitoredDays: z.number().int(),
+    locationPoints: z.number().int(),
+    livingArea: z.number(),
+    monitoringMethodId: z.number().int(),
     rawSpreadsheetLink: z.string().nullable().optional(),
     rawSpreadsheetUpdateDate: z.string().nullable().optional(),
     editedSpreadsheetLink: z.string().nullable().optional(),
-    editedSpreadsheetUpdateDate: z.string().nullable().optional(),
+    editedSpreadsheetUpdateDate: z.string().nullable().optional()
 });
 
 export const createGpsTrackingInputSchema = gpsTrackingSchema.omit({
@@ -60,6 +61,7 @@ export const getAllGpsTrackingOutputSchema = gpsTrackingSchema.extend({
     rawSpreadsheetUpdateDateFormatted: z.string().nullable().optional(),
     editedSpreadsheetUpdateDateFormatted: z.string().nullable().optional(),
     withdrawn: z.boolean(),
+    assigneeName: z.string().nonempty()
 });
 
 export const getFormOptionsGpsTrackingOutputSchema = z.object({
@@ -76,6 +78,10 @@ export const getFormOptionsGpsTrackingOutputSchema = z.object({
         id: z.number().int(),
         description: z.string().nonempty(),
     })),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty()
+    }))
 });
 
 export type GpsTracking = z.infer<typeof gpsTrackingSchema>;

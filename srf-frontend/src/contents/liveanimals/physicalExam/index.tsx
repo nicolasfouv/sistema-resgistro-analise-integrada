@@ -29,7 +29,7 @@ export const PhysicalExamContentDefinition = {
     columns: [
         { key: 'liveAnimalCode', label: 'Código do Animal', width: 'w-2/12' },
         { key: 'veterinarianVisitDateFormatted', label: 'Data da Visita', width: 'w-2/12' },
-        { key: 'veterinarianName', label: 'Veterinário', width: 'w-2/12' },
+        { key: 'assigneeName', label: 'Responsável', width: 'w-2/12' },
         { key: 'generalConditionName', label: 'Condição Geral', width: 'w-5/12' }
         // deixar w-1/12 sobrando para ações
     ],
@@ -38,7 +38,7 @@ export const PhysicalExamContentDefinition = {
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'liveAnimalCode', label: 'Código do Animal', type: 'text' },
             { key: 'veterinarianVisitDate', label: 'Data da Visita', type: 'date' },
-            { key: 'veterinarianName', label: 'Veterinário', type: 'text' },
+            { key: 'assigneeName', label: 'Responsável', type: 'text' },
             { key: 'generalConditionId', label: 'Condição Geral', type: 'enum', options: generalConditionOptions },
             { key: 'mucousId', label: 'Mucosa', type: 'enum', options: mucousOptions },
             { key: 'hydrationId', label: 'Hidratação', type: 'enum', options: hydrationOptions },

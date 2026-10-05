@@ -55,7 +55,7 @@ export function SamplesSideDrawer({ filters, onClose }: SamplesSideDrawerProps) 
             pageFilters.push({ field: 'veterinarianVisitDate', value: { type: 'date' as const, from: date, to: date } });
         }
         pageFilters.push({ field: 'liveAnimalCode', value: { type: 'text' as const, term: first.liveAnimalCode } });
-        pageFilters.push({ field: 'veterinarianName', value: { type: 'text' as const, term: first.veterinarianName } });
+        pageFilters.push({ field: 'assigneeName', value: { type: 'text' as const, term: first.assigneeName } });
     }
     const pageUrl = `/animaisvivos/veterinario/amostras-av?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
 
@@ -120,7 +120,7 @@ export function SamplesSideDrawer({ filters, onClose }: SamplesSideDrawerProps) 
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                             <Field label="Código do Animal" value={sample.liveAnimalCode} />
                                             <Field label="Data da Visita" value={sample.veterinarianVisitDateFormatted || ''} />
-                                            <Field label="Veterinário" value={sample.veterinarianName} />
+                                            <Field label="Responsável" value={sample.assigneeName} />
                                             <Field label="Tipo da Amostra" value={sample.sampleTypeDescription} />
                                             <Field label="Status" value={sample.statusName} />
                                             <Field label="Armazenamento" value={sample.storageName} />

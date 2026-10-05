@@ -49,7 +49,7 @@ export function StoolAnalysisSideDrawer({ filters, onClose }: StoolAnalysisSideD
             pageFilters.push({ field: 'veterinarianVisitDate', value: { type: 'date' as const, from: date, to: date } });
         }
         pageFilters.push({ field: 'liveAnimalCode', value: { type: 'text' as const, term: first.liveAnimalCode } });
-        pageFilters.push({ field: 'veterinarianName', value: { type: 'text' as const, term: first.veterinarianName } });
+        pageFilters.push({ field: 'assigneeName', value: { type: 'text' as const, term: first.assigneeName } });
     }
     const pageUrl = `/animaisvivos/exameseanalises/analisefezes?filters=${encodeURIComponent(JSON.stringify(pageFilters))}`;
 
@@ -97,7 +97,7 @@ export function StoolAnalysisSideDrawer({ filters, onClose }: StoolAnalysisSideD
                                         <div className="flex flex-col items-start gap-0.5">
                                             <span className="text-sm font-bold text-text-main">{result.liveAnimalCode}</span>
                                             <span className="text-xs text-text-light-gray">
-                                                {result.veterinarianVisitDateFormatted || 'Data Indisponível'} · {result.veterinarianName}
+                                                {result.veterinarianVisitDateFormatted || 'Data Indisponível'} · {result.assigneeName}
                                             </span>
                                         </div>
                                         <span className="text-standard-blue text-xs font-bold uppercase">
@@ -115,7 +115,7 @@ export function StoolAnalysisSideDrawer({ filters, onClose }: StoolAnalysisSideD
                                             <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                                 <Field label="Código do Animal" value={result.liveAnimalCode} />
                                                 <Field label="Data da Visita" value={result.veterinarianVisitDateFormatted || ''} />
-                                                <Field label="Veterinário" value={result.veterinarianName} />
+                                                <Field label="Responsável" value={result.assigneeName} />
                                                 <Field label="Peso (Kg)" value={String(result.weight)} />
                                                 <Field label="Tecnologia de Processamento" value={result.processingTechnologyName} />
                                                 <Field label="Observações" value={result.note || 'Nenhuma observação informada.'} fullWidth />

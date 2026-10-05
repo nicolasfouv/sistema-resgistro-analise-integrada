@@ -8,8 +8,9 @@ export const InterviewContentDefinition = {
     id: 'entrevista',
     label: 'Entrevistas',
     columns: [
-        { key: 'tutorName', label: 'Tutor', width: 'w-5/12' },
-        { key: 'dateFormatted', label: 'Data da Realização', width: 'w-6/12' },
+        { key: 'tutorName', label: 'Tutor', width: 'w-3/12' },
+        { key: 'dateFormatted', label: 'Data da Realização', width: 'w-2/12' },
+        { key: 'assigneeName', label: 'Responsável', width: 'w-6/12' }
         // deixar w-1/12 sobrando para ações
     ],
     filterFields: [
@@ -17,6 +18,7 @@ export const InterviewContentDefinition = {
         { key: 'tutorName', label: 'Tutor', type: 'text' },
         { key: 'liveAnimalCodes', label: 'Código do Animal', type: 'text' },
         { key: 'date', label: 'Data da Realização', type: 'date' },
+        { key: 'assigneeName', label: 'Responsável', type: 'text' }
     ],
     rowIdField: 'id',
     renderActions: (item: GetAllInterviewOutput, isExpanded: boolean, toggle: (id: string) => void, refresh: () => void) => (

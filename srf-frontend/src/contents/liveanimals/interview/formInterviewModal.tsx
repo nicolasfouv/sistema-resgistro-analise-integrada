@@ -38,6 +38,7 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
     const [selectedDate, setSelectedDate] = useState<string>(
         interview?.date ? interview.date.split('T')[0] : ''
     );
+    const [assigneeId, setAssigneeId] = useState<number | ''>(interview?.assigneeId ?? '');
     const [note, setNote] = useState<string>(interview?.notes ?? '');
     const [answers, setAnswers] = useState<AnswerState[]>([]);
     const [animalInterviews, setAnimalInterviews] = useState<AnimalInterviewState[]>([]);
@@ -166,6 +167,7 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
         try {
             const data = {
                 tutorId: Number(selectedTutorId),
+                assigneeId: Number(assigneeId),
                 date: selectedDate,
                 notes: note || undefined,
                 answers: answers.map(a => ({
@@ -284,7 +286,7 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                         {/* Dados da Entrevista */}
                         <fieldset className="border border-border rounded p-4">
                             <legend className="text-sm font-bold text-standard-blue px-2">Dados da Entrevista</legend>
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-3 gap-4">
                                 <div className="flex flex-col">
                                     <label className="text-sm font-bold mb-1 text-left">Tutor</label>
                                     <select
@@ -308,6 +310,13 @@ export function InterviewFormModal({ interview, close, refresh }: InterviewFormM
                                         className="border border-border rounded p-2 bg-white h-10"
                                         required
                                     />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label className="text-sm font-bold mb-1 text-left">Responsável</label>
+                                    <select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white h-10" required>
+                                        <option value="">Selecione...</option>
+                                        {options.assignees.map(assignee => (<option key={assignee.id} value={assignee.id}>{assignee.name}</option>))}
+                                    </select>
                                 </div>
                             </div>
                         </fieldset>

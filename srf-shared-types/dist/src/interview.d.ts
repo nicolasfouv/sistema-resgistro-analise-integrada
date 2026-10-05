@@ -18,6 +18,8 @@ export declare const getAllInterviewOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
     canEdit: z.ZodBoolean;
     createdByMe: z.ZodBoolean;
+    assigneeId: z.ZodNumber;
+    assigneeName: z.ZodString;
     tutorId: z.ZodNumber;
     tutorName: z.ZodString;
     date: z.ZodString;
@@ -78,6 +80,10 @@ export declare const getFormOptionsInterviewOutputSchema: z.ZodObject<{
             text: z.ZodString;
         }, z.z.core.$strip>>;
     }, z.z.core.$strip>>;
+    assignees: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.z.core.$strip>>;
 }, z.z.core.$strip>;
 export declare const interviewAnswerInputSchema: z.ZodObject<{
     questionId: z.ZodNumber;
@@ -109,6 +115,7 @@ export declare const createInterviewInputSchema: z.ZodObject<{
             answerOptionId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
         }, z.z.core.$strip>>;
     }, z.z.core.$strip>>;
+    assigneeId: z.ZodNumber;
 }, z.z.core.$strip>;
 export declare const updateInterviewInputSchema: z.ZodObject<{
     tutorId: z.ZodNumber;
@@ -127,6 +134,7 @@ export declare const updateInterviewInputSchema: z.ZodObject<{
             answerOptionId: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
         }, z.z.core.$strip>>;
     }, z.z.core.$strip>>;
+    assigneeId: z.ZodNumber;
 }, z.z.core.$strip>;
 export type AnswerOutput = z.infer<typeof answerOutputSchema>;
 export type AnimalInterviewOutput = z.infer<typeof animalInterviewOutputSchema>;

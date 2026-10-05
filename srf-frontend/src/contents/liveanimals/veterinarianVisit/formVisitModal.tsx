@@ -27,7 +27,7 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
     const [options, setOptions] = useState<GetFormOptionsVeterinarianVisitOutput | null>(null);
 
     const [liveAnimalId, setLiveAnimalId] = useState<number | ''>(visit?.liveAnimalId || '');
-    const [veterinarianId, setVeterinarianId] = useState<number | ''>(visit?.veterinarianId || '');
+    const [assigneeId, setassigneeId] = useState<number | ''>(visit?.assigneeId || '');
     const [date, setDate] = useState(visit?.date ? new Date(visit.date).toISOString().slice(0, 10) : '');
     const [animalPicture, setAnimalPicture] = useState(visit?.animalPicture || '');
     const [note, setNote] = useState(visit?.note || '');
@@ -56,7 +56,7 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
             if (isEditing) {
                 const data = {
                     liveAnimalId: Number(liveAnimalId),
-                    veterinarianId: Number(veterinarianId),
+                    assigneeId: Number(assigneeId),
                     date: date,
                     animalPicture: animalPicture,
                     note: note,
@@ -69,7 +69,7 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
             } else {
                 const data = {
                     liveAnimalId: Number(liveAnimalId),
-                    veterinarianId: Number(veterinarianId),
+                    assigneeId: Number(assigneeId),
                     date: date,
                     animalPicture: animalPicture,
                     note: note,
@@ -166,15 +166,15 @@ export function VeterinarianVisitFormModal({ visit, close, refresh }: Veterinari
                             </div>
 
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Veterinário</label>
+                                <label className="text-sm font-bold mb-1 text-left">Responsável</label>
                                 <select
-                                    value={veterinarianId}
-                                    onChange={(e) => setVeterinarianId(Number(e.target.value))}
+                                    value={assigneeId}
+                                    onChange={(e) => setassigneeId(Number(e.target.value))}
                                     className="border border-border rounded p-2 bg-white"
                                     required
                                 >
                                     <option value="">Selecione...</option>
-                                    {options.veterinarians.map(v => (
+                                    {options.assignees.map(v => (
                                         <option key={v.id} value={v.id}>{v.name}</option>
                                     ))}
                                 </select>

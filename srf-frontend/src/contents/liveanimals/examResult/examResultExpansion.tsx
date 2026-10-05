@@ -43,8 +43,8 @@ export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExam
                         <input type="text" disabled value={item.veterinarianVisitDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     <div className="flex flex-col w-3/12">
-                        <label className="ml-1 font-bold">Veterinário</label>
-                        <input type="text" disabled value={item.veterinarianName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                        <label className="ml-1 font-bold">Responsável</label>
+                        <input type="text" disabled value={item.assigneeName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
                     <div className="flex flex-col w-3/12">
                         <label className="ml-1 font-bold">Interpretação</label>
@@ -57,7 +57,7 @@ export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExam
             <div className="flex gap-2 w-full text-sm">
                 <div className="flex flex-col w-full">
                     <label className="ml-1 font-bold">Observações</label>
-                    <input type="text" disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    <textarea rows={3} disabled value={item.note || 'Nenhuma observação informada'} className="mb-2 border border-border rounded px-2 py-1 text-text-input resize-none" />
                 </div>
             </div>
 
@@ -134,7 +134,7 @@ export function ExamResultExpansion({ item, close, refresh }: { item: GetAllExam
             <div className="flex justify-between items-center pb-1 mb-2 border-b border-gray-600">
                 <h3 className="font-bold text-text-main uppercase">Bioquímico</h3>
             </div>
-            <div className="gap-2 w-full text-sm grid grid-cols-4">
+            <div className="gap-2 w-full text-sm grid grid-cols-5">
                 <div key="ALT" className="flex flex-col w-full">
                     <label className="ml-1 font-bold flex items-center">ALT (U/L)
                         <img src={grayQuestionMark}

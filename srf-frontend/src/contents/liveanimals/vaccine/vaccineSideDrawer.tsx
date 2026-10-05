@@ -130,7 +130,7 @@ export function VaccineSideDrawer({ filters, onClose }: VaccineSideDrawerProps) 
                                                 </h4>
                                                 <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                                     <Field label="Data da Visita (Data da Aplicação)" value={vaccine.veterinarianVisitDateFormatted!} />
-                                                    <Field label="Veterinário" value={vaccine.veterinarianName!} />
+                                                    <Field label="Responsável" value={vaccine.assigneeName!} />
                                                 </div>
                                             </div>
                                         )}

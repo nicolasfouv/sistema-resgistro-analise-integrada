@@ -26,7 +26,7 @@ export function StoolAnalysisFormModal({ stoolAnalysis, close, refresh }: StoolA
     // Campos de seleção da visita
     const [selectedDate, setSelectedDate] = useState<string>('');
     const [selectedAnimalId, setSelectedAnimalId] = useState<number | ''>('');
-    const [selectedVeterinarianId, setSelectedVeterinarianId] = useState<number | ''>('');
+    const [selectedAssigneeId, setSelectedAssigneeId] = useState<number | ''>(stoolAnalysis?.assigneeId ?? '');
 
     // Campos da análise
     const [weight, setWeight] = useState<number | ''>(stoolAnalysis?.weight ?? '');
@@ -43,8 +43,8 @@ export function StoolAnalysisFormModal({ stoolAnalysis, close, refresh }: StoolA
                     if (matchingVisit) {
                         setSelectedDate(matchingVisit.date);
                         setSelectedAnimalId(matchingVisit.liveAnimal.id);
-                        setSelectedVeterinarianId(matchingVisit.veterinarian.id);
                     }
+                    setSelectedAssigneeId(stoolAnalysis.assigneeId);
                 }
             } catch (error) {
                 console.error(error);
@@ -57,48 +57,35 @@ export function StoolAnalysisFormModal({ stoolAnalysis, close, refresh }: StoolA
         if (!options) return [];
         let visits = options.veterinarianVisits;
         if (selectedAnimalId) visits = visits.filter(v => v.liveAnimal.id === selectedAnimalId);
-        if (selectedVeterinarianId) visits = visits.filter(v => v.veterinarian.id === selectedVeterinarianId);
         const dateSet = new Map<string, string>();
         visits.forEach(v => {
             if (!dateSet.has(v.date)) dateSet.set(v.date, new Date(v.date).toLocaleDateString('pt-BR'));
         });
         return Array.from(dateSet.entries()).map(([iso, formatted]) => ({ iso, formatted }));
-    }, [options, selectedAnimalId, selectedVeterinarianId]);
+    }, [options, selectedAnimalId]);
 
     const filteredAnimals = useMemo(() => {
         if (!options) return [];
         let visits = options.veterinarianVisits;
         if (selectedDate) visits = visits.filter(v => v.date === selectedDate);
-        if (selectedVeterinarianId) visits = visits.filter(v => v.veterinarian.id === selectedVeterinarianId);
         const map = new Map<number, string>();
         visits.forEach(v => { if (!map.has(v.liveAnimal.id)) map.set(v.liveAnimal.id, v.liveAnimal.code); });
         return Array.from(map.entries()).map(([id, code]) => ({ id, code }));
-    }, [options, selectedDate, selectedVeterinarianId]);
-
-    const filteredVeterinarians = useMemo(() => {
-        if (!options) return [];
-        let visits = options.veterinarianVisits;
-        if (selectedDate) visits = visits.filter(v => v.date === selectedDate);
-        if (selectedAnimalId) visits = visits.filter(v => v.liveAnimal.id === selectedAnimalId);
-        const map = new Map<number, string>();
-        visits.forEach(v => { if (!map.has(v.veterinarian.id)) map.set(v.veterinarian.id, v.veterinarian.name); });
-        return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
-    }, [options, selectedDate, selectedAnimalId]);
+    }, [options, selectedDate]);
 
     const veterinarianVisitId = useMemo(() => {
-        if (!options || !selectedDate || !selectedAnimalId || !selectedVeterinarianId) return null;
+        if (!options || !selectedDate || !selectedAnimalId) return null;
         const visit = options.veterinarianVisits.find(
-            v => v.date === selectedDate && v.liveAnimal.id === selectedAnimalId && v.veterinarian.id === selectedVeterinarianId
+            v => v.date === selectedDate && v.liveAnimal.id === selectedAnimalId
         );
         return visit?.id ?? null;
-    }, [options, selectedDate, selectedAnimalId, selectedVeterinarianId]);
+    }, [options, selectedDate, selectedAnimalId]);
 
     function handleDateChange(value: string) {
         setSelectedDate(value);
         if (value) {
             const mv = options?.veterinarianVisits.filter(v => v.date === value) || [];
             if (selectedAnimalId && !mv.some(v => v.liveAnimal.id === selectedAnimalId)) setSelectedAnimalId('');
-            if (selectedVeterinarianId && !mv.some(v => v.veterinarian.id === selectedVeterinarianId)) setSelectedVeterinarianId('');
         }
     }
 
@@ -107,23 +94,13 @@ export function StoolAnalysisFormModal({ stoolAnalysis, close, refresh }: StoolA
         if (value) {
             const mv = options?.veterinarianVisits.filter(v => v.liveAnimal.id === value) || [];
             if (selectedDate && !mv.some(v => v.date === selectedDate)) setSelectedDate('');
-            if (selectedVeterinarianId && !mv.some(v => v.veterinarian.id === selectedVeterinarianId)) setSelectedVeterinarianId('');
-        }
-    }
-
-    function handleVeterinarianChange(value: number | '') {
-        setSelectedVeterinarianId(value);
-        if (value) {
-            const mv = options?.veterinarianVisits.filter(v => v.veterinarian.id === value) || [];
-            if (selectedDate && !mv.some(v => v.date === selectedDate)) setSelectedDate('');
-            if (selectedAnimalId && !mv.some(v => v.liveAnimal.id === selectedAnimalId)) setSelectedAnimalId('');
         }
     }
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         if (!veterinarianVisitId) {
-            setError('Selecione uma data, um animal e um veterinário para determinar a visita.');
+            setError('Selecione uma data e um animal para determinar a visita.');
             return;
         }
         setLoading(true);
@@ -131,6 +108,7 @@ export function StoolAnalysisFormModal({ stoolAnalysis, close, refresh }: StoolA
         try {
             const data = {
                 veterinarianVisitId: Number(veterinarianVisitId),
+                assigneeId: Number(selectedAssigneeId),
                 weight: Number(weight),
                 processingTechnologyId: Number(processingTechnologyId),
                 note: note || null
@@ -172,7 +150,7 @@ export function StoolAnalysisFormModal({ stoolAnalysis, close, refresh }: StoolA
                         {/* Visita Associada */}
                         <fieldset className="border border-border rounded p-4">
                             <legend className="text-sm font-bold text-standard-blue px-2">Visita Associada</legend>
-                            <div className="grid grid-cols-3 gap-4">
+                            <div className="grid grid-cols-2 gap-4">
                                 <div className="flex flex-col">
                                     <label className="text-sm font-bold mb-1 text-left">Código do Animal</label>
                                     <select value={selectedAnimalId} onChange={(e) => handleAnimalChange(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white" required>
@@ -187,18 +165,18 @@ export function StoolAnalysisFormModal({ stoolAnalysis, close, refresh }: StoolA
                                         {filteredDates.map(d => (<option key={d.iso} value={d.iso}>{d.formatted}</option>))}
                                     </select>
                                 </div>
-                                <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Veterinário</label>
-                                    <select value={selectedVeterinarianId} onChange={(e) => handleVeterinarianChange(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white" required>
-                                        <option value="">Selecione...</option>
-                                        {filteredVeterinarians.map(v => (<option key={v.id} value={v.id}>{v.name}</option>))}
-                                    </select>
-                                </div>
                             </div>
                         </fieldset>
 
                         {/* Campos da análise */}
                         <div className="grid grid-cols-3 gap-4">
+                            <div className="flex flex-col">
+                                <label className="text-sm font-bold mb-1 text-left">Responsável</label>
+                                <select value={selectedAssigneeId} onChange={(e) => setSelectedAssigneeId(e.target.value ? Number(e.target.value) : '')} className="border border-border rounded p-2 bg-white" required>
+                                    <option value="">Selecione...</option>
+                                    {options.assignees.map(assignee => (<option key={assignee.id} value={assignee.id}>{assignee.name}</option>))}
+                                </select>
+                            </div>
                             <div className="flex flex-col">
                                 <label className="text-sm font-bold mb-1 text-left">Peso das Fezes (g)</label>
                                 <input type="number" step="0.01" min="0" value={weight} onChange={(e) => setWeight(e.target.value ? Number(e.target.value) : '')}

@@ -28,15 +28,17 @@ export const NecropsyContentDefinition = {
     id: 'necropsia', //formId
     label: 'Necrópsias',
     columns: [
-        { key: 'deadAnimalCode', label: 'Código do Animal', width: 'w-4/12' },
+        { key: 'deadAnimalCode', label: 'Código do Animal', width: 'w-3/12' },
         { key: 'performedDateFormatted', label: 'Data da Realização', width: 'w-3/12' },
-        { key: 'identifiedGenderName', label: 'Gênero Identificado', width: 'w-4/12' }
+        { key: 'identifiedGenderName', label: 'Gênero Identificado', width: 'w-2/12' },
+        { key: 'assigneeName', label: 'Responsável', width: 'w-3/12' }
         // deixar w-1/12 sobrando para ações
     ],
     get filterFields() {
         return [
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'deadAnimalCode', label: 'Código do Animal', type: 'text' },
+            { key: 'assigneeName', label: 'Responsável', type: 'text' },
             { key: 'identifiedGenderName', label: 'Gênero Identificado', type: 'enum', options: identifiedGendersOptions },
             { key: 'performedDate', label: 'Data da Realização', type: 'date' },
             { key: 'bodyConditionName', label: 'Estado do Corpo', type: 'enum', options: bodyConditionsOptions },

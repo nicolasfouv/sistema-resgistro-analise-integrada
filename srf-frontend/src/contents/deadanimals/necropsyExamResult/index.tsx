@@ -54,7 +54,8 @@ export const EctoparasiteAnalysisContentDefinition = {
             { key: 'suspiciousAgentName', label: 'Agente Suspeito', type: 'enum', options: suspiciousAgentOptions },
             { key: 'cpcrMethodName', label: 'Método CPCR', type: 'enum', options: cpcrMethodOptions },
             { key: 'cpcrStatusName', label: 'Status CPCR', type: 'enum', options: cpcrStatusOptions },
-            { key: 'qpcrStatusName', label: 'Status QPCR', type: 'enum', options: qpcrStatusOptions }
+            { key: 'qpcrStatusName', label: 'Status QPCR', type: 'enum', options: qpcrStatusOptions },
+            { key: 'assigneeName', label: 'Responsável', type: 'text' }
         ];
     },
     rowIdField: 'uniqueId',

@@ -21,17 +21,18 @@ import z from 'zod';
 //   @@map("exame_fisico")
 // }
 export const physicalExamSchema = z.object({
-    id: z.number().int({ error: 'ID do exame físico inválido' }),
-    veterinarianVisitId: z.number().int({ error: 'ID da visita veterinária inválido' }),
-    generalConditionId: z.number().int({ error: 'ID da condição geral inválido' }),
-    fr: z.string().nonempty({ error: 'FR é obrigatória' }),
-    fc: z.number().int({ error: 'FC deve ser um número inteiro' }),
-    tempRectal: z.number({ error: 'Temperatura retal deve ser um número' }),
-    mucousId: z.number().int({ error: 'ID da mucosa inválido' }),
-    tpc: z.number().int({ error: 'TPC deve ser um número inteiro' }),
-    hydrationId: z.number().int({ error: 'ID da hidratação inválido' }),
-    weight: z.number({ error: 'Peso deve ser um número' }),
-    score: z.number().int({ error: 'Score deve ser um número inteiro' }),
+    id: z.number().int(),
+    veterinarianVisitId: z.number().int(),
+    assigneeId: z.number().int(),
+    generalConditionId: z.number().int(),
+    fr: z.string().nonempty(),
+    fc: z.number().int(),
+    tempRectal: z.number(),
+    mucousId: z.number().int(),
+    tpc: z.number().int(),
+    hydrationId: z.number().int(),
+    weight: z.number(),
+    score: z.number().int(),
     bloodCollectionNote: z.string().optional(),
     physicalExamNote: z.string().optional(),
     generalNote: z.string().optional()
@@ -52,8 +53,7 @@ export const getAllPhysicalExamOutputSchema = physicalExamSchema.extend({
     hydrationName: z.string().nonempty(),
     liveAnimalId: z.number().int(),
     liveAnimalCode: z.string().nonempty(),
-    veterinarianId: z.number().int(),
-    veterinarianName: z.string().nonempty()
+    assigneeName: z.string().nonempty()
 });
 export const getFormOptionsPhysicalExamOutputSchema = z.object({
     veterinarianVisits: z.array(z.object({
@@ -62,11 +62,11 @@ export const getFormOptionsPhysicalExamOutputSchema = z.object({
         liveAnimal: z.object({
             id: z.number().int(),
             code: z.string().nonempty()
-        }),
-        veterinarian: z.object({
-            id: z.number().int(),
-            name: z.string().nonempty()
         })
+    })),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty()
     })),
     generalConditions: z.array(z.object({
         id: z.number().int(),

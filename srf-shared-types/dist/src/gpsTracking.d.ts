@@ -1,6 +1,7 @@
 import z from 'zod';
 export declare const gpsTrackingSchema: z.ZodObject<{
     id: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     liveAnimalId: z.ZodNumber;
     trackingDeviceId: z.ZodNumber;
     startDate: z.ZodString;
@@ -17,6 +18,7 @@ export declare const gpsTrackingSchema: z.ZodObject<{
 }, z.z.core.$strip>;
 export declare const createGpsTrackingInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     trackingDeviceId: z.ZodNumber;
     startDate: z.ZodString;
@@ -32,6 +34,7 @@ export declare const createGpsTrackingInputSchema: z.ZodObject<{
 }, z.z.core.$strip>;
 export declare const updateGpsTrackingInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     trackingDeviceId: z.ZodNumber;
     startDate: z.ZodString;
@@ -47,6 +50,7 @@ export declare const updateGpsTrackingInputSchema: z.ZodObject<{
 }, z.z.core.$strip>;
 export declare const getAllGpsTrackingOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
+    assigneeId: z.ZodNumber;
     liveAnimalId: z.ZodNumber;
     trackingDeviceId: z.ZodNumber;
     startDate: z.ZodString;
@@ -72,6 +76,7 @@ export declare const getAllGpsTrackingOutputSchema: z.ZodObject<{
     rawSpreadsheetUpdateDateFormatted: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     editedSpreadsheetUpdateDateFormatted: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     withdrawn: z.ZodBoolean;
+    assigneeName: z.ZodString;
 }, z.z.core.$strip>;
 export declare const getFormOptionsGpsTrackingOutputSchema: z.ZodObject<{
     liveAnimals: z.ZodArray<z.ZodObject<{
@@ -86,6 +91,10 @@ export declare const getFormOptionsGpsTrackingOutputSchema: z.ZodObject<{
     monitoringMethods: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         description: z.ZodString;
+    }, z.z.core.$strip>>;
+    assignees: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
     }, z.z.core.$strip>>;
 }, z.z.core.$strip>;
 export type GpsTracking = z.infer<typeof gpsTrackingSchema>;

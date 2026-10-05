@@ -27,7 +27,6 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
     // Campos de seleção da visita (dependentes entre si)
     const [selectedDate, setSelectedDate] = useState<string>('');
     const [selectedAnimalId, setSelectedAnimalId] = useState<number | ''>('');
-    const [selectedVeterinarianId, setSelectedVeterinarianId] = useState<number | ''>('');
 
     // Campos do formulário
     const [sampleTypeId, setSampleTypeId] = useState<number | ''>(sample?.sampleTypeId || '');
@@ -59,7 +58,6 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                     if (matchingVisit) {
                         setSelectedDate(matchingVisit.date);
                         setSelectedAnimalId(matchingVisit.liveAnimal.id);
-                        setSelectedVeterinarianId(matchingVisit.veterinarian.id);
                     }
                 }
             } catch (error) {
@@ -69,12 +67,11 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
         loadOptions();
     }, []);
 
-    // Datas disponíveis - filtradas pelo animal e veterinário se selecionados
+    // Datas disponíveis para o animal selecionado
     const filteredDates = useMemo(() => {
         if (!options) return [];
         let visits = options.veterinarianVisits;
         if (selectedAnimalId) visits = visits.filter(v => v.liveAnimal.id === selectedAnimalId);
-        if (selectedVeterinarianId) visits = visits.filter(v => v.veterinarian.id === selectedVeterinarianId);
 
         const dateSet = new Map<string, string>();
         visits.forEach(v => {
@@ -84,14 +81,13 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
             }
         });
         return Array.from(dateSet.entries()).map(([iso, formatted]) => ({ iso: iso, formatted: formatted }));
-    }, [options, selectedAnimalId, selectedVeterinarianId]);
+    }, [options, selectedAnimalId]);
 
-    // Animais disponíveis - filtrados pela data e veterinário se selecionados
+    // Animais disponíveis para a data selecionada
     const filteredAnimals = useMemo(() => {
         if (!options) return [];
         let visits = options.veterinarianVisits;
         if (selectedDate) visits = visits.filter(v => v.date === selectedDate);
-        if (selectedVeterinarianId) visits = visits.filter(v => v.veterinarian.id === selectedVeterinarianId);
 
         // Animais únicos
         const animalMap = new Map<number, string>();
@@ -101,40 +97,22 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
             }
         });
         return Array.from(animalMap.entries()).map(([id, code]) => ({ id: id, code: code }));
-    }, [options, selectedDate, selectedVeterinarianId]);
-
-    // Veterinários disponíveis - filtrados pela data e animal se selecionados
-    const filteredVeterinarians = useMemo(() => {
-        if (!options) return [];
-        let visits = options.veterinarianVisits;
-        if (selectedDate) visits = visits.filter(v => v.date === selectedDate);
-        if (selectedAnimalId) visits = visits.filter(v => v.liveAnimal.id === selectedAnimalId);
-
-        // Veterinários únicos
-        const vetMap = new Map<number, string>();
-        visits.forEach(v => {
-            if (!vetMap.has(v.veterinarian.id)) {
-                vetMap.set(v.veterinarian.id, v.veterinarian.name);
-            }
-        });
-        return Array.from(vetMap.entries()).map(([id, name]) => ({ id: id, name: name }));
-    }, [options, selectedDate, selectedAnimalId]);
+    }, [options, selectedDate]);
 
     // Obter o id da visita veterinária
     const veterinarianVisitId = useMemo(() => {
-        if (!options || !selectedDate || !selectedAnimalId || !selectedVeterinarianId) return null;
+        if (!options || !selectedDate || !selectedAnimalId) return null;
         const visit = options.veterinarianVisits.find(
-            v => v.date === selectedDate && v.liveAnimal.id === selectedAnimalId && v.veterinarian.id === selectedVeterinarianId
+            v => v.date === selectedDate && v.liveAnimal.id === selectedAnimalId
         );
         return visit?.id ?? null;
-    }, [options, selectedDate, selectedAnimalId, selectedVeterinarianId]);
+    }, [options, selectedDate, selectedAnimalId]);
 
     function handleDateChange(value: string) {
         setSelectedDate(value);
         if (value) {
             const matchingVisits = options?.veterinarianVisits.filter(v => v.date === value) || [];
             if (selectedAnimalId && !matchingVisits.some(v => v.liveAnimal.id === selectedAnimalId)) setSelectedAnimalId('');
-            if (selectedVeterinarianId && !matchingVisits.some(v => v.veterinarian.id === selectedVeterinarianId)) setSelectedVeterinarianId('');
         }
     }
 
@@ -143,16 +121,6 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
         if (value) {
             const matchingVisits = options?.veterinarianVisits.filter(v => v.liveAnimal.id === value) || [];
             if (selectedDate && !matchingVisits.some(v => v.date === selectedDate)) setSelectedDate('');
-            if (selectedVeterinarianId && !matchingVisits.some(v => v.veterinarian.id === selectedVeterinarianId)) setSelectedVeterinarianId('');
-        }
-    }
-
-    function handleVeterinarianChange(value: number | '') {
-        setSelectedVeterinarianId(value);
-        if (value) {
-            const matchingVisits = options?.veterinarianVisits.filter(v => v.veterinarian.id === value) || [];
-            if (selectedDate && !matchingVisits.some(v => v.date === selectedDate)) setSelectedDate('');
-            if (selectedAnimalId && !matchingVisits.some(v => v.liveAnimal.id === selectedAnimalId)) setSelectedAnimalId('');
         }
     }
 
@@ -174,7 +142,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         if (!veterinarianVisitId) {
-            setError('Selecione uma data, um animal e um veterinário para determinar a visita.');
+            setError('Selecione uma data e um animal para determinar a visita.');
             return;
         }
         setLoading(true);
@@ -245,7 +213,7 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                         {/* Seleção da Visita Associada */}
                         <fieldset className="border border-border rounded p-4">
                             <legend className="text-sm font-bold text-standard-blue px-2">Visita Associada</legend>
-                            <div className="grid grid-cols-3 gap-4">
+                            <div className="grid grid-cols-2 gap-4">
                                 {/* Animal */}
                                 <div className="flex flex-col">
                                     <label className="text-sm font-bold mb-1 text-left">Código do Animal</label>
@@ -278,21 +246,6 @@ export function VeterinarianSampleFormModal({ sample, close, refresh }: Veterina
                                     </select>
                                 </div>
 
-                                {/* Veterinário */}
-                                <div className="flex flex-col">
-                                    <label className="text-sm font-bold mb-1 text-left">Veterinário</label>
-                                    <select
-                                        value={selectedVeterinarianId}
-                                        onChange={(e) => handleVeterinarianChange(e.target.value ? Number(e.target.value) : '')}
-                                        className="border border-border rounded p-2 bg-white"
-                                        required
-                                    >
-                                        <option value="">Selecione...</option>
-                                        {filteredVeterinarians.map(v => (
-                                            <option key={v.id} value={v.id}>{v.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
                             </div>
                         </fieldset>
 

@@ -13,12 +13,13 @@ import z from 'zod';
 //   @@map("aplicacao_vacina")
 // }
 export const vaccineSchema = z.object({
-    id: z.number().int({ error: 'ID da vacina inválido' }),
-    liveAnimalId: z.number().int({ error: 'ID do animal vivo inválido' }),
-    vaccineId: z.number().int({ error: 'ID da vacina inválido' }),
-    applicationDate: z.string().nonempty({ error: 'Data da aplicação é obrigatória' }),
-    veterinarianVisitId: z.number().int({ error: 'ID da visita veterinária inválido' }).optional(),
-    vaccineTypeId: z.number().int({ error: 'ID do tipo da vacina inválido' })
+    id: z.number().int(),
+    liveAnimalId: z.number().int(),
+    vaccineId: z.number().int(),
+    applicationDate: z.string().nonempty(),
+    veterinarianVisitId: z.number().int().optional(),
+    assigneeId: z.number().int(),
+    vaccineTypeId: z.number().int()
 });
 export const createVaccineInputSchema = vaccineSchema.omit({
     id: true
@@ -33,7 +34,7 @@ export const getAllVaccineOutputSchema = vaccineSchema.extend({
     vaccineName: z.string(),
     vaccineTypeName: z.string(),
     veterinarianVisitId: z.number().int().optional(),
-    veterinarianName: z.string().optional(),
+    assigneeName: z.string().optional(),
     veterinarianVisitDate: z.string().optional(),
     veterinarianVisitDateFormatted: z.string().optional(),
     applicationDateFormatted: z.string().optional()
@@ -49,11 +50,11 @@ export const getFormOptionsVaccineOutputSchema = z.object({
         liveAnimal: z.object({
             id: z.number().int(),
             code: z.string().nonempty()
-        }),
-        veterinarian: z.object({
-            id: z.number().int(),
-            name: z.string().nonempty()
         })
+    })),
+    assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty()
     })),
     vaccines: z.array(z.object({
         id: z.number().int(),

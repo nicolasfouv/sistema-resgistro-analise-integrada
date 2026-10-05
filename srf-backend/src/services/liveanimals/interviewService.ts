@@ -16,6 +16,7 @@ export class InterviewService {
         const interviews = await prisma.tutorInterview.findMany({
             select: {
                 id: true,
+                assignee: { select: { id: true, name: true } },
                 tutorId: true,
                 tutor: { select: { id: true, name: true } },
                 date: true,
@@ -111,6 +112,8 @@ export class InterviewService {
                     createdByMe: creatorMap.get(String(i.id)) === requesterId,
                     tutorId: i.tutorId,
                     tutorName: i.tutor.name,
+                    assigneeId: i.assignee.id,
+                    assigneeName: i.assignee.name,
                     date: i.date.toISOString(),
                     notes: i.notes || undefined,
                     tutorAnswers: tutorAnswers,
@@ -124,6 +127,11 @@ export class InterviewService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsInterviewOutput> {
+        const assignees = await prisma.veterinarian.findMany({
+            select: { id: true, name: true },
+            orderBy: { name: 'asc' }
+        });
+
         const tutors = await prisma.tutor.findMany({
             select: { id: true, name: true },
             orderBy: { name: 'asc' }
@@ -163,7 +171,8 @@ export class InterviewService {
         });
 
         return {
-            tutors: tutors.map(t => ({ id: t.id, name: t.name })),
+            assignees: assignees,
+            tutors: tutors,
             tutorQuestions: tutorQuestions.map(q => ({
                 id: q.id,
                 text: q.text,
@@ -203,6 +212,7 @@ export class InterviewService {
             // Cria a entrevista do tutor
             const interview = await tx.tutorInterview.create({
                 data: {
+                    assigneeId: data.assigneeId,
                     tutorId: data.tutorId,
                     date: new Date(data.date),
                     notes: data.notes || null
@@ -281,6 +291,7 @@ export class InterviewService {
             const interview = await tx.tutorInterview.update({
                 where: { id: recordId },
                 data: {
+                    assigneeId: data.assigneeId,
                     tutorId: data.tutorId,
                     date: new Date(data.date),
                     notes: data.notes || null

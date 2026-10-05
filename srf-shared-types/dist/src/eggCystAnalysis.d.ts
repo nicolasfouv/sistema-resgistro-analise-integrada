@@ -4,16 +4,19 @@ export declare const eggCystAnalysisSchema: z.ZodObject<{
     stoolAnalysisId: z.ZodNumber;
     eggCystSpecieId: z.ZodNumber;
     quantity: z.ZodNumber;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    note: z.ZodOptional<z.ZodString>;
+    assigneeId: z.ZodNumber;
 }, z.z.core.$strip>;
 export declare const createEggCystAnalysisInputSchema: z.ZodObject<{
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    assigneeId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodString>;
     stoolAnalysisId: z.ZodNumber;
     eggCystSpecieId: z.ZodNumber;
     quantity: z.ZodNumber;
 }, z.z.core.$strip>;
 export declare const updateEggCystAnalysisInputSchema: z.ZodObject<{
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    assigneeId: z.ZodNumber;
+    note: z.ZodOptional<z.ZodString>;
     stoolAnalysisId: z.ZodNumber;
     eggCystSpecieId: z.ZodNumber;
     quantity: z.ZodNumber;
@@ -23,7 +26,8 @@ export declare const getAllEggCystAnalysisOutputSchema: z.ZodObject<{
     stoolAnalysisId: z.ZodNumber;
     eggCystSpecieId: z.ZodNumber;
     quantity: z.ZodNumber;
-    note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    note: z.ZodOptional<z.ZodString>;
+    assigneeId: z.ZodNumber;
     canEdit: z.ZodBoolean;
     createdByMe: z.ZodBoolean;
     veterinarianVisitDate: z.ZodString;
@@ -31,9 +35,8 @@ export declare const getAllEggCystAnalysisOutputSchema: z.ZodObject<{
     veterinarianVisitId: z.ZodNumber;
     liveAnimalId: z.ZodNumber;
     liveAnimalCode: z.ZodString;
-    veterinarianId: z.ZodNumber;
-    veterinarianName: z.ZodString;
     eggCystSpecieName: z.ZodString;
+    assigneeName: z.ZodString;
 }, z.z.core.$strip>;
 export declare const getFormOptionsEggCystAnalysisOutputSchema: z.ZodObject<{
     stoolAnalyses: z.ZodArray<z.ZodObject<{
@@ -45,13 +48,13 @@ export declare const getFormOptionsEggCystAnalysisOutputSchema: z.ZodObject<{
                 id: z.ZodNumber;
                 code: z.ZodString;
             }, z.z.core.$strip>;
-            veterinarian: z.ZodObject<{
-                id: z.ZodNumber;
-                name: z.ZodString;
-            }, z.z.core.$strip>;
         }, z.z.core.$strip>;
     }, z.z.core.$strip>>;
     eggCystSpecies: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.z.core.$strip>>;
+    assignees: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
     }, z.z.core.$strip>>;

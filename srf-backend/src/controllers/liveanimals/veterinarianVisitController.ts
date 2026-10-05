@@ -37,10 +37,10 @@ class VeterinarianVisitController {
                 return res.status(403).json({ error: permissionCheck.reason });
             }
 
-            const { liveAnimalId, veterinarianId, date, animalPicture, note, bodyMeasurements } = createVeterinarianVisitInputSchema.parse(req.body);
+            const data = createVeterinarianVisitInputSchema.parse(req.body);
 
             const visit = await this.veterinarianVisitService.create(
-                { liveAnimalId, veterinarianId, date, animalPicture, note, bodyMeasurements },
+                data,
                 req.userId
             );
             return res.status(201).json(visit);
@@ -56,11 +56,11 @@ class VeterinarianVisitController {
         try {
             // sem verificação de permissão
             const { id } = req.params;
-            const { liveAnimalId, veterinarianId, date, animalPicture, note, bodyMeasurements } = updateVeterinarianVisitInputSchema.parse(req.body);
+            const data = updateVeterinarianVisitInputSchema.parse(req.body);
 
             const visit = await this.veterinarianVisitService.update(
                 Number(id),
-                { liveAnimalId, veterinarianId, date, animalPicture, note, bodyMeasurements },
+                data,
                 req.userId
             );
             return res.status(200).json(visit);

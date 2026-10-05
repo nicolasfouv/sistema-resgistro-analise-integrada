@@ -16,6 +16,7 @@ export class HelminthAnalysisService {
         const analysis = await prisma.helminthAnalysis.findMany({
             select: {
                 id: true,
+                assignee: { select: { id: true, name: true } },
                 necropsy: {
                     select: {
                         id: true,
@@ -59,6 +60,8 @@ export class HelminthAnalysisService {
                 id: a.id,
                 canEdit: permission.canEdit,
                 createdByMe: creatorMap.get(String(a.id)) === userId,
+                assigneeId: a.assignee.id,
+                assigneeName: a.assignee.name,
                 necropsyId: a.necropsy.id,
                 necropsyDate: a.necropsy.performedDate.toISOString(),
                 deadAnimalId: a.necropsy.deadAnimal.id,
@@ -77,7 +80,7 @@ export class HelminthAnalysisService {
     }
 
     async getFormOptions(): Promise<GetFormOptionsHelminthAnalysisOutput> {
-        const [necropsies, helminthSpecies, locations] = await Promise.all([
+        const [necropsies, assignees, helminthSpecies, locations] = await Promise.all([
             prisma.necropsy.findMany({
                 select: {
                     id: true,
@@ -85,6 +88,10 @@ export class HelminthAnalysisService {
                     deadAnimal: { select: { id: true, code: true } }
                 },
                 orderBy: { performedDate: 'desc' }
+            }),
+            prisma.veterinarian.findMany({
+                select: { id: true, name: true },
+                orderBy: { name: 'asc' }
             }),
             prisma.helminthSpecie.findMany({
                 select: {
@@ -111,8 +118,9 @@ export class HelminthAnalysisService {
                     code: n.deadAnimal.code
                 }
             })),
-            helminthSpecies,
-            locations
+            assignees: assignees,
+            helminthSpecies: helminthSpecies,
+            locations: locations
         }
     }
 
@@ -137,6 +145,7 @@ export class HelminthAnalysisService {
             const analysis = await tx.helminthAnalysis.create({
                 data: {
                     necropsyId: data.necropsyId,
+                    assigneeId: data.assigneeId,
                     helminthSpecieId: data.helminthSpecieId,
                     maleQuantity: data.maleQuantity,
                     femaleQuantity: data.femaleQuantity,
@@ -202,6 +211,7 @@ export class HelminthAnalysisService {
                 },
                 data: {
                     necropsyId: data.necropsyId,
+                    assigneeId: data.assigneeId,
                     helminthSpecieId: data.helminthSpecieId,
                     maleQuantity: data.maleQuantity,
                     femaleQuantity: data.femaleQuantity,
