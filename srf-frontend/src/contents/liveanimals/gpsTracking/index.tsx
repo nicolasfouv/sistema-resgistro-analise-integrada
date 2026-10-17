@@ -5,6 +5,7 @@ import { GpsTrackingToolBar } from "./gpsTrackingToolBar";
 import { GpsTrackingExpansion } from "./gpsTrackingExpansion";
 
 let trackingDeviceOptions: { value: string | number; label: string }[] = [];
+let stageOptions: { value: string | number; label: string }[] = [];
 let optionsLoaded = false;
 
 async function loadFilterOptions() {
@@ -12,6 +13,7 @@ async function loadFilterOptions() {
     try {
         const options = await getGpsTrackingFormOptions();
         trackingDeviceOptions = options.trackingDevices.map(td => ({ value: td.id, label: `${td.brand} ${td.serialNumber}` }));
+        stageOptions = options.stages.map(s => ({ value: s.id, label: s.name }));
         optionsLoaded = true;
     } catch (error) {
         console.error('Falha ao carregar opções de filtro:', error);
@@ -24,7 +26,7 @@ export const GpsTrackingContentDefinition = {
     columns: [
         { key: 'liveAnimalCode', label: 'Código do Animal', width: 'w-3/12' },
         { key: 'assigneeName', label: 'Responsável', width: 'w-3/12' },
-        { key: 'trackingDeviceBrandSerialNumber', label: 'Dispositivo de Rastreamento', width: 'w-5/12' }
+        { key: 'stageName', label: 'Etapa', width: 'w-5/12' },
         // deixar w-1/12 sobrando para ações
     ],
     get filterFields() {
@@ -32,6 +34,7 @@ export const GpsTrackingContentDefinition = {
             { key: 'createdByMe', label: 'Criados por mim', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },
             { key: 'liveAnimalCode', label: 'Código do Animal', type: 'text' },
             { key: 'assigneeName', label: 'Responsável', type: 'text' },
+            { key: 'stageName', label: 'Etapa', type: 'enum', options: stageOptions },
             { key: 'trackingDeviceId', label: 'Dispositivo de Rastreamento', type: 'enum', options: trackingDeviceOptions },
             { key: 'startDate', label: 'Data de Instalação', type: 'date' },
             { key: 'withdrawn', label: 'Retirada', type: 'boolean', trueLabel: 'Sim', falseLabel: 'Não' },

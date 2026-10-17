@@ -219,6 +219,7 @@ model gpsTracking {
   id                          Int              @id @default(autoincrement())
   assigneeId                  Int              @map("id_responsavel")
   liveAnimalId                Int              @unique @map("id_animal_vivo")
+  stageId                     Int              @map("id_etapa")
   trackingDeviceId            Int              @map("id_dispositivo_rastreio")
   startDate                   DateTime         @map("data_inicio") @db.DateTime(0)
   endDate                     DateTime?        @map("data_fim") @db.DateTime(0)
@@ -235,11 +236,21 @@ model gpsTracking {
   liveAnimal                  liveAnimal       @relation(fields: [liveAnimalId], references: [id])
   trackingDevice              trackingDevice   @relation(fields: [trackingDeviceId], references: [id])
   monitoringMethod            monitoringMethod @relation(fields: [monitoringMethodId], references: [id])
+  enumStage                   enum_stage       @relation(fields: [stageId], references: [id])
 
   @@index([assigneeId], map: "rastreio_gps_id_responsavel_fkey")
   @@index([trackingDeviceId], map: "rastreio_gps_id_dispositivo_rastreio_fkey")
   @@index([monitoringMethodId], map: "rastreio_gps_id_metodo_monitoramento_fkey")
+  @@index([stageId], map: "rastreio_gps_id_etapa_fkey")
   @@map("rastreio_gps")
+}
+
+model enum_stage {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique @map("nome")
+  gpsTracking gpsTracking[]
+
+  @@map("enum_etapa")
 }
 
 model monitoringMethod {
@@ -403,18 +414,18 @@ model castration {
 }
 
 model deworming {
-  id          Int         @id @default(autoincrement())
-  liveAnimalId Int        @unique(map: "vermifugacao_id_animal_vivo_key") @map("id_animal_vivo")
-  assigneeId  Int         @map("id_responsavel")
-  veterinarianVisitId Int? @unique @map("id_visita_veterinaria")
-  startDate   DateTime    @map("data_inicio") @db.DateTime(0)
-  endDate     DateTime?   @map("data_fim") @db.DateTime(0)
-  medicationId Int        @map("id_medicamento")
-  note        String?     @map("observacao")
-  liveAnimal  liveAnimal  @relation(fields: [liveAnimalId], references: [id])
-  assignee    veterinarian @relation(fields: [assigneeId], references: [id])
-  veterinarianVisit veterinarianVisit? @relation(fields: [veterinarianVisitId], references: [id])
-  medication  medication  @relation(fields: [medicationId], references: [id])
+  id                  Int                @id @default(autoincrement())
+  liveAnimalId        Int                @unique(map: "vermifugacao_id_animal_vivo_key") @map("id_animal_vivo")
+  assigneeId          Int                @map("id_responsavel")
+  veterinarianVisitId Int?               @unique @map("id_visita_veterinaria")
+  startDate           DateTime           @map("data_inicio") @db.DateTime(0)
+  endDate             DateTime?          @map("data_fim") @db.DateTime(0)
+  medicationId        Int                @map("id_medicamento")
+  note                String?            @map("observacao")
+  liveAnimal          liveAnimal         @relation(fields: [liveAnimalId], references: [id])
+  assignee            veterinarian       @relation(fields: [assigneeId], references: [id])
+  veterinarianVisit   veterinarianVisit? @relation(fields: [veterinarianVisitId], references: [id])
+  medication          medication         @relation(fields: [medicationId], references: [id])
 
   @@index([assigneeId], map: "vermifugacao_id_responsavel_fkey")
   @@index([medicationId], map: "vermifugacao_id_medicamento_fkey")
@@ -422,8 +433,8 @@ model deworming {
 }
 
 model medication {
-  id        Int         @id @default(autoincrement())
-  name      String      @map("nome")
+  id         Int         @id @default(autoincrement())
+  name       String      @map("nome")
   dewormings deworming[]
 
   @@map("medicamento")

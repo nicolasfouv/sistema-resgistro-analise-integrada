@@ -4,6 +4,7 @@ export declare const gpsTrackingSchema: z.ZodObject<{
     assigneeId: z.ZodNumber;
     liveAnimalId: z.ZodNumber;
     trackingDeviceId: z.ZodNumber;
+    stageId: z.ZodNumber;
     startDate: z.ZodString;
     endDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
@@ -23,6 +24,7 @@ export declare const createGpsTrackingInputSchema: z.ZodObject<{
     startDate: z.ZodString;
     endDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     trackingDeviceId: z.ZodNumber;
+    stageId: z.ZodNumber;
     monitoredDays: z.ZodNumber;
     locationPoints: z.ZodNumber;
     livingArea: z.ZodNumber;
@@ -39,6 +41,7 @@ export declare const updateGpsTrackingInputSchema: z.ZodObject<{
     startDate: z.ZodString;
     endDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     trackingDeviceId: z.ZodNumber;
+    stageId: z.ZodNumber;
     monitoredDays: z.ZodNumber;
     locationPoints: z.ZodNumber;
     livingArea: z.ZodNumber;
@@ -53,6 +56,7 @@ export declare const getAllGpsTrackingOutputSchema: z.ZodObject<{
     assigneeId: z.ZodNumber;
     liveAnimalId: z.ZodNumber;
     trackingDeviceId: z.ZodNumber;
+    stageId: z.ZodNumber;
     startDate: z.ZodString;
     endDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     note: z.ZodOptional<z.ZodNullable<z.ZodString>>;
@@ -67,6 +71,7 @@ export declare const getAllGpsTrackingOutputSchema: z.ZodObject<{
     canEdit: z.ZodBoolean;
     createdByMe: z.ZodBoolean;
     liveAnimalCode: z.ZodString;
+    stageName: z.ZodString;
     trackingDeviceBrandSerialNumber: z.ZodString;
     lastUpdateDate: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     lastUpdateDateFormatted: z.ZodOptional<z.ZodString>;
@@ -93,6 +98,10 @@ export declare const getFormOptionsGpsTrackingOutputSchema: z.ZodObject<{
         description: z.ZodString;
     }, z.z.core.$strip>>;
     assignees: z.ZodArray<z.ZodObject<{
+        id: z.ZodNumber;
+        name: z.ZodString;
+    }, z.z.core.$strip>>;
+    stages: z.ZodArray<z.ZodObject<{
         id: z.ZodNumber;
         name: z.ZodString;
     }, z.z.core.$strip>>;

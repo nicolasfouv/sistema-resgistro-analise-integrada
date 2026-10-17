@@ -16,10 +16,9 @@ export class GpsTrackingService {
             select: {
                 id: true,
                 assignee: { select: { id: true, name: true } },
-                liveAnimalId: true,
                 liveAnimal: { select: { id: true, code: true } },
-                trackingDeviceId: true,
                 trackingDevice: { select: { id: true, brand: true, serialNumber: true } },
+                enumStage: { select: { id: true, name: true } },
                 startDate: true,
                 endDate: true,
                 note: true,
@@ -81,6 +80,8 @@ export class GpsTrackingService {
                     assigneeName: r.assignee.name,
                     liveAnimalId: r.liveAnimal.id,
                     liveAnimalCode: r.liveAnimal.code,
+                    stageId: r.enumStage.id,
+                    stageName: r.enumStage.name,
                     trackingDeviceId: r.trackingDevice.id,
                     trackingDeviceBrandSerialNumber: `${r.trackingDevice.brand} ${r.trackingDevice.serialNumber}`,
                     startDate: r.startDate.toISOString(),
@@ -125,7 +126,12 @@ export class GpsTrackingService {
             orderBy: { name: 'asc' }
         });
 
-        return { liveAnimals, trackingDevices, monitoringMethods, assignees };
+        const stages = await prisma.enum_stage.findMany({
+            select: { id: true, name: true },
+            orderBy: { id: 'asc' }
+        });
+
+        return { liveAnimals, trackingDevices, monitoringMethods, assignees, stages };
     }
 
     async create(data: CreateGpsTrackingInput, requesterId: string) {
@@ -144,6 +150,7 @@ export class GpsTrackingService {
                     assigneeId: data.assigneeId,
                     liveAnimalId: data.liveAnimalId,
                     trackingDeviceId: data.trackingDeviceId,
+                    stageId: data.stageId,
                     startDate: new Date(data.startDate),
                     endDate: data.endDate ? new Date(data.endDate) : null,
                     note: data.note || null,
@@ -199,6 +206,7 @@ export class GpsTrackingService {
                     assigneeId: data.assigneeId,
                     liveAnimalId: data.liveAnimalId,
                     trackingDeviceId: data.trackingDeviceId,
+                    stageId: data.stageId,
                     startDate: new Date(data.startDate),
                     endDate: data.endDate ? new Date(data.endDate) : null,
                     note: data.note || null,

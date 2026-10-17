@@ -25,6 +25,7 @@ export const gpsTrackingSchema = z.object({
     assigneeId: z.number().int(),
     liveAnimalId: z.number().int(),
     trackingDeviceId: z.number().int(),
+    stageId: z.number().int(),
     startDate: z.string().nonempty(),
     endDate: z.string().nullable().optional(),
     note: z.string().nullable().optional(),
@@ -47,6 +48,7 @@ export const getAllGpsTrackingOutputSchema = gpsTrackingSchema.extend({
     canEdit: z.boolean(),
     createdByMe: z.boolean(),
     liveAnimalCode: z.string().nonempty(),
+    stageName: z.string().nonempty(),
     trackingDeviceBrandSerialNumber: z.string().nonempty(),
     lastUpdateDate: z.string().nullable().optional(),
     lastUpdateDateFormatted: z.string().optional(),
@@ -73,6 +75,10 @@ export const getFormOptionsGpsTrackingOutputSchema = z.object({
         description: z.string().nonempty(),
     })),
     assignees: z.array(z.object({
+        id: z.number().int(),
+        name: z.string().nonempty()
+    })),
+    stages: z.array(z.object({
         id: z.number().int(),
         name: z.string().nonempty()
     }))

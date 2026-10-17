@@ -385,8 +385,28 @@ modify column ativo boolean not null default(false);;
 
 -- atualizar a parte de gps, separar pos fases: controle, castrado, vermifugado, castrado + vermifugado (não necessáriamente nessa ordem)
 
+create table srf.enum_etapa (
+	id int primary key auto_increment,
+    nome varchar(255) unique not null
+);
+
+insert into srf.enum_etapa (nome) 
+values ('Controle'), ('Castrado'), ('Vermifugado'), ('Castrado + Vermifugado');
+
+alter table srf.rastreio_gps
+add column id_etapa int not null;
+
+alter table srf.rastreio_gps
+add index `rastreio_gps_id_etapa_fkey` (id_etapa);
+
+alter table srf.rastreio_gps
+add constraint `fk_rastreio_gps_etapa`
+foreign key (id_etapa) references srf.enum_etapa (id);
+
 -- pensar sobre como vai funcionar a diferenciação de projetos no sistema
 
 */
+
+
 
 

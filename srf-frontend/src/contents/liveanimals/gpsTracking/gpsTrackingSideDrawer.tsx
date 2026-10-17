@@ -90,7 +90,7 @@ export function GpsTrackingSideDrawer({ filters, onClose }: GpsTrackingSideDrawe
                                     className="w-full flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-hover-bg transition-colors"
                                 >
                                     <div className="flex flex-col items-start gap-0.5">
-                                        <span className="text-sm font-bold text-text-main">{tracking.trackingDeviceBrandSerialNumber}</span>
+                                        <span className="text-sm font-bold text-text-main">{tracking.stageName}</span>
                                         <span className="text-xs text-text-light-gray">
                                             {tracking.startDateFormatted} · {tracking.liveAnimalCode}
                                         </span>
@@ -108,6 +108,8 @@ export function GpsTrackingSideDrawer({ filters, onClose }: GpsTrackingSideDrawe
                                         </h4>
                                         <div className="gap-2 w-full text-sm grid grid-cols-2 mt-3">
                                             <Field label="Animal" value={tracking.liveAnimalCode} />
+                                            <Field label="Responsável" value={tracking.assigneeName} />
+                                            <Field label="Etapa" value={tracking.stageName} />
                                             <Field label="Dispositivo" value={tracking.trackingDeviceBrandSerialNumber} />
                                             <Field label="Data de Instalação" value={tracking.startDateFormatted || ''} />
                                             <Field label="Data de Retirada" value={tracking.endDateFormatted || '-'} />

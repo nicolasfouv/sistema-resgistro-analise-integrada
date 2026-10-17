@@ -41,16 +41,16 @@ export function GpsTrackingExpansion({ item, close, refresh }: { item: GetAllGps
                         <label className="ml-1 font-bold">Responsável</label>
                         <input type="text" disabled value={item.assigneeName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                    {/* <div className="flex flex-col w-full">
-                        <label className="ml-1 font-bold">Última Atualização</label>
-                        <input type="text" disabled value={item.lastUpdateDateFormatted || '-'} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
-                    </div> */}
                     <div className="flex flex-col w-5/12">
+                        <label className="ml-1 font-bold">Etapa</label>
+                        <input type="text" disabled value={item.stageName} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
+                    </div>
+                </div>
+                <div className="gap-2 w-full text-sm grid grid-cols-4">
+                    <div className="flex flex-col w-full col-span-2">
                         <label className="ml-1 font-bold">Dispositivo de Rastreamento</label>
                         <input type="text" disabled value={item.trackingDeviceBrandSerialNumber} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
                     </div>
-                </div>
-                <div className="gap-2 w-full text-sm grid grid-cols-2">
                     <div className="flex flex-col w-full">
                         <label className="ml-1 font-bold">Data de Instalação</label>
                         <input type="text" disabled value={item.startDateFormatted || ''} className="mb-2 border border-border rounded px-2 py-1 text-text-input" />
