@@ -64,17 +64,3 @@ router.use(necropsyExamResultRoutes);
 //     await seedQuestions();
 //     res.json({ message: 'Questions seeded successfully' });
 // });
-
-import { seedBasicRegistrations } from "../scripts/seed-basic-registrations";
-router.post('/temp/seed-basic-registrations', async (req, res) => {
-    try {
-        await seedBasicRegistrations();
-        res.json({ message: 'Basic registrations seeded successfully' });
-    } catch (error) {
-        console.error('Erro ao executar seed de cadastros básicos:', error);
-        res.status(500).json({
-            message: 'Falha ao executar seed de cadastros básicos',
-            error: error instanceof Error ? error.message : String(error),
-        });
-    }
-});
