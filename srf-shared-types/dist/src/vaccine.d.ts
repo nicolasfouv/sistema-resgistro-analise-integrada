@@ -6,7 +6,7 @@ export declare const vaccineSchema: z.ZodObject<{
     applicationDate: z.ZodString;
     veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
     assigneeId: z.ZodNumber;
-    vaccineTypeId: z.ZodNumber;
+    vaccineTypeId: z.ZodOptional<z.ZodNumber>;
 }, z.z.core.$strip>;
 export declare const createVaccineInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
@@ -14,7 +14,7 @@ export declare const createVaccineInputSchema: z.ZodObject<{
     assigneeId: z.ZodNumber;
     vaccineId: z.ZodNumber;
     applicationDate: z.ZodString;
-    vaccineTypeId: z.ZodNumber;
+    vaccineTypeId: z.ZodOptional<z.ZodNumber>;
 }, z.z.core.$strip>;
 export declare const updateVaccineInputSchema: z.ZodObject<{
     liveAnimalId: z.ZodNumber;
@@ -22,7 +22,7 @@ export declare const updateVaccineInputSchema: z.ZodObject<{
     assigneeId: z.ZodNumber;
     vaccineId: z.ZodNumber;
     applicationDate: z.ZodString;
-    vaccineTypeId: z.ZodNumber;
+    vaccineTypeId: z.ZodOptional<z.ZodNumber>;
 }, z.z.core.$strip>;
 export declare const getAllVaccineOutputSchema: z.ZodObject<{
     id: z.ZodNumber;
@@ -30,12 +30,12 @@ export declare const getAllVaccineOutputSchema: z.ZodObject<{
     vaccineId: z.ZodNumber;
     applicationDate: z.ZodString;
     assigneeId: z.ZodNumber;
-    vaccineTypeId: z.ZodNumber;
+    vaccineTypeId: z.ZodOptional<z.ZodNumber>;
     canEdit: z.ZodBoolean;
     createdByMe: z.ZodBoolean;
     liveAnimalCode: z.ZodString;
     vaccineName: z.ZodString;
-    vaccineTypeName: z.ZodString;
+    vaccineTypeName: z.ZodOptional<z.ZodString>;
     veterinarianVisitId: z.ZodOptional<z.ZodNumber>;
     assigneeName: z.ZodOptional<z.ZodString>;
     veterinarianVisitDate: z.ZodOptional<z.ZodString>;

@@ -66,8 +66,8 @@ export class VaccineService {
                     assigneeId: v.assignee.id,
                     assigneeName: v.assignee.name,
                     applicationDate: v.date.toISOString(),
-                    vaccineTypeId: v.vaccineType.id,
-                    vaccineTypeName: v.vaccineType.name
+                    vaccineTypeId: v.vaccineType?.id ?? undefined,
+                    vaccineTypeName: v.vaccineType?.name ?? undefined
                 };
             })
         );
@@ -177,13 +177,15 @@ export class VaccineService {
             });
             if (!existingVaccine) throw new Error('Vacina não encontrada.');
 
-            // Verifica se o tipo de vacina existe
-            const existingVaccineType = await tx.enumVaccineType.findUnique({
-                where: {
-                    id: data.vaccineTypeId
-                }
-            });
-            if (!existingVaccineType) throw new Error('Tipo de aplicação da vacina não encontrado.');
+            // Verifica se o tipo de vacina existe (opcional)
+            if (data.vaccineTypeId) {
+                const existingVaccineType = await tx.enumVaccineType.findUnique({
+                    where: {
+                        id: data.vaccineTypeId
+                    }
+                });
+                if (!existingVaccineType) throw new Error('Tipo de aplicação da vacina não encontrado.');
+            }
 
             // Verifica se a mesma vacina já foi aplicada no mesmo animal na mesma data
             const existingVaccineApplication = await tx.vaccineApplication.findFirst({
@@ -203,7 +205,7 @@ export class VaccineService {
                     vaccineId: data.vaccineId,
                     date: new Date(data.applicationDate + 'T12:00:00'),
                     veterinarianVisitId: data.veterinarianVisitId || null,
-                    vaccineTypeId: data.vaccineTypeId
+                    vaccineTypeId: data.vaccineTypeId ?? null
                 }
             });
 
@@ -253,11 +255,13 @@ export class VaccineService {
             });
             if (!existingVaccine) throw new Error('Vacina não encontrada.');
 
-            // Verifica se o tipo de aplicação da vacina existe
-            const existingVaccineType = await tx.enumVaccineType.findUnique({
-                where: { id: data.vaccineTypeId }
-            });
-            if (!existingVaccineType) throw new Error('Tipo de aplicação da vacina não encontrado.');
+            // Verifica se o tipo de aplicação da vacina existe (opcional)
+            if (data.vaccineTypeId) {
+                const existingVaccineType = await tx.enumVaccineType.findUnique({
+                    where: { id: data.vaccineTypeId }
+                });
+                if (!existingVaccineType) throw new Error('Tipo de aplicação da vacina não encontrado.');
+            }
 
             // Verifica se a aplicação da vacina já existe
             if (data.veterinarianVisitId) {
@@ -265,7 +269,6 @@ export class VaccineService {
                     where: {
                         veterinarianVisitId: data.veterinarianVisitId,
                         vaccineId: data.vaccineId,
-                        vaccineTypeId: data.vaccineTypeId,
                         id: { not: recordId }
                     }
                 });
@@ -291,7 +294,7 @@ export class VaccineService {
                     vaccineId: data.vaccineId,
                     date: new Date(data.applicationDate + 'T12:00:00'),
                     veterinarianVisitId: data.veterinarianVisitId || null,
-                    vaccineTypeId: data.vaccineTypeId
+                    vaccineTypeId: data.vaccineTypeId ?? null
                 }
             });
 

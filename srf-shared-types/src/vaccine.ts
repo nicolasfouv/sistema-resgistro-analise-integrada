@@ -22,7 +22,7 @@ export const vaccineSchema = z.object({
     applicationDate: z.string().nonempty(),
     veterinarianVisitId: z.number().int().optional(),
     assigneeId: z.number().int(),
-    vaccineTypeId: z.number().int()
+    vaccineTypeId: z.number().int().optional()
 });
 
 export const createVaccineInputSchema = vaccineSchema.omit({
@@ -38,7 +38,7 @@ export const getAllVaccineOutputSchema = vaccineSchema.extend({
     createdByMe: z.boolean(),
     liveAnimalCode: z.string(),
     vaccineName: z.string(),
-    vaccineTypeName: z.string(),
+    vaccineTypeName: z.string().optional(),
     veterinarianVisitId: z.number().int().optional(),
     assigneeName: z.string().optional(),
     veterinarianVisitDate: z.string().optional(),

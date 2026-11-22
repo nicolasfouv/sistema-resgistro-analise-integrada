@@ -403,7 +403,11 @@ alter table srf.rastreio_gps
 add constraint `fk_rastreio_gps_etapa`
 foreign key (id_etapa) references srf.enum_etapa (id);
 
+ALTER TABLE srf.`aplicacao_vacina`
+MODIFY COLUMN `id_tipo_vacina` INT NULL;
+
 -- pensar sobre como vai funcionar a diferenciação de projetos no sistema
+
 
 */
 

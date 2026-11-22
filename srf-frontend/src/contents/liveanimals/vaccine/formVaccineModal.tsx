@@ -133,7 +133,7 @@ export function VaccineFormModal({ vaccine, close, refresh }: VaccineFormModalPr
             const data = {
                 vaccineId: Number(vaccineId),
                 liveAnimalId: Number(selectedAnimalId),
-                vaccineTypeId: Number(vaccineTypeId),
+                vaccineTypeId: Number(vaccineTypeId) || undefined,
                 applicationDate: finalApplicationDate,
                 veterinarianVisitId: Number(veterinarianVisitId) || undefined,
                 assigneeId: Number(selectedAssigneeId)
@@ -263,12 +263,11 @@ export function VaccineFormModal({ vaccine, close, refresh }: VaccineFormModalPr
 
                             {/* Tipo de aplicação da Vacina */}
                             <div className="flex flex-col">
-                                <label className="text-sm font-bold mb-1 text-left">Tipo de aplicação da Vacina</label>
+                                <label className="text-sm font-bold mb-1 text-left">Tipo de aplicação da Vacina (Opcional)</label>
                                 <select
                                     value={vaccineTypeId}
-                                    onChange={(e) => setVaccineTypeId(Number(e.target.value))}
+                                    onChange={(e) => setVaccineTypeId(e.target.value ? Number(e.target.value) : '')}
                                     className="border border-border rounded p-2 bg-white"
-                                    required
                                 >
                                     <option value="">Selecione...</option>
                                     {options.vaccineTypes.map(t => (
