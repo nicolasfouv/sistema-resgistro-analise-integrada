@@ -961,7 +961,14 @@ INSERT INTO `destino_amostra_necropsia` (`nome`) VALUES
  
 INSERT INTO `enum_etapa` (`nome`) VALUES
 ('Controle'),('Castrado'),('Vermifugado'),('Castrado + Vermifugado');
- 
+
+INSERT INTO `enum_genero_animal` (`id`, `nome`) VALUES ('1', 'Fêmea');
+INSERT INTO `enum_genero_animal` (`id`, `nome`) VALUES ('2', 'Macho');
+
+INSERT INTO `enum_genero` (`id`, `nome`) VALUES ('1', 'Mulher');
+INSERT INTO `enum_genero` (`id`, `nome`) VALUES ('2', 'Homem');
+INSERT INTO `enum_genero` (`id`, `nome`) VALUES ('3', 'Outro');
+
 -- =============================================================================
 -- 9) CONFERÊNCIA RÁPIDA (opcional)
 -- =============================================================================

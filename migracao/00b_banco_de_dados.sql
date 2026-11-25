@@ -1,0 +1,4 @@
+DROP DATABASE IF EXISTS `mig_auxiliar`;
+CREATE DATABASE IF NOT EXISTS `mig_auxiliar`
+  DEFAULT CHARACTER SET utf8mb4
+  DEFAULT COLLATE utf8mb4_unicode_ci;
